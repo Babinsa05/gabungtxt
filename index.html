@@ -2,462 +2,238 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TXT Combiner - Gabung File, Deteksi Desa & Bulan</title>
+    <title>TEST TXT Combiner - Simple Version</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .card { background: white; border-radius: 28px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #1e3a5f, #0f2a44); color: white; padding: 24px 28px; }
-        .header h1 { font-size: 1.6rem; }
-        .header p { margin-top: 6px; opacity: 0.85; font-size: 0.85rem; }
-        .content { padding: 28px; }
-        .tabs { display: flex; gap: 8px; border-bottom: 2px solid #e2e8f0; margin-bottom: 24px; flex-wrap: wrap; }
-        .tab-btn { background: none; border: none; padding: 12px 24px; font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 12px 12px 0 0; color: #64748b; }
-        .tab-btn.active { background: #1e3a5f; color: white; }
-        .status-bar { display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 10px 18px; border-radius: 60px; width: fit-content; margin-bottom: 24px; }
-        .led { width: 12px; height: 12px; border-radius: 50%; background: #10b981; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
-        .btn { padding: 10px 24px; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.85rem; }
-        .btn-primary { background: #1e3a5f; color: white; }
-        .btn-primary:hover { background: #0f2a44; }
-        .btn-secondary { background: #475569; color: white; }
-        .btn-secondary:hover { background: #334155; }
-        .btn-success { background: #10b981; color: white; }
-        .btn-success:hover { background: #059669; }
-        .btn-danger { background: #ef4444; color: white; }
-        .btn-danger:hover { background: #dc2626; }
-        .btn-purple { background: #7c3aed; color: white; }
-        .btn-purple:hover { background: #5b21b6; }
-        .btn-outline { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
-        .btn-outline:hover { background: #e2e8f0; }
-        .file-panel { background: #f8fafc; border-radius: 20px; padding: 20px; margin-bottom: 24px; border: 2px dashed #cbd5e1; }
-        .file-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 600; }
-        .file-list { max-height: 250px; overflow-y: auto; }
-        .file-item { background: white; border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; }
-        .remove-file { background: #fee2e2; border: none; padding: 4px 12px; border-radius: 20px; cursor: pointer; color: #dc2626; font-size: 0.7rem; }
-        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 12px; }
-        pre { background: #0f172a; color: #e2e8f0; padding: 20px; border-radius: 20px; overflow-x: auto; white-space: pre-wrap; font-family: monospace; font-size: 0.8rem; line-height: 1.5; min-height: 150px; max-height: 400px; }
-        .info-text { font-size: 0.75rem; color: #64748b; margin-top: 8px; text-align: right; }
-        .preview-name { background: #e6f0fa; padding: 8px 12px; border-radius: 12px; margin-top: 8px; font-size: 0.8rem; text-align: center; }
-        .help-text { font-size: 0.7rem; color: #94a3b8; margin-top: 8px; text-align: center; }
-        footer { text-align: center; font-size: 0.7rem; padding: 20px; color: #64748b; border-top: 1px solid #e2e8f0; background: white; border-radius: 0 0 28px 28px; }
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 12px 24px; border-radius: 60px; font-size: 0.85rem; z-index: 1000; animation: fadeOut 2.5s forwards; }
-        @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
-        .guide-box { background: #f0fdf4; border-left: 5px solid #10b981; padding: 20px; border-radius: 16px; margin-bottom: 20px; }
-        .guide-box h3 { color: #065f46; margin-bottom: 12px; }
+        body { font-family: sans-serif; padding: 20px; background: #f0f0f0; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #1e1e1e; color: white; padding: 15px; border-radius: 8px; overflow: auto; }
+        .file-list { border: 1px solid #ccc; padding: 10px; min-height: 100px; margin: 10px 0; }
+        .file-item { background: #e0e0e0; padding: 5px 10px; margin: 5px; display: flex; justify-content: space-between; }
+        .status { background: #d4edda; padding: 10px; border-radius: 5px; margin: 10px 0; }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="card">
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="combiner">📄 TXT Combiner</button>
-            <button class="tab-btn" data-tab="guide">📖 Cara Penggunaan</button>
-            <button class="tab-btn" data-tab="prompt">🤖 Prompt AI</button>
-            <button class="tab-btn" data-tab="word">📝 Copy ke Word</button>
-        </div>
-        
-        <div id="combiner" class="tab-pane active">
-            <div class="header">
-                <h1>📄 TXT Combiner</h1>
-                <p>Upload file/folder TXT | Deteksi Nama Desa & Bulan | Gabung | Hapus duplikat | Urut tanggal</p>
-            </div>
-            <div class="content">
-                <div class="status-bar">
-                    <div class="led"></div>
-                    <span>✅ Siap - Upload file atau folder</span>
-                </div>
-
-                <div class="btn-group">
-                    <button id="addFilesBtn" class="btn btn-primary">📄 Pilih File TXT</button>
-                    <button id="addFolderBtn" class="btn btn-secondary">📁 Pilih Folder</button>
-                    <button id="clearAllBtn" class="btn btn-danger">🗑️ Hapus Semua</button>
-                    <button id="saveToSupabaseBtn" class="btn btn-purple">💾 Simpan CSS</button>
-                    <button id="loadCssBtn" class="btn btn-outline">📥 Load CSS</button>
-                    <button id="historyBtn" class="btn btn-outline">📜 Riwayat</button>
-                </div>
-
-                <div class="file-panel" id="dropZone">
-                    <div class="file-header">
-                        <span>📁 File Terupload</span>
-                        <span id="fileCount">0 file</span>
-                    </div>
-                    <div id="fileList" class="file-list">📭 Belum ada file</div>
-                    <div class="help-text">💡 Drag & drop file/folder TXT ke sini</div>
-                </div>
-
-                <div class="result-header">
-                    <span>📋 <strong>Hasil Gabungan</strong></span>
-                    <button id="downloadBtn" class="btn btn-success">⬇️ Download TXT</button>
-                </div>
-                <pre id="output">✨ Upload file/folder TXT, akan digabung otomatis...</pre>
-                <div id="infoText" class="info-text">📏 Total: 0 entri | 0 duplikat | 📍 Desa: - | 📅 Bulan: -</div>
-                <div id="previewName" class="preview-name">📄 Nama file: Laporan_Gabungan.txt</div>
-            </div>
-            <footer>🔧 Gabung file TXT | Deteksi Desa & Bulan | Hapus duplikat | Urut tanggal</footer>
-        </div>
-        
-        <div id="guide" class="tab-pane">
-            <div class="header" style="background: linear-gradient(135deg, #0f5f3a, #0a3d25);">
-                <h1>📖 Cara Penggunaan</h1>
-                <p>Panduan lengkap untuk operator</p>
-            </div>
-            <div class="content" id="guideContent">
-                <div class="guide-box"><h3>📌 A. Upload File</h3><p>Klik tombol "Pilih File TXT" atau "Pilih Folder" untuk upload file.</p></div>
-                <div class="guide-box"><h3>🖱️ B. Drag & Drop</h3><p>Seret file/folder ke area panel untuk upload cepat.</p></div>
-                <div class="guide-box"><h3>⚡ C. Proses Otomatis</h3><p>Sistem akan otomatis menggabungkan, menghapus duplikat, dan mengurutkan berdasarkan tanggal.</p></div>
-            </div>
-            <footer>📌 Panduan penggunaan</footer>
-        </div>
-        
-        <div id="prompt" class="tab-pane">
-            <div class="header" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">
-                <h1>🤖 Prompt AI</h1>
-                <p>Copy-paste ke ChatGPT, Claude, DeepSeek</p>
-            </div>
-            <div class="content">
-                <div class="prompt-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <strong>📜 PROMPT LENGKAP</strong>
-                    <button id="copyPromptBtn" class="copy-btn" style="background:#3b82f6; border:none; padding:6px 16px; border-radius:20px; color:white; cursor:pointer;">📋 Copy</button>
-                </div>
-                <div class="prompt-box" style="background:#1e1e2e; color:#e2e8f0; padding:20px; border-radius:16px; font-family:monospace; font-size:0.8rem;">
-Anda adalah asisten yang akan mengolah data kegiatan Babinsa.
-
-【FORMAT OUTPUT】
-1. Output teks biasa
-2. Setiap baris: Hari, Tanggal [TAB] Narasi (150-250 karakter)
-3. Dibagi dua bagian: 5 pertama + 4 terakhir dalam kode blok
-
-Silakan berikan data kegiatan.
-                </div>
-            </div>
-            <footer>🤖 Prompt siap pakai</footer>
-        </div>
-        
-        <div id="word" class="tab-pane">
-            <div class="header" style="background: linear-gradient(135deg, #185ABD, #0e408a);">
-                <h1>📝 Copy ke Word</h1>
-                <p>Panduan format dokumen</p>
-            </div>
-            <div class="content">
-                <div class="word-box" style="background:#eff6ff; border-left:5px solid #185ABD; padding:20px; border-radius:16px;">
-                    <h3>📋 Cara Copy ke Word</h3>
-                    <ol><li>Blok teks</li><li>Ctrl+C</li><li>Buka Word</li><li>Ctrl+V</li><li>Pilih "Keep Text Only"</li></ol>
-                </div>
-            </div>
-            <footer>📝 Tips copy ke Word</footer>
-        </div>
+    <h1>📄 TXT Combiner - TEST VERSION</h1>
+    
+    <div class="status" id="status">✅ Siap - Upload file TXT</div>
+    
+    <div>
+        <button id="btnFile">📄 Pilih File TXT</button>
+        <button id="btnClear">🗑️ Hapus Semua</button>
+        <button id="btnDownload">⬇️ Download Hasil</button>
     </div>
+    
+    <h3>📁 File Terupload (<span id="fileCount">0</span>)</h3>
+    <div id="fileList" class="file-list">📭 Belum ada file</div>
+    
+    <h3>📋 Hasil Gabungan</h3>
+    <pre id="output">✨ Upload file TXT, akan digabung otomatis...</pre>
+    
+    <div id="info">📏 Total: 0 entri | 0 duplikat</div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ==================== DATA ====================
+// Data store
 let files = [];
 let finalText = "";
-let detectedDesa = "";
-let detectedBulan = "";
 
-const daftarBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+// DOM elements
+const outputEl = document.getElementById('output');
+const fileListEl = document.getElementById('fileList');
+const fileCountEl = document.getElementById('fileCount');
+const infoEl = document.getElementById('info');
 
-// ==================== SUPABASE ====================
-const SUPABASE_URL = 'https://yyeagjiyvaqtjmaltapl.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5ZWFnaml5dmFxdGptYWx0YXBsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MDcxMTQsImV4cCI6MjA5Njk4MzExNH0.c4UOWUSNaSzfrYoW_KDVQtZtjfLeBD9K59mPwKhnYBs';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-console.log('✅ Supabase connected');
-
-// ==================== UTILITY ====================
-function showToast(msg, bg) {
-    let existing = document.querySelector('.toast');
-    if (existing) existing.remove();
-    let toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = msg;
-    toast.style.backgroundColor = bg;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2500);
-}
-
-function detectDesa(text) {
-    let match = text.match(/Desa\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
-    return match ? match[1] : null;
-}
-
-function detectBulan(text) {
-    for (let bulan of daftarBulan) {
-        if (text.includes(bulan)) return bulan;
-    }
-    return null;
+// Helper functions
+function showMessage(msg, isError = false) {
+    const statusEl = document.getElementById('status');
+    statusEl.innerHTML = isError ? `⚠️ ${msg}` : `✅ ${msg}`;
+    statusEl.style.background = isError ? '#f8d7da' : '#d4edda';
+    setTimeout(() => {
+        statusEl.innerHTML = '✅ Siap - Upload file TXT';
+        statusEl.style.background = '#d4edda';
+    }, 2000);
 }
 
 function parseEntries(content) {
-    return content.split(/\r?\n/).filter(l => l.trim().length > 0);
+    return content.split(/\r?\n/).filter(line => line.trim().length > 0);
 }
 
-function extractDate(entry) {
-    let match = entry.match(/(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i);
-    if (match) {
-        let bulanMap = { januari:1, februari:2, maret:3, april:4, mei:5, juni:6, juli:7, agustus:8, september:9, oktober:10, november:11, desember:12 };
-        return new Date(parseInt(match[3]), bulanMap[match[2].toLowerCase()]-1, parseInt(match[1]));
-    }
-    return null;
-}
-
-function sortByDate(entries) {
-    return [...entries].sort((a,b) => {
-        let da = extractDate(a), db = extractDate(b);
-        if (!da && !db) return 0;
-        if (!da) return 1;
-        if (!db) return -1;
-        return da - db;
-    });
-}
-
-function readFile(file) {
-    return new Promise((resolve) => {
-        let reader = new FileReader();
-        reader.onload = e => resolve(e.target.result);
-        reader.readAsText(file);
-    });
-}
-
-async function processCombine() {
-    if (!files.length) {
-        document.getElementById('output').innerHTML = '✨ Upload file/folder TXT...';
-        document.getElementById('infoText').innerHTML = '📏 Total: 0 entri | 0 duplikat | 📍 Desa: - | 📅 Bulan: -';
+function processCombine() {
+    if (files.length === 0) {
+        outputEl.innerHTML = '✨ Upload file TXT, akan digabung otomatis...';
+        infoEl.innerHTML = '📏 Total: 0 entri | 0 duplikat';
         finalText = "";
         return;
     }
     
-    document.getElementById('output').innerHTML = '🔄 Memproses...';
+    outputEl.innerHTML = '🔄 Memproses...';
     
+    // Gabungkan semua baris dari semua file
     let allLines = [];
     for (let f of files) {
-        allLines.push(...parseEntries(f.content));
+        let lines = parseEntries(f.content);
+        allLines.push(...lines);
     }
     
-    let unique = [...new Map(allLines.map(l => [l.toLowerCase().trim(), l])).values()];
-    let duplicates = allLines.length - unique.length;
-    let sorted = sortByDate(unique);
-    finalText = sorted.join('\n');
+    // Hapus duplikat (case insensitive)
+    let uniqueLines = [];
+    let seen = new Set();
+    for (let line of allLines) {
+        let key = line.toLowerCase().trim();
+        if (!seen.has(key)) {
+            seen.add(key);
+            uniqueLines.push(line);
+        }
+    }
     
-    // Update detected desa & bulan
-    let allText = files.map(f => f.content).join(' ');
-    detectedDesa = detectDesa(allText) || '';
-    detectedBulan = detectBulan(allText) || '';
+    let duplicateCount = allLines.length - uniqueLines.length;
     
-    document.getElementById('output').innerHTML = finalText || '(kosong)';
-    document.getElementById('infoText').innerHTML = `📏 Total: ${sorted.length} entri | ${duplicates} duplikat | 📍 Desa: ${detectedDesa || '-'} | 📅 Bulan: ${detectedBulan || '-'}`;
+    // Urutkan berdasarkan tanggal jika ada
+    function extractDate(line) {
+        let match = line.match(/(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i);
+        if (match) {
+            let bulanMap = { januari:1, februari:2, maret:3, april:4, mei:5, juni:6, juli:7, agustus:8, september:9, oktober:10, november:11, desember:12 };
+            return new Date(parseInt(match[3]), bulanMap[match[2].toLowerCase()]-1, parseInt(match[1]));
+        }
+        return null;
+    }
     
-    let previewName = detectedDesa && detectedBulan ? `${detectedDesa}_Gabungan_${detectedBulan}.txt` : (detectedDesa ? `${detectedDesa}_Gabungan.txt` : (detectedBulan ? `Gabungan_${detectedBulan}.txt` : 'Laporan_Gabungan.txt'));
-    document.getElementById('previewName').innerHTML = `📄 Nama file: ${previewName}`;
-    
-    if (sorted.length) showToast(`✅ ${sorted.length} entri (${duplicates} duplikat)`, '#10b981');
-}
-
-async function addFile(file) {
-    if (!file.name.endsWith('.txt')) { showToast(`⚠️ ${file.name} bukan TXT`, '#f59e0b'); return; }
-    if (files.some(f => f.name === file.name)) { showToast(`⚠️ ${file.name} sudah ada`, '#f59e0b'); return; }
-    
-    let content = await readFile(file);
-    files.push({ name: file.name, content });
-    renderFileList();
-    await processCombine();
-    showToast(`✅ ${file.name}`, '#10b981');
-}
-
-async function readFolder(entry) {
-    let results = [];
-    let reader = entry.createReader();
-    let readAll = () => new Promise((resolve) => {
-        reader.readEntries(async (entries) => {
-            for (let e of entries) {
-                if (e.isFile) {
-                    let file = await new Promise(r => e.file(r));
-                    if (file.name.endsWith('.txt')) results.push(file);
-                } else if (e.isDirectory) {
-                    let sub = await readFolder(e);
-                    results.push(...sub);
-                }
-            }
-            resolve();
-        }, () => resolve());
+    let sortedLines = [...uniqueLines].sort((a, b) => {
+        let dateA = extractDate(a);
+        let dateB = extractDate(b);
+        if (!dateA && !dateB) return 0;
+        if (!dateA) return 1;
+        if (!dateB) return -1;
+        return dateA - dateB;
     });
-    await readAll();
-    return results;
+    
+    finalText = sortedLines.join('\n');
+    outputEl.innerHTML = finalText || '(kosong)';
+    infoEl.innerHTML = `📏 Total: ${sortedLines.length} entri | ${duplicateCount} duplikat dihapus`;
+    
+    showMessage(`Selesai! ${sortedLines.length} entri, ${duplicateCount} duplikat`);
 }
 
 function renderFileList() {
-    let container = document.getElementById('fileList');
-    let counter = document.getElementById('fileCount');
-    counter.innerText = `${files.length} file`;
-    if (!files.length) { container.innerHTML = '📭 Belum ada file'; return; }
-    container.innerHTML = files.map((f, i) => `<div class="file-item"><span>📄 ${escapeHtml(f.name)}</span><button class="remove-file" data-index="${i}">Hapus</button></div>`).join('');
-    document.querySelectorAll('.remove-file').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            let idx = parseInt(btn.dataset.index);
-            files.splice(idx, 1);
-            renderFileList();
-            await processCombine();
-            showToast('File dihapus', '#475569');
-        });
-    });
+    fileCountEl.innerText = files.length;
+    
+    if (files.length === 0) {
+        fileListEl.innerHTML = '📭 Belum ada file';
+        return;
+    }
+    
+    fileListEl.innerHTML = files.map((f, idx) => `
+        <div class="file-item">
+            <span>📄 ${escapeHtml(f.name)}</span>
+            <button onclick="removeFile(${idx})" style="background:#fee; border:none; padding:2px 10px; border-radius:5px; cursor:pointer;">Hapus</button>
+        </div>
+    `).join('');
 }
 
-function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
-
-function download() {
-    if (!finalText) { showToast('Tidak ada data', '#f59e0b'); return; }
-    let name = detectedDesa && detectedBulan ? `${detectedDesa}_Gabungan_${detectedBulan}.txt` : `Laporan_Gabungan_${new Date().toISOString().slice(0,10)}.txt`;
-    let blob = new Blob([finalText], { type: 'text/plain' });
-    let a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = name;
-    a.click();
-    URL.revokeObjectURL(a.href);
-    showToast(`⬇️ ${name}`, '#10b981');
+function escapeHtml(str) {
+    return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
 }
 
-function clearAll() {
-    if (!files.length) return;
-    if (confirm(`Hapus ${files.length} file?`)) {
-        files = []; finalText = ''; detectedDesa = ''; detectedBulan = '';
+function removeFile(index) {
+    files.splice(index, 1);
+    renderFileList();
+    processCombine();
+    showMessage('File dihapus');
+}
+
+async function addFile(file) {
+    if (!file.name.endsWith('.txt')) {
+        showMessage(`${file.name} bukan file TXT!`, true);
+        return false;
+    }
+    
+    if (files.some(f => f.name === file.name)) {
+        showMessage(`${file.name} sudah ada!`, true);
+        return false;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+        const content = e.target.result;
+        files.push({ name: file.name, content: content });
         renderFileList();
         processCombine();
-        showToast('Semua dihapus', '#475569');
-    }
+        showMessage(`${file.name} ditambahkan`);
+    };
+    reader.readAsText(file, "UTF-8");
+    return true;
 }
 
-// ==================== SUPABASE FUNCTIONS ====================
-async function saveCSS() {
-    let cssContent = '';
-    document.querySelectorAll('style').forEach(style => { cssContent += style.innerHTML; });
-    let { error } = await supabase.from('file_css').upsert({ id: 'style.css', konten: cssContent, updated_at: new Date() });
-    if (error) { showToast('Gagal simpan CSS', '#ef4444'); console.error(error); }
-    else { showToast('✅ CSS tersimpan!', '#10b981'); }
-}
-
-async function loadCSS() {
-    let { data, error } = await supabase.from('file_css').select('konten').eq('id', 'style.css').single();
-    if (error || !data) { showToast('Gagal load CSS', '#f59e0b'); return; }
-    let styleTag = document.createElement('style');
-    styleTag.textContent = data.konten;
-    document.head.appendChild(styleTag);
-    showToast('✅ CSS dimuat!', '#10b981');
-}
-
-async function showHistory() {
-    let { data, error } = await supabase.from('hasil_gabungan').select('*').order('created_at', { ascending: false }).limit(10);
-    if (error) { showToast('Gagal ambil riwayat', '#ef4444'); return; }
-    if (!data.length) { showToast('Belum ada riwayat', '#475569'); return; }
-    let msg = '📜 RIWAYAT HASIL GABUNGAN:\n\n';
-    data.forEach((item, i) => {
-        msg += `${i+1}. ${new Date(item.created_at).toLocaleString()}\n`;
-        msg += `   Desa: ${item.desa || '-'} | Bulan: ${item.bulan || '-'} | ${item.jumlah_entri} entri\n`;
-        msg += `   Preview: ${(item.konten || '').substring(0, 80)}...\n\n`;
-    });
-    alert(msg);
-}
-
-// ==================== EVENT ====================
-document.getElementById('addFilesBtn').onclick = () => {
-    let input = document.createElement('input');
-    input.type = 'file'; input.multiple = true; input.accept = '.txt';
-    input.onchange = async (e) => { for (let f of e.target.files) await addFile(f); };
-    input.click();
-};
-
-document.getElementById('addFolderBtn').onclick = () => {
-    let input = document.createElement('input');
-    input.type = 'file'; input.webkitdirectory = true;
-    input.onchange = async (e) => {
-        let added = 0;
-        for (let f of e.target.files) {
-            if (f.name.endsWith('.txt') && !files.some(ex => ex.name === f.name)) {
-                let content = await readFile(f);
-                files.push({ name: f.name, content });
-                added++;
-            }
+// Event handlers
+document.getElementById('btnFile').onclick = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = true;
+    input.accept = '.txt';
+    input.onchange = (e) => {
+        for (let file of e.target.files) {
+            addFile(file);
         }
-        renderFileList();
-        await processCombine();
-        showToast(`📁 ${added} file`, '#475569');
     };
     input.click();
 };
 
-document.getElementById('clearAllBtn').onclick = clearAll;
-document.getElementById('downloadBtn').onclick = download;
-document.getElementById('saveToSupabaseBtn').onclick = saveCSS;
-document.getElementById('loadCssBtn').onclick = loadCSS;
-document.getElementById('historyBtn').onclick = showHistory;
-document.getElementById('copyPromptBtn').onclick = () => {
-    let text = document.querySelector('.prompt-box')?.innerText || '';
-    navigator.clipboard.writeText(text);
-    showToast('✅ Prompt disalin!', '#10b981');
+document.getElementById('btnClear').onclick = () => {
+    if (files.length > 0 && confirm(`Hapus semua ${files.length} file?`)) {
+        files = [];
+        finalText = "";
+        renderFileList();
+        processCombine();
+        showMessage('Semua file dihapus');
+    }
 };
 
-let dropZone = document.getElementById('dropZone');
-dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.background = '#eef2ff'; };
-dropZone.ondragleave = () => { dropZone.style.background = '#f8fafc'; };
+document.getElementById('btnDownload').onclick = () => {
+    if (!finalText) {
+        showMessage('Tidak ada hasil untuk di-download!', true);
+        return;
+    }
+    
+    const blob = new Blob([finalText], { type: 'text/plain' });
+    const link = document.createElement('a');
+    const date = new Date().toISOString().slice(0, 10);
+    link.href = URL.createObjectURL(blob);
+    link.download = `Hasil_Gabungan_${date}.txt`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    showMessage('Download dimulai!');
+};
+
+// Drag & drop
+const dropZone = document.querySelector('.container');
+dropZone.ondragover = (e) => {
+    e.preventDefault();
+    dropZone.style.background = '#e8f4fd';
+};
+dropZone.ondragleave = () => {
+    dropZone.style.background = 'white';
+};
 dropZone.ondrop = async (e) => {
-    e.preventDefault(); dropZone.style.background = '#f8fafc';
-    for (let item of e.dataTransfer.items) {
-        let entry = item.webkitGetAsEntry();
-        if (!entry) continue;
-        if (entry.isFile) {
-            let file = await new Promise(r => entry.file(r));
-            if (file.name.endsWith('.txt')) await addFile(file);
-        } else if (entry.isDirectory) {
-            let added = 0;
-            for (let f of await readFolder(entry)) {
-                if (!files.some(ex => ex.name === f.name)) {
-                    let content = await readFile(f);
-                    files.push({ name: f.name, content });
-                    added++;
-                }
+    e.preventDefault();
+    dropZone.style.background = 'white';
+    
+    const items = e.dataTransfer.items;
+    for (let i = 0; i < items.length; i++) {
+        const entry = items[i].webkitGetAsEntry();
+        if (entry && entry.isFile) {
+            const file = await new Promise(resolve => entry.file(resolve));
+            if (file.name.endsWith('.txt')) {
+                await addFile(file);
+            } else {
+                showMessage(`${file.name} bukan TXT`, true);
             }
-            renderFileList();
-            await processCombine();
-            showToast(`📁 ${added} file`, '#475569');
         }
     }
 };
 
-let tabs = document.querySelectorAll('.tab-btn');
-let panes = document.querySelectorAll('.tab-pane');
-tabs.forEach(btn => {
-    btn.addEventListener('click', () => {
-        let id = btn.dataset.tab;
-        tabs.forEach(b => b.classList.remove('active'));
-        panes.forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(id).classList.add('active');
-    });
-});
-
-renderFileList();
-processCombine();
-
-// Auto save to Supabase when process done
-let originalProcess = processCombine;
-window.processCombine = async () => {
-    await originalProcess();
-    if (finalText && finalText.length > 0 && detectedDesa) {
-        await supabase.from('hasil_gabungan').insert({
-            konten: finalText.substring(0, 500),
-            desa: detectedDesa,
-            bulan: detectedBulan,
-            jumlah_entri: finalText.split('\n').length,
-            created_at: new Date()
-        }).then(() => console.log('Auto saved to Supabase'));
-    }
-};
+console.log('✅ Test version siap!');
 </script>
 </body>
 </html>
