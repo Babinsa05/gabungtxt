@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TXT Combiner - Deteksi Bulan & Desa + AI Prompt + Panduan Word</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="combiner">📄 TXT Combiner</button>
+            <button class="tab-btn" data-tab="guide">📖 Cara Penggunaan</button>
+            <button class="tab-btn" data-tab="prompt">🤖 Prompt AI</button>
+            <button class="tab-btn" data-tab="word">📝 Copy ke Word</button>
+            <button class="tab-btn" data-tab="readme">📘 README.md</button>
+        </div>
+        
+        <!-- Tab 1: TXT Combiner -->
+        <div id="combiner" class="tab-pane active">
+            <div class="header">
+                <h1>📄 TXT Combiner</h1>
+                <p>Upload file/folder TXT | Deteksi otomatis Nama Desa & Bulan | Gabung | Hapus duplikat | Urut berdasarkan tanggal</p>
+            </div>
+            <div class="content">
+                <div class="status-bar">
+                    <div class="led"></div>
+                    <span id="statusText">✅ Siap - Upload file atau folder</span>
+                </div>
+
+                <div class="btn-group">
+                    <button id="addFilesBtn" class="btn btn-primary">📄 Pilih File TXT</button>
+                    <button id="addFolderBtn" class="btn btn-secondary">📁 Pilih Folder (termasuk sub-folder)</button>
+                    <button id="clearAllBtn" class="btn btn-danger">🗑️ Hapus Semua</button>
+                </div>
+
+                <div class="file-panel" id="dropZone">
+                    <div class="file-header">
+                        <span>📁 File Terupload</span>
+                        <span id="fileCount">0 file</span>
+                    </div>
+                    <div id="fileList" class="file-list">📭 Belum ada file</div>
+                </div>
+
+                <div class="result-header">
+                    <span>📋 <strong>Hasil Gabungan</strong></span>
+                    <button id="downloadBtn" class="btn btn-success">⬇️ Download TXT</button>
+                </div>
+                <pre id="output">✨ Upload file/folder TXT, akan digabung otomatis...</pre>
+                <div id="infoText" class="info-text">📏 Total: 0 entri | 0 duplikat dihapus | 📍 Desa: - | 📅 Bulan: -</div>
+                <div id="previewName" class="preview-name">📄 Nama file output: Laporan_Gabungan.txt</div>
+            </div>
+            <footer>🔧 Deteksi otomatis Nama Desa & Bulan | Gabung file | Hapus duplikat | Urut berdasarkan tanggal</footer>
+        </div>
+        
+        <!-- Tab 2: Cara Penggunaan -->
+        <div id="guide" class="tab-pane">
+            <div class="header" style="background: linear-gradient(135deg, #0f5f3a, #0a3d25);">
+                <h1>📖 Cara Penggunaan TXT Combiner</h1>
+                <p>Panduan lengkap untuk operator</p>
+            </div>
+            <div class="content" id="guideContent"></div>
+            <footer>📌 Gunakan tab "Copy ke Word" untuk panduan format dokumen</footer>
+        </div>
+        
+        <!-- Tab 3: Prompt AI -->
+        <div id="prompt" class="tab-pane">
+            <div class="header" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">
+                <h1>🤖 Perintah ke Prompt AI</h1>
+                <p>Copy-paste ke ChatGPT, Claude, DeepSeek untuk mengolah data kegiatan Babinsa</p>
+            </div>
+            <div class="content" id="promptContent"></div>
+            <footer>🤖 Prompt siap pakai untuk AI</footer>
+        </div>
+        
+        <!-- Tab 4: Copy ke Word -->
+        <div id="word" class="tab-pane">
+            <div class="header" style="background: linear-gradient(135deg, #185ABD, #0e408a);">
+                <h1>📝 Panduan Copy-Paste ke Microsoft Word (DOCX)</h1>
+                <p>Font, ukuran, alignment, paragraf, dan shortcut keyboard</p>
+            </div>
+            <div class="content" id="wordContent"></div>
+            <footer>📝 Gunakan panduan ini untuk hasil copy-paste yang rapi di Microsoft Word</footer>
+        </div>
+        
+        <!-- Tab 5: README.md -->
+        <div id="readme" class="tab-pane">
+            <div class="header" style="background: linear-gradient(135deg, #eab308, #ca8a04); color: #1e293b;">
+                <h1>📘 README.md - Panduan Prompt AI</h1>
+                <p>Dokumentasi lengkap cara menggunakan prompt AI untuk mengolah data Babinsa</p>
+            </div>
+            <div class="content">
+                <div class="flex-between" style="margin-bottom: 16px;">
+                    <span class="badge">📄 Konten README.md</span>
+                    <button id="copyReadmeBtn" class="copy-btn">📋 Copy README</button>
+                </div>
+                <div id="readmeContentDisplay" class="prompt-box" style="max-height: 500px; overflow-y: auto;">Loading...</div>
+            </div>
+            <footer>📖 Gunakan file README.md untuk menyimpan prompt AI</footer>
+        </div>
+    </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
