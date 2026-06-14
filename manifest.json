@@ -1,7 +1,7 @@
 {
     "name": "TXT Combiner",
     "short_name": "TXTCombiner",
-    "description": "Gabung file TXT, deteksi desa dan bulan, hapus duplikat",
+    "description": "Gabung file TXT, deteksi desa dan bulan, hapus duplikat, simpan ke Supabase",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#1e3a5f",

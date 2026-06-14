@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TXT Combiner - Deteksi Bulan & Desa</title>
+    <title>TXT Combiner - Deteksi Bulan & Desa + Supabase</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 </head>
@@ -33,6 +33,8 @@
                     <button id="addFilesBtn" class="btn btn-primary">📄 Pilih File TXT</button>
                     <button id="addFolderBtn" class="btn btn-secondary">📁 Pilih Folder</button>
                     <button id="clearAllBtn" class="btn btn-danger">🗑️ Hapus Semua</button>
+                    <button id="saveToSupabaseBtn" class="btn btn-purple">💾 Simpan CSS ke Supabase</button>
+                    <button id="loadCssFromSupabaseBtn" class="btn btn-outline">📥 Load CSS dari Supabase</button>
                 </div>
 
                 <div class="file-panel" id="dropZone">
@@ -46,13 +48,16 @@
 
                 <div class="result-header">
                     <span>📋 <strong>Hasil Gabungan</strong></span>
-                    <button id="downloadBtn" class="btn btn-success">⬇️ Download TXT</button>
+                    <div>
+                        <button id="historyBtn" class="btn btn-outline">📜 Riwayat</button>
+                        <button id="downloadBtn" class="btn btn-success">⬇️ Download TXT</button>
+                    </div>
                 </div>
                 <pre id="output">✨ Upload file/folder TXT, akan digabung otomatis...</pre>
                 <div id="infoText" class="info-text">📏 Total: 0 entri | 0 duplikat dihapus</div>
                 <div id="previewName" class="preview-name">📄 Nama file output: Laporan_Gabungan.txt</div>
             </div>
-            <footer>🔧 Deteksi otomatis Nama Desa & Bulan | Gabung file | Hapus duplikat | Urut berdasarkan tanggal</footer>
+            <footer>🔧 Deteksi otomatis Nama Desa & Bulan | Gabung file | Hapus duplikat | Urut berdasarkan tanggal | ⚡ Tersimpan ke Supabase</footer>
         </div>
         
         <!-- Tab 2: Cara Penggunaan -->
@@ -86,8 +91,9 @@
         </div>
     </div>
 </div>
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="app.js"></script>
+
+<!-- Supabase JS Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
 </body>
 </html>

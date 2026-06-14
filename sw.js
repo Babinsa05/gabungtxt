@@ -1,4 +1,4 @@
-const CACHE_NAME = 'txt-combiner-v1';
+const CACHE_NAME = 'txt-combiner-v2';
 const urlsToCache = [
     './',
     './index.html',
