@@ -3,9 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TXT Combiner - Deteksi Bulan & Desa</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
+    <title>TXT Combiner - Upload File & Folder + Sub Folder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .card { background: white; border-radius: 28px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1e3a5f, #0f2a44); color: white; padding: 24px 28px; }
+        .header h1 { font-size: 1.6rem; }
+        .header p { margin-top: 6px; opacity: 0.85; font-size: 0.85rem; }
+        .content { padding: 28px; }
+        
+        .tabs { display: flex; gap: 8px; border-bottom: 2px solid #e2e8f0; margin-bottom: 24px; flex-wrap: wrap; }
+        .tab-btn { background: none; border: none; padding: 12px 24px; font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 12px 12px 0 0; transition: all 0.2s; color: #64748b; }
+        .tab-btn.active { background: #1e3a5f; color: white; }
+        .tab-btn:hover:not(.active) { background: #e2e8f0; color: #1e293b; }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .status-bar { display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 10px 18px; border-radius: 60px; width: fit-content; margin-bottom: 24px; }
+        .led { width: 12px; height: 12px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+        .btn { padding: 10px 24px; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.85rem; }
+        .btn:active { transform: scale(0.96); }
+        .btn-primary { background: #1e3a5f; color: white; }
+        .btn-primary:hover { background: #0f2a44; }
+        .btn-secondary { background: #475569; color: white; }
+        .btn-secondary:hover { background: #334155; }
+        .btn-success { background: #10b981; color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-purple { background: #7c3aed; color: white; }
+        .btn-purple:hover { background: #5b21b6; }
+        .btn-outline { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
+        .btn-outline:hover { background: #e2e8f0; }
+        
+        .file-panel { background: #f8fafc; border-radius: 20px; padding: 20px; margin-bottom: 24px; border: 2px dashed #cbd5e1; transition: all 0.2s; }
+        .file-panel.drag-over { background: #eef2ff; border-color: #1e3a5f; }
+        .file-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 600; }
+        .file-list { max-height: 250px; overflow-y: auto; }
+        .file-item { background: white; border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; }
+        .remove-file { background: #fee2e2; border: none; padding: 4px 12px; border-radius: 20px; cursor: pointer; color: #dc2626; font-size: 0.7rem; font-weight: 600; }
+        .remove-file:hover { background: #fecaca; }
+        
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 12px; }
+        pre { background: #0f172a; color: #e2e8f0; padding: 20px; border-radius: 20px; overflow-x: auto; white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 0.8rem; line-height: 1.5; min-height: 150px; max-height: 400px; }
+        
+        .info-text { font-size: 0.75rem; color: #64748b; margin-top: 8px; text-align: right; }
+        .preview-name { background: #e6f0fa; padding: 8px 12px; border-radius: 12px; margin-top: 8px; font-size: 0.8rem; text-align: center; }
+        .help-text { font-size: 0.7rem; color: #94a3b8; margin-top: 8px; text-align: center; }
+        
+        .guide-box { background: #f0fdf4; border-left: 5px solid #10b981; padding: 20px; border-radius: 16px; margin-bottom: 20px; }
+        .guide-box h3 { color: #065f46; margin-bottom: 12px; }
+        .word-box { background: #eff6ff; border-left: 5px solid #185ABD; padding: 20px; border-radius: 16px; margin-bottom: 20px; }
+        .word-box h3 { color: #185ABD; margin-bottom: 12px; }
+        .prompt-box { background: #1e1e2e; color: #e2e8f0; padding: 20px; border-radius: 16px; font-family: monospace; font-size: 0.8rem; overflow-x: auto; white-space: pre-wrap; margin-top: 16px; border: 1px solid #334155; }
+        .prompt-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 12px; }
+        .copy-btn { background: #3b82f6; border: none; padding: 6px 16px; border-radius: 20px; color: white; cursor: pointer; font-size: 0.75rem; }
+        .copy-btn:hover { background: #2563eb; }
+        
+        footer { text-align: center; font-size: 0.7rem; padding: 20px; color: #64748b; border-top: 1px solid #e2e8f0; background: white; border-radius: 0 0 28px 28px; }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 12px 24px; border-radius: 60px; font-size: 0.85rem; z-index: 1000; animation: fadeOut 2.5s forwards; }
+        @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+        
+        .keyboard-shortcut { background: #f1f5f9; padding: 4px 12px; border-radius: 8px; font-family: monospace; font-weight: bold; font-size: 0.8rem; display: inline-block; margin: 2px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f1f5f9; }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -21,18 +90,20 @@
         <div id="combiner" class="tab-pane active">
             <div class="header">
                 <h1>📄 TXT Combiner</h1>
-                <p>Upload file/folder TXT | Deteksi otomatis Nama Desa & Bulan | Gabung | Hapus duplikat | Urut berdasarkan tanggal</p>
+                <p>Upload file/folder TXT (termasuk sub-folder) | Deteksi otomatis Nama Desa & Bulan | Gabung | Hapus duplikat | Urut berdasarkan tanggal</p>
             </div>
             <div class="content">
                 <div class="status-bar">
                     <div class="led"></div>
-                    <span id="statusText">✅ Siap - Upload file atau folder</span>
+                    <span id="statusText">✅ Siap - Upload file atau folder (termasuk sub-folder)</span>
                 </div>
 
                 <div class="btn-group">
                     <button id="addFilesBtn" class="btn btn-primary">📄 Pilih File TXT</button>
-                    <button id="addFolderBtn" class="btn btn-secondary">📁 Pilih Folder</button>
+                    <button id="addFolderBtn" class="btn btn-secondary">📁 Pilih Folder (termasuk sub-folder)</button>
                     <button id="clearAllBtn" class="btn btn-danger">🗑️ Hapus Semua</button>
+                    <button id="saveToSupabaseBtn" class="btn btn-purple">💾 Simpan ke Database</button>
+                    <button id="historyBtn" class="btn btn-outline">📜 Riwayat</button>
                 </div>
 
                 <div class="file-panel" id="dropZone">
@@ -41,7 +112,7 @@
                         <span id="fileCount">0 file</span>
                     </div>
                     <div id="fileList" class="file-list">📭 Belum ada file</div>
-                    <div class="help-text">💡 Drag & drop file/folder TXT ke sini</div>
+                    <div class="help-text">💡 Drag & drop file atau folder TXT ke sini (termasuk sub-folder)</div>
                 </div>
 
                 <div class="result-header">
@@ -49,7 +120,7 @@
                     <button id="downloadBtn" class="btn btn-success">⬇️ Download TXT</button>
                 </div>
                 <pre id="output">✨ Upload file/folder TXT, akan digabung otomatis...</pre>
-                <div id="infoText" class="info-text">📏 Total: 0 entri | 0 duplikat dihapus</div>
+                <div id="infoText" class="info-text">📏 Total: 0 entri | 0 duplikat dihapus | 📍 Desa: - | 📅 Bulan: -</div>
                 <div id="previewName" class="preview-name">📄 Nama file output: Laporan_Gabungan.txt</div>
             </div>
             <footer>🔧 Deteksi otomatis Nama Desa & Bulan | Gabung file | Hapus duplikat | Urut berdasarkan tanggal</footer>
@@ -61,31 +132,55 @@
                 <h1>📖 Cara Penggunaan</h1>
                 <p>Panduan lengkap untuk operator</p>
             </div>
-            <div class="content" id="guideContent"></div>
-            <footer>📌 Panduan penggunaan TXT Combiner</footer>
+            <div class="content" id="guideContent">
+                <div class="guide-box"><h3>📌 A. Upload File/Folder</h3>
+                    <table>
+                        <tr><th>Tombol</th><th>Fungsi</th></tr>
+                        <tr><td>📄 Pilih File TXT</td><td>Upload satu atau beberapa file .txt sekaligus</td></tr>
+                        <tr><td>📁 Pilih Folder</td><td>Upload semua file .txt dalam folder (termasuk sub-folder)</td></tr>
+                        <tr><td>🗑️ Hapus Semua</td><td>Menghapus seluruh file yang sudah diupload</td></tr>
+                        <tr><td>💾 Simpan ke Database</td><td>Menyimpan hasil gabungan ke Supabase</td></tr>
+                        <tr><td>📜 Riwayat</td><td>Melihat riwayat hasil gabungan yang tersimpan</td></tr>
+                    </table>
+                </div>
+                <div class="guide-box"><h3>🖱️ B. Drag & Drop</h3>
+                    <p>Seret file atau folder langsung ke area panel "File Terupload" untuk upload cepat. Sistem akan membaca semua file .txt termasuk yang berada di dalam sub-folder.</p>
+                </div>
+                <div class="guide-box"><h3>⚡ C. Proses Otomatis</h3>
+                    <ul>
+                        <li>✅ Membaca semua isi file dari folder dan sub-folder</li>
+                        <li>✅ Menghapus baris duplikat (case-insensitive)</li>
+                        <li>✅ Mengurutkan berdasarkan tanggal (format: 12 Januari 2026)</li>
+                        <li>✅ Mendeteksi Nama Desa dari teks</li>
+                        <li>✅ Mendeteksi Nama Bulan dari teks</li>
+                    </ul>
+                </div>
+                <div class="guide-box"><h3>💾 D. Download Hasil</h3>
+                    <p>Klik <strong>Download TXT</strong> → file otomatis bernama: <code>NamaDesa_Gabungan_Bulan.txt</code> atau <code>Laporan_Gabungan_YYYY-MM-DD.txt</code></p>
+                </div>
+            </div>
+            <footer>📌 Gunakan tab "Copy ke Word" untuk panduan format dokumen</footer>
         </div>
         
         <!-- Tab 3: Prompt AI -->
         <div id="prompt" class="tab-pane">
             <div class="header" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">
-                <h1>🤖 Prompt AI</h1>
-                <p>Copy-paste ke ChatGPT, Claude, DeepSeek</p>
+                <h1>🤖 Perintah ke Prompt AI</h1>
+                <p>Copy-paste ke ChatGPT, Claude, DeepSeek untuk mengolah data kegiatan Babinsa</p>
             </div>
-            <div class="content" id="promptContent"></div>
-            <footer>🤖 Prompt siap pakai</footer>
-        </div>
-        
-        <!-- Tab 4: Copy ke Word -->
-        <div id="word" class="tab-pane">
-            <div class="header" style="background: linear-gradient(135deg, #185ABD, #0e408a);">
-                <h1>📝 Copy ke Word</h1>
-                <p>Panduan format dokumen</p>
-            </div>
-            <div class="content" id="wordContent"></div>
-            <footer>📝 Tips copy ke Microsoft Word</footer>
-        </div>
-    </div>
-</div>
-<script src="app.js"></script>
-</body>
-</html>
+            <div class="content">
+                <div class="prompt-header">
+                    <strong>📜 PROMPT LENGKAP</strong>
+                    <button id="copyPromptBtn" class="copy-btn">📋 Copy Prompt</button>
+                </div>
+                <div class="prompt-box" id="promptText">
+Anda adalah asisten yang akan mengolah data kegiatan Babinsa. Ikuti aturan berikut:
+
+【FORMAT OUTPUT】
+1. Output teks biasa (bukan markdown tabel, bukan bullet list)
+2. Setiap baris: Hari, Tanggal [TAB] Narasi (150-250 karakter, tanpa ulang tanggal)
+3. Dibagi dua bagian dalam kode blok: 5 pertama + 4 terakhir
+
+【CONTOH】
+```text
+Minggu, 05 April 2026    Babinsa Kayu Putih melaksanakan gotong royong di BD Melake.
