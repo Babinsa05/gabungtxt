@@ -5,23 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>TXT Combiner Pro | Gabung & Bersihkan Duplikat</title>
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRYVCBDb21iaW5lciBQcm8iLAogICJzaG9ydF9uYW1lIjogIlRYVENvbWJpbmVyIiwKICAiZGVzY3JpcHRpb24iOiAiR2FidW5nIGRhbiBiZXJzaWhrYW4gZHVwbGlrYXQgZmlsZSBUWFQiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2YwZjRmOCIsCiAgInRoZW1lX2NvbG9yIjogIiM0ZjQ2ZTUiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzUwJyBmaWxsPScjNGY0NmU1Jy8+PHRleHQgeD0nMjU2JyB5PScyNjAnIGZvbnQtc2l6ZT0nMTgwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmb250LWZhbWlseT0nU2Vnb2UgVUknIGZpbGw9J3doaXRlJz5UQzwvdGV4dD48L3N2Zz4iLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXQp9">
+    <!-- PWA Manifest dengan CDN Icon -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRYVCBDb21iaW5lciBQcm8iLAogICJzaG9ydF9uYW1lIjogIlRYVENvbWJpbmVyIiwKICAiZGVzY3JpcHRpb24iOiAiR2FidW5nIGRhbiBiZXJzaWhrYW4gZHVwbGlrYXQgZmlsZSBUWFQiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2YwZjRmOCIsCiAgInRoZW1lX2NvbG9yIjogIiM0ZjQ2ZTUiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi5qcy5kZWxpdnIubmV0L2dwL2ZvbnQtYXdlc29tZS82LjAuMC9zdmdzL3NvbGlkL2xheWVyLWdyb3VwLnN2ZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4uanMuZGVsaXZyLm5ldC9ncC9mb250LWF3ZXNvbWUvNi4wLjAvc3Zncy9zb2xpZC9sYXllci1ncm91cC5zdmciLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXQp9">
     
-    <!-- Tailwind CSS + Font Awesome + Google Fonts -->
+    <!-- Favicon CDN -->
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/svgs/solid/layer-group.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/svgs/solid/layer-group.svg">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:opsz,wght@14..32,300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
         * { 
-            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
         body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: linear-gradient(145deg, #f0f4f8 0%, #d9e2ec 50%, #bcccdc 100%);
             min-height: 100vh;
             display: flex;
@@ -31,7 +39,6 @@
             position: relative;
         }
         
-        /* Background decorative elements */
         body::before {
             content: '';
             position: fixed;
@@ -66,7 +73,184 @@
                 0 10px 30px rgba(0, 0, 0, 0.06);
         }
         
-        /* Custom Scrollbar */
+        /* ============================================================
+           FONTS ELEGAN
+           ============================================================ */
+        
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #1e293b 0%, #4f46e5 50%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            line-height: 1.1;
+        }
+        
+        .brand-title .pro-badge {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            -webkit-text-fill-color: white;
+            padding: 2px 12px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-left: 6px;
+            vertical-align: middle;
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+        }
+        
+        .brand-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            letter-spacing: 0.03em;
+        }
+        
+        .footer-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            letter-spacing: 0.04em;
+        }
+        
+        .footer-text .highlight {
+            font-weight: 600;
+            color: #6366f1;
+            -webkit-text-fill-color: #6366f1;
+        }
+        
+        /* ============================================================
+           BUTTONS ELEGAN
+           ============================================================ */
+        
+        .btn-elegant {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            padding: 10px 22px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-elegant i {
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.2);
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-primary:hover::after {
+            opacity: 1;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            color: white;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-blue {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+        }
+        
+        .btn-blue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-emerald {
+            background: linear-gradient(135deg, #6ee7b7, #34d399);
+            color: white;
+            box-shadow: 0 4px 16px rgba(52, 211, 153, 0.2);
+        }
+        
+        .btn-emerald:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(52, 211, 153, 0.3);
+        }
+        
+        /* Install Button */
+        .install-btn {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.02em;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1e293b;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: none;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
+            animation: pulse-glow 2.5s ease-in-out infinite;
+        }
+        
+        .install-btn.show {
+            display: inline-flex;
+        }
+        
+        .install-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 28px rgba(245, 158, 11, 0.35);
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25); }
+            50% { box-shadow: 0 4px 32px rgba(245, 158, 11, 0.4); }
+        }
+        
+        @media (display-mode: standalone) {
+            .install-btn { display: none !important; }
+        }
+        
+        /* ============================================================
+           COMPONENTS
+           ============================================================ */
+        
         .custom-scroll::-webkit-scrollbar { 
             width: 4px; 
             height: 4px; 
@@ -93,33 +277,18 @@
         
         /* Dropzone */
         .drop-zone {
-            border: 2px dashed rgba(148, 163, 184, 0.3);
+            border: 2px dashed rgba(148, 163, 184, 0.25);
             border-radius: 20px;
-            padding: 24px;
+            padding: 20px 24px;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            background: rgba(248, 250, 252, 0.3);
+            background: rgba(248, 250, 252, 0.2);
             cursor: pointer;
             position: relative;
         }
         
-        .drop-zone::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(52, 211, 153, 0.05));
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-        
         .drop-zone:hover {
-            border-color: rgba(99, 102, 241, 0.3);
-            background: rgba(248, 250, 252, 0.6);
-        }
-        
-        .drop-zone:hover::before {
-            opacity: 1;
+            border-color: rgba(99, 102, 241, 0.25);
+            background: rgba(248, 250, 252, 0.4);
         }
         
         .dropzone-active {
@@ -128,118 +297,15 @@
             transform: scale(1.005);
         }
         
-        .dropzone-active::before {
-            opacity: 1 !important;
-        }
-        
-        /* Modern Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.2);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(79, 70, 229, 0.3);
-        }
-        
-        .btn-primary:hover::after {
-            opacity: 1;
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, #34d399, #10b981);
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(16, 185, 129, 0.3);
-        }
-        
-        .btn-blue {
-            background: linear-gradient(135deg, #60a5fa, #3b82f6);
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-blue:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(59, 130, 246, 0.3);
-        }
-        
-        .btn-emerald {
-            background: linear-gradient(135deg, #6ee7b7, #34d399);
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 4px 16px rgba(52, 211, 153, 0.2);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-emerald:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(52, 211, 153, 0.3);
-        }
-        
         /* File Item */
         .file-item {
-            background: rgba(255, 255, 255, 0.6);
+            font-family: 'Inter', sans-serif;
+            background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(226, 232, 240, 0.5);
-            border-radius: 12px;
-            padding: 10px 16px;
+            border: 1px solid rgba(226, 232, 240, 0.3);
+            border-radius: 10px;
+            padding: 8px 14px;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             justify-content: space-between;
@@ -248,10 +314,21 @@
         }
         
         .file-item:hover {
-            background: rgba(255, 255, 255, 0.85);
-            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(99, 102, 241, 0.2);
             transform: translateX(4px);
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.06);
+        }
+        
+        .file-item .file-name {
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #1e293b;
+        }
+        
+        .file-item .file-size {
+            font-weight: 400;
+            font-size: 0.65rem;
+            color: #94a3b8;
         }
         
         /* Toast */
@@ -265,8 +342,10 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             color: white;
-            font-size: 14px;
+            font-family: 'Inter', sans-serif;
             font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.01em;
             opacity: 0;
             transform: translateY(20px) scale(0.95);
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -297,7 +376,7 @@
         }
         
         .toast-icon {
-            font-size: 18px;
+            font-size: 1.1rem;
             flex-shrink: 0;
         }
         
@@ -305,9 +384,9 @@
         .output-area {
             background: linear-gradient(145deg, #0f172a, #1a2332);
             border-radius: 16px;
-            padding: 18px;
-            min-height: 140px;
-            max-height: 340px;
+            padding: 16px 18px;
+            min-height: 120px;
+            max-height: 320px;
             overflow: auto;
             border: 1px solid rgba(255, 255, 255, 0.04);
             box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -318,127 +397,207 @@
         }
         
         /* Stats */
+        .stats-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
         .stat-card {
-            background: rgba(255, 255, 255, 0.5);
+            font-family: 'Inter', sans-serif;
+            background: rgba(255, 255, 255, 0.55);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border-radius: 12px;
+            border-radius: 10px;
             padding: 8px 16px;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            flex: 1;
+            min-width: 100px;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.75);
+            transform: translateY(-1px);
+        }
+        
+        .stat-card .stat-icon {
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        
+        .stat-card .stat-label {
+            font-size: 0.7rem;
             font-weight: 500;
-            color: #475569;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #94a3b8;
+            letter-spacing: 0.02em;
         }
         
         .stat-card .stat-value {
+            font-size: 0.85rem;
             font-weight: 700;
             color: #1e293b;
+            min-width: 20px;
+            text-align: center;
         }
+        
+        .stat-card .stat-divider {
+            color: #e2e8f0;
+            font-weight: 300;
+        }
+        
+        .stat-raw .stat-icon { color: #6366f1; }
+        .stat-raw .stat-value { color: #4f46e5; }
+        
+        .stat-duplicate .stat-icon { color: #ef4444; }
+        .stat-duplicate .stat-value { color: #dc2626; }
+        
+        .stat-unique .stat-icon { color: #10b981; }
+        .stat-unique .stat-value { color: #059669; }
         
         /* Filename Display */
         .filename-display {
-            background: rgba(255, 255, 255, 0.5);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border-radius: 10px;
-            padding: 4px 14px;
-            font-size: 12px;
-            font-weight: 600;
+            border-radius: 8px;
+            padding: 3px 12px;
             color: #4f46e5;
-            border: 1px solid rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.1);
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         
-        /* Install Button */
-        .install-btn {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: #1e293b;
-            border: none;
-            padding: 8px 20px;
+        /* Badge Count */
+        .badge-count {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: #4f46e5;
+            padding: 2px 10px;
             border-radius: 50px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: none;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
-            animation: pulse-glow 2.5s ease-in-out infinite;
+            background: rgba(99, 102, 241, 0.08);
         }
         
-        .install-btn.show {
-            display: inline-flex;
+        .dot-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.03) 1px, transparent 0);
+            background-size: 24px 24px;
         }
         
-        .install-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 28px rgba(245, 158, 11, 0.35);
+        .drop-hint {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.65rem;
+            color: #94a3b8;
+            letter-spacing: 0.02em;
         }
         
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25); }
-            50% { box-shadow: 0 4px 32px rgba(245, 158, 11, 0.4); }
+        .section-label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: #475569;
+            letter-spacing: 0.02em;
         }
         
-        @media (display-mode: standalone) {
-            .install-btn { display: none !important; }
-        }
-        
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #1e293b 0%, #4f46e5 60%, #7c3aed 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .empty-state {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-align: center;
+            padding: 8px 0;
         }
         
         /* Responsive */
         @media (max-width: 768px) {
             body { padding: 12px; }
             .glass-card { border-radius: 24px; padding: 16px !important; }
-            .btn-primary, .btn-success, .btn-blue, .btn-emerald {
+            
+            .brand-title {
+                font-size: 1.5rem;
+            }
+            .brand-title .pro-badge {
+                font-size: 0.45rem;
+                padding: 1px 10px;
+            }
+            
+            .btn-elegant {
                 padding: 8px 16px;
-                font-size: 12px;
+                font-size: 0.7rem;
                 border-radius: 12px;
             }
-            .toast { left: 16px; right: 16px; bottom: 16px; font-size: 13px; padding: 12px 18px; }
-            .file-item { padding: 8px 12px; font-size: 12px; }
-            .output-area { max-height: 200px; }
-            .stat-card { font-size: 11px; padding: 6px 12px; }
-            .filename-display { font-size: 11px; padding: 3px 10px; }
-            .drop-zone { padding: 16px; }
+            .toast { left: 16px; right: 16px; bottom: 16px; font-size: 0.8rem; padding: 12px 18px; }
+            .file-item { padding: 6px 12px; }
+            .output-area { max-height: 200px; padding: 12px 14px; }
+            .filename-display { font-size: 0.6rem; padding: 2px 10px; }
+            .drop-zone { padding: 14px 16px; }
+            
+            .stat-card {
+                padding: 6px 12px;
+                min-width: 80px;
+                flex: 1;
+            }
+            .stat-card .stat-label {
+                font-size: 0.6rem;
+            }
+            .stat-card .stat-value {
+                font-size: 0.75rem;
+            }
+            .stat-card .stat-icon {
+                font-size: 0.7rem;
+            }
         }
         
         @media (max-width: 480px) {
             .glass-card { border-radius: 20px; padding: 12px !important; }
-            .btn-primary, .btn-success, .btn-blue, .btn-emerald {
+            
+            .brand-title {
+                font-size: 1.2rem;
+            }
+            .brand-title .pro-badge {
+                font-size: 0.4rem;
+                padding: 1px 8px;
+            }
+            
+            .btn-elegant {
                 padding: 6px 12px;
-                font-size: 11px;
+                font-size: 0.65rem;
                 border-radius: 10px;
             }
-            .toast { font-size: 12px; padding: 10px 16px; }
-        }
-        
-        /* Decorative dot pattern */
-        .dot-pattern {
-            background-image: radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.04) 1px, transparent 0);
-            background-size: 24px 24px;
-        }
-        
-        /* File count badge */
-        .badge-count {
-            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
-            color: #4f46e5;
-            padding: 2px 12px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
+            .btn-elegant i {
+                font-size: 0.7rem;
+            }
+            .toast { font-size: 0.75rem; padding: 10px 16px; }
+            
+            .stat-card {
+                padding: 4px 10px;
+                min-width: 60px;
+                gap: 4px;
+            }
+            .stat-card .stat-label {
+                font-size: 0.55rem;
+            }
+            .stat-card .stat-value {
+                font-size: 0.7rem;
+            }
+            .stat-card .stat-icon {
+                font-size: 0.6rem;
+            }
+            .stat-card .stat-divider {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -454,65 +613,66 @@
     <div class="glass-card p-6 md:p-8 dot-pattern">
         
         <!-- HEADER -->
-        <div class="flex flex-wrap items-center justify-between gap-4 mb-7">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-indigo-200/40">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-200/40 flex-shrink-0">
                     <i class="fas fa-layer-group"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-extrabold gradient-text tracking-tight">
-                        TXT Combiner <span class="text-xs font-medium text-indigo-400 bg-indigo-50 px-2 py-0.5 rounded-full ml-1">Pro</span>
+                    <h1 class="brand-title">
+                        TXT Combiner
+                        <span class="pro-badge">Pro</span>
                     </h1>
-                    <p class="text-xs text-gray-400 font-medium">Gabung & bersihkan duplikat file teks</p>
+                    <p class="brand-subtitle">Gabung &amp; bersihkan duplikat</p>
                 </div>
             </div>
             <button id="installBtn" class="install-btn">
-                <i class="fas fa-download"></i> Install App
+                <i class="fas fa-download"></i> Install
             </button>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-wrap gap-2 md:gap-3 mb-6">
-            <button id="addFilesBtn" class="btn-primary">
-                <i class="fas fa-file-upload text-sm"></i> Pilih File
+        <div class="flex flex-wrap gap-2 md:gap-3 mb-5">
+            <button id="addFilesBtn" class="btn-elegant btn-primary">
+                <i class="fas fa-file-upload"></i> File
             </button>
-            <button id="addFolderBtn" class="btn-emerald">
-                <i class="fas fa-folder-open text-sm"></i> Pilih Folder
+            <button id="addFolderBtn" class="btn-elegant btn-emerald">
+                <i class="fas fa-folder-open"></i> Folder
             </button>
         </div>
 
         <!-- Dropzone -->
-        <div id="dropZone" class="drop-zone mb-6">
-            <div class="flex justify-between items-center mb-3">
-                <span class="text-sm font-semibold text-gray-600">
-                    <i class="fas fa-folder-tree mr-2 text-indigo-400"></i> File Terupload
+        <div id="dropZone" class="drop-zone mb-5">
+            <div class="flex justify-between items-center mb-2">
+                <span class="section-label">
+                    <i class="fas fa-folder-tree mr-1.5 text-indigo-400"></i> File
                 </span>
-                <span id="fileCount" class="badge-count">0 file</span>
+                <span id="fileCount" class="badge-count">0</span>
             </div>
-            <div id="fileList" class="max-h-52 overflow-y-auto custom-scroll space-y-1.5 text-sm text-gray-600">
-                📭 Belum ada file
+            <div id="fileList" class="max-h-48 overflow-y-auto custom-scroll space-y-1">
+                <div class="empty-state">📭 Belum ada file</div>
             </div>
-            <div class="text-xs text-center text-gray-400 mt-3 font-medium">
-                <i class="fas fa-cloud-upload-alt mr-1"></i> Drag & drop file/folder TXT di sini (auto reset)
+            <div class="drop-hint text-center mt-2.5">
+                <i class="fas fa-cloud-upload-alt mr-1"></i> Drag &amp; drop di sini
             </div>
         </div>
 
-        <!-- Result Header -->
-        <div class="flex flex-wrap justify-between items-center mb-3 gap-2">
-            <div class="flex items-center gap-3 flex-wrap">
-                <span class="font-bold text-gray-700 flex items-center gap-2 text-sm md:text-base">
-                    <i class="fas fa-code-branch text-indigo-500"></i> Hasil Gabungan
+        <!-- Result -->
+        <div class="flex flex-wrap justify-between items-center mb-2.5 gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
+                <span class="section-label flex items-center gap-1.5">
+                    <i class="fas fa-code-branch text-indigo-500"></i> Hasil
                 </span>
                 <span id="outputFilename" class="filename-display">
-                    <i class="fas fa-file-alt text-xs"></i>
-                    <span id="filenameText">Belum ada file</span>
+                    <i class="fas fa-file-alt text-[10px]"></i>
+                    <span id="filenameText">-</span>
                 </span>
             </div>
-            <div class="flex flex-wrap gap-2">
-                <button id="copyBtn" class="btn-blue">
+            <div class="flex flex-wrap gap-1.5">
+                <button id="copyBtn" class="btn-elegant btn-blue" style="padding: 8px 16px; font-size: 0.7rem;">
                     <i class="fas fa-copy"></i> Salin
                 </button>
-                <button id="downloadBtn" class="btn-success">
+                <button id="downloadBtn" class="btn-elegant btn-success" style="padding: 8px 16px; font-size: 0.7rem;">
                     <i class="fas fa-download"></i> Download
                 </button>
             </div>
@@ -524,24 +684,32 @@
         </div>
         
         <!-- Stats -->
-        <div id="infoStat" class="mt-3 flex flex-wrap gap-2 justify-between items-center">
-            <span class="stat-card">
-                <i class="fas fa-database text-indigo-400"></i> 
-                <span class="stat-value" id="totalRawCount">0</span> baris awal
-            </span>
-            <span class="stat-card">
-                <i class="fas fa-trash-alt text-red-400"></i> 
-                <span class="stat-value" id="duplicateCount">0</span> duplikat
-            </span>
-            <span class="stat-card">
-                <i class="fas fa-check-circle text-emerald-400"></i> 
-                <span class="stat-value" id="uniqueCount">0</span> baris unik
-            </span>
+        <div class="stats-wrapper">
+            <div class="stat-card stat-raw">
+                <i class="fas fa-database stat-icon"></i>
+                <span class="stat-label">Baris Awal</span>
+                <span class="stat-divider">|</span>
+                <span class="stat-value" id="totalRawCount">0</span>
+            </div>
+            <div class="stat-card stat-duplicate">
+                <i class="fas fa-trash-alt stat-icon"></i>
+                <span class="stat-label">Duplikat</span>
+                <span class="stat-divider">|</span>
+                <span class="stat-value" id="duplicateCount">0</span>
+            </div>
+            <div class="stat-card stat-unique">
+                <i class="fas fa-check-circle stat-icon"></i>
+                <span class="stat-label">Baris Unik</span>
+                <span class="stat-divider">|</span>
+                <span class="stat-value" id="uniqueCount">0</span>
+            </div>
         </div>
 
-        <!-- Footer -->
-        <div class="text-center text-[11px] text-gray-400 mt-5 pt-3 border-t border-gray-200/40 font-medium">
-            Developer : I Nyoman Arta &mdash; © 2025 TXT Combiner Pro
+        <!-- FOOTER -->
+        <div class="text-center mt-4 pt-2.5 border-t border-gray-200/30">
+            <span class="footer-text">
+                <span class="highlight">I Nyoman Arta</span> &middot; &copy; 2025
+            </span>
         </div>
     </div>
 </div>
@@ -558,6 +726,7 @@
         e.preventDefault();
         deferredPrompt = e;
         installBtn.classList.add('show');
+        console.log('📱 PWA install prompt available');
     });
 
     installBtn.addEventListener('click', async () => {
@@ -584,14 +753,19 @@
     }
 
     // ============================================================
-    // SERVICE WORKER
+    // SERVICE WORKER (dengan CDN)
     // ============================================================
     
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
+            // Register service worker dengan URL yang sama
             navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('✅ SW registered:', reg))
-                .catch(err => console.log('❌ SW registration failed:', err));
+                .then(reg => {
+                    console.log('✅ Service Worker registered:', reg);
+                })
+                .catch(err => {
+                    console.log('❌ Service Worker registration failed:', err);
+                });
         });
     }
 
@@ -650,7 +824,7 @@
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text)
                 .then(() => {
-                    showToast(`📋 ${currentCombinedLines.length} baris berhasil disalin!`, 'success');
+                    showToast(`📋 ${currentCombinedLines.length} baris disalin`, 'success');
                 })
                 .catch(() => {
                     fallbackCopy(text);
@@ -670,9 +844,9 @@
         textarea.select();
         try {
             document.execCommand('copy');
-            showToast(`📋 ${currentCombinedLines.length} baris berhasil disalin!`, 'success');
+            showToast(`📋 ${currentCombinedLines.length} baris disalin`, 'success');
         } catch (e) {
-            showToast('Gagal menyalin, silakan copy manual', 'error');
+            showToast('Gagal menyalin', 'error');
         }
         document.body.removeChild(textarea);
     }
@@ -681,7 +855,7 @@
     function updateOutputFilename() {
         if (selectedFiles.length === 0) {
             currentOutputName = '';
-            filenameText.textContent = 'Belum ada file';
+            filenameText.textContent = '-';
             return;
         }
         const firstName = selectedFiles[0].name;
@@ -694,8 +868,8 @@
     // ======================== RENDER FILE LIST ========================
     function renderFileList() {
         if (!selectedFiles.length) {
-            fileListDiv.innerHTML = '📭 Belum ada file';
-            fileCountSpan.textContent = '0 file';
+            fileListDiv.innerHTML = '<div class="empty-state">📭 Belum ada file</div>';
+            fileCountSpan.textContent = '0';
             updateOutputFilename();
             return;
         }
@@ -705,11 +879,11 @@
             fileItem.className = 'file-item';
             fileItem.innerHTML = `
                 <div class="flex items-center gap-2 truncate flex-1 min-w-0">
-                    <i class="fas fa-file-alt text-indigo-400 text-sm flex-shrink-0"></i>
-                    <span class="text-xs font-medium truncate max-w-[180px] md:max-w-xs" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</span>
-                    <span class="text-[10px] text-gray-400 flex-shrink-0">(${(file.size/1024).toFixed(1)} KB)</span>
+                    <i class="fas fa-file-alt text-indigo-400 text-[11px] flex-shrink-0"></i>
+                    <span class="file-name truncate max-w-[180px] md:max-w-xs" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</span>
+                    <span class="file-size flex-shrink-0">(${(file.size/1024).toFixed(1)} KB)</span>
                 </div>
-                <button class="remove-file-btn text-gray-400 hover:text-red-500 text-sm px-2 transition flex-shrink-0" data-index="${idx}">
+                <button class="remove-file-btn text-gray-400 hover:text-red-500 text-xs px-1.5 transition flex-shrink-0" data-index="${idx}">
                     <i class="fas fa-times-circle"></i>
                 </button>
             `;
@@ -717,7 +891,7 @@
         });
         fileListDiv.innerHTML = '';
         fileListDiv.appendChild(fragment);
-        fileCountSpan.textContent = `${selectedFiles.length} file`;
+        fileCountSpan.textContent = selectedFiles.length;
         updateOutputFilename();
         
         document.querySelectorAll('.remove-file-btn').forEach(btn => {
@@ -861,7 +1035,7 @@
         selectedFiles.push(...txtFiles);
         renderFileList();
         refreshCombine();
-        showToast(`✅ ${txtFiles.length} file berhasil diupload (auto reset)`, 'success');
+        showToast(`✅ ${txtFiles.length} file diupload`, 'success');
     }
     
     function addFolderFromInput(files) {
@@ -875,7 +1049,7 @@
         selectedFiles.push(...txtFiles);
         renderFileList();
         refreshCombine();
-        showToast(`✅ ${txtFiles.length} file dari folder berhasil diupload (auto reset)`, 'success');
+        showToast(`✅ ${txtFiles.length} file dari folder`, 'success');
     }
     
     // ======================== EVENT LISTENERS ========================
@@ -900,7 +1074,7 @@
     
     downloadBtn.addEventListener('click', () => {
         if (currentCombinedLines.length === 0) {
-            showToast('Tidak ada data untuk diunduh', 'error');
+            showToast('Tidak ada data', 'error');
             return;
         }
         const blob = new Blob([currentCombinedLines.join('\n')], {type: 'text/plain'});
@@ -912,7 +1086,7 @@
         link.click();
         document.body.removeChild(link);
         setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-        showToast(`⬇️ File "${downloadName}" berhasil di-download`, 'success');
+        showToast(`⬇️ ${downloadName}`, 'success');
     });
 
     copyBtn.addEventListener('click', copyResult);
@@ -964,7 +1138,7 @@
             selectedFiles.push(...filesToAdd);
             renderFileList();
             refreshCombine();
-            showToast(`✅ ${filesToAdd.length} file berhasil diupload (auto reset)`, 'success');
+            showToast(`✅ ${filesToAdd.length} file diupload`, 'success');
         } else {
             showToast('Tidak ada file .txt', 'error');
         }
@@ -976,15 +1150,27 @@
 
 <!-- Service Worker -->
 <script>
+    // Register Service Worker dengan cache dan CDN assets
     (function registerSW() {
         const swCode = `
 const CACHE_NAME = 'txt-combiner-v3';
-const ASSETS = ['/', '/index.html'];
+const ASSETS = [
+    '/',
+    '/index.html',
+    'https://cdn.tailwindcss.com',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
+    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:opsz,wght@14..32,300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap'
+];
 
 self.addEventListener('install', (e) => {
     e.waitUntil(
         caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(ASSETS))
+            .then(cache => {
+                console.log('📦 Caching assets...');
+                return cache.addAll(ASSETS).catch(err => {
+                    console.log('⚠️ Some assets failed to cache:', err);
+                });
+            })
             .then(() => self.skipWaiting())
     );
 });
@@ -1003,8 +1189,32 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
     e.respondWith(
         caches.match(e.request)
-            .then(res => res || fetch(e.request))
-            .catch(() => new Response('Offline', { status: 503 }))
+            .then(res => {
+                if (res) {
+                    return res;
+                }
+                return fetch(e.request).then(response => {
+                    // Cache successful responses from CDN
+                    if (response && response.status === 200) {
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+                                try {
+                                    cache.put(e.request, responseToCache);
+                                } catch (err) {
+                                    console.log('⚠️ Cache put failed:', err);
+                                }
+                            });
+                    }
+                    return response;
+                });
+            })
+            .catch(() => {
+                return new Response('Offline - Please check your connection', { 
+                    status: 503,
+                    headers: { 'Content-Type': 'text/plain' }
+                });
+            })
     );
 });
 `;
@@ -1015,11 +1225,41 @@ self.addEventListener('fetch', (e) => {
             
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register(swUrl)
-                    .then(reg => console.log('✅ Service Worker registered'))
-                    .catch(err => console.log('❌ SW registration failed:', err));
+                    .then(reg => {
+                        console.log('✅ Service Worker registered');
+                        // Update jika ada perubahan
+                        reg.update();
+                    })
+                    .catch(err => {
+                        console.log('❌ SW registration failed:', err);
+                        // Fallback: coba register dengan URL sederhana
+                        tryRegisterFallback();
+                    });
             }
         } catch (e) {
-            console.log('SW registration skipped:', e);
+            console.log('⚠️ SW registration skipped:', e);
+            tryRegisterFallback();
+        }
+        
+        function tryRegisterFallback() {
+            try {
+                const simpleSW = `
+self.addEventListener('fetch', (e) => {
+    e.respondWith(
+        caches.match(e.request)
+            .then(res => res || fetch(e.request))
+            .catch(() => new Response('Offline', { status: 503 }))
+    );
+});
+`;
+                const blob = new Blob([simpleSW], { type: 'application/javascript' });
+                const url = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(url)
+                    .then(reg => console.log('✅ Fallback SW registered'))
+                    .catch(err => console.log('❌ Fallback SW failed:', err));
+            } catch (e) {
+                console.log('⚠️ No SW support');
+            }
         }
     })();
 </script>
