@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>TXT Combiner | Gabung & Bersihkan Duplikat</title>
+    <title>TXT Combiner Pro | Gabung & Bersihkan Duplikat</title>
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRYVCBDb21iaW5lciIsCiAgInNob3J0X25hbWUiOiAiVFhUQ29tYmluZXIiLAogICJkZXNjcmlwdGlvbiI6ICJHYWJ1bmcgZGFuIGJlcnNpa2FuIGR1cGxpa2F0IGZpbGUgVFhUIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNlZWYyZjkiLAogICJ0aGVtZV9jb2xvciI6ICIjNGY0NmU1IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgNTEyIDUxMic+PHJlY3Qgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIHJ4PSc1MCcgZmlsbD0nIzRmNDZlNScvPjx0ZXh0IHg9JzI1NicgeT0nMjYwJyBmb250LXNpemU9JzE4MCcgdGV4dC1hbmNob3I9J21pZGRsZScgZm9udC1mYW1pbHk9J1NlZ29lIFVJJyBmaWxsPSd3aGl0ZSc+VEM8L3RleHQ+PC9zdmc+IiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfQogIF0KfQ==">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRYVCBDb21iaW5lciBQcm8iLAogICJzaG9ydF9uYW1lIjogIlRYVENvbWJpbmVyIiwKICAiZGVzY3JpcHRpb24iOiAiR2FidW5nIGRhbiBiZXJzaWhrYW4gZHVwbGlrYXQgZmlsZSBUWFQiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2YwZjRmOCIsCiAgInRoZW1lX2NvbG9yIjogIiM0ZjQ2ZTUiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzUwJyBmaWxsPScjNGY0NmU1Jy8+PHRleHQgeD0nMjU2JyB5PScyNjAnIGZvbnQtc2l6ZT0nMTgwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmb250LWZhbWlseT0nU2Vnb2UgVUknIGZpbGw9J3doaXRlJz5UQzwvdGV4dD48L3N2Zz4iLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXQp9">
     
     <!-- Tailwind CSS + Font Awesome + Google Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,95 +22,164 @@
         }
         
         body {
-            background: linear-gradient(135deg, #e8edf5 0%, #d5deeb 50%, #c8d3e6 100%);
+            background: linear-gradient(145deg, #f0f4f8 0%, #d9e2ec 50%, #bcccdc 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Background decorative elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 80%, rgba(52, 211, 153, 0.05) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
         }
         
         .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px;
             box-shadow: 
-                0 20px 60px rgba(79, 70, 229, 0.12),
-                0 8px 24px rgba(0, 0, 0, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
+                0 25px 80px rgba(79, 70, 229, 0.08),
+                0 10px 30px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         
         .glass-card:hover {
             box-shadow: 
-                0 24px 72px rgba(79, 70, 229, 0.18),
-                0 8px 24px rgba(0, 0, 0, 0.08);
+                0 30px 90px rgba(79, 70, 229, 0.12),
+                0 10px 30px rgba(0, 0, 0, 0.06);
         }
         
+        /* Custom Scrollbar */
         .custom-scroll::-webkit-scrollbar { 
-            width: 5px; 
-            height: 5px; 
+            width: 4px; 
+            height: 4px; 
         }
         .custom-scroll::-webkit-scrollbar-track { 
-            background: rgba(226, 232, 240, 0.5); 
+            background: rgba(226, 232, 240, 0.3); 
             border-radius: 10px; 
         }
         .custom-scroll::-webkit-scrollbar-thumb { 
-            background: linear-gradient(135deg, #818cf8, #6366f1);
+            background: linear-gradient(135deg, #a5b4fc, #818cf8);
             border-radius: 10px; 
         }
         .custom-scroll::-webkit-scrollbar-thumb:hover { 
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            background: linear-gradient(135deg, #818cf8, #6366f1);
         }
         
         pre {
             white-space: pre-wrap;
             word-wrap: break-word;
-            font-family: 'Menlo', 'Consolas', 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
             font-size: 0.8rem;
-            line-height: 1.6;
+            line-height: 1.7;
+        }
+        
+        /* Dropzone */
+        .drop-zone {
+            border: 2px dashed rgba(148, 163, 184, 0.3);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: rgba(248, 250, 252, 0.3);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .drop-zone::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(52, 211, 153, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        
+        .drop-zone:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(248, 250, 252, 0.6);
+        }
+        
+        .drop-zone:hover::before {
+            opacity: 1;
         }
         
         .dropzone-active {
-            background: rgba(99, 102, 241, 0.08) !important;
             border-color: #6366f1 !important;
-            transform: scale(1.01);
+            background: rgba(99, 102, 241, 0.06) !important;
+            transform: scale(1.005);
         }
         
+        .dropzone-active::before {
+            opacity: 1 !important;
+        }
+        
+        /* Modern Buttons */
         .btn-primary {
             background: linear-gradient(135deg, #6366f1, #4f46e5);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 14px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.2);
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+            box-shadow: 0 6px 24px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-primary:hover::after {
+            opacity: 1;
         }
         
         .btn-success {
             background: linear-gradient(135deg, #34d399, #10b981);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 14px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -118,20 +187,20 @@
         
         .btn-success:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+            box-shadow: 0 6px 24px rgba(16, 185, 129, 0.3);
         }
         
         .btn-blue {
             background: linear-gradient(135deg, #60a5fa, #3b82f6);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 14px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -139,20 +208,20 @@
         
         .btn-blue:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+            box-shadow: 0 6px 24px rgba(59, 130, 246, 0.3);
         }
         
         .btn-emerald {
             background: linear-gradient(135deg, #6ee7b7, #34d399);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 14px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(52, 211, 153, 0.25);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 16px rgba(52, 211, 153, 0.2);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -160,16 +229,18 @@
         
         .btn-emerald:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52, 211, 153, 0.35);
+            box-shadow: 0 6px 24px rgba(52, 211, 153, 0.3);
         }
         
+        /* File Item */
         .file-item {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(226, 232, 240, 0.6);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
             border-radius: 12px;
-            padding: 10px 14px;
-            transition: all 0.3s ease;
+            padding: 10px 16px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -177,31 +248,35 @@
         }
         
         .file-item:hover {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #818cf8;
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(99, 102, 241, 0.3);
             transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.06);
         }
         
+        /* Toast */
         .toast {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            padding: 14px 24px;
+            bottom: 30px;
+            right: 30px;
+            padding: 14px 28px;
             border-radius: 16px;
-            background: rgba(15, 23, 42, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             color: white;
             font-size: 14px;
             font-weight: 500;
             opacity: 0;
             transform: translateY(20px) scale(0.95);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 9999;
-            max-width: 420px;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            max-width: 440px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         
         .toast.show {
@@ -210,44 +285,68 @@
         }
         
         .toast.success {
-            background: rgba(16, 185, 129, 0.95);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(6, 148, 102, 0.95));
         }
         
         .toast.error {
-            background: rgba(239, 68, 68, 0.95);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(220, 38, 38, 0.95));
         }
         
         .toast.info {
-            background: rgba(59, 130, 246, 0.95);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(37, 99, 235, 0.95));
         }
         
+        .toast-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        /* Output Area */
         .output-area {
-            background: linear-gradient(145deg, #0f172a, #1e293b);
+            background: linear-gradient(145deg, #0f172a, #1a2332);
             border-radius: 16px;
-            padding: 16px;
-            min-height: 120px;
-            max-height: 320px;
+            padding: 18px;
+            min-height: 140px;
+            max-height: 340px;
             overflow: auto;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         
+        .output-area pre {
+            color: #e2e8f0;
+        }
+        
+        /* Stats */
         .stat-card {
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 12px;
-            padding: 8px 14px;
+            padding: 8px 16px;
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-        
-        .filename-display {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(8px);
-            border-radius: 10px;
-            padding: 4px 12px;
             font-size: 12px;
             font-weight: 500;
+            color: #475569;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .stat-card .stat-value {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        /* Filename Display */
+        .filename-display {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 10px;
+            padding: 4px 14px;
+            font-size: 12px;
+            font-weight: 600;
             color: #4f46e5;
             border: 1px solid rgba(99, 102, 241, 0.15);
             display: inline-flex;
@@ -255,101 +354,116 @@
             gap: 6px;
         }
         
-        @media (max-width: 640px) {
+        /* Install Button */
+        .install-btn {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1e293b;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: none;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
+            animation: pulse-glow 2.5s ease-in-out infinite;
+        }
+        
+        .install-btn.show {
+            display: inline-flex;
+        }
+        
+        .install-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 28px rgba(245, 158, 11, 0.35);
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25); }
+            50% { box-shadow: 0 4px 32px rgba(245, 158, 11, 0.4); }
+        }
+        
+        @media (display-mode: standalone) {
+            .install-btn { display: none !important; }
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #1e293b 0%, #4f46e5 60%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
             body { padding: 12px; }
-            .glass-card { border-radius: 20px; padding: 16px !important; }
+            .glass-card { border-radius: 24px; padding: 16px !important; }
             .btn-primary, .btn-success, .btn-blue, .btn-emerald {
-                padding: 8px 14px;
+                padding: 8px 16px;
                 font-size: 12px;
                 border-radius: 12px;
             }
             .toast { left: 16px; right: 16px; bottom: 16px; font-size: 13px; padding: 12px 18px; }
             .file-item { padding: 8px 12px; font-size: 12px; }
-            .output-area { max-height: 200px; font-size: 12px; }
-            .stat-card { font-size: 11px; padding: 6px 10px; }
+            .output-area { max-height: 200px; }
+            .stat-card { font-size: 11px; padding: 6px 12px; }
             .filename-display { font-size: 11px; padding: 3px 10px; }
+            .drop-zone { padding: 16px; }
         }
         
         @media (max-width: 480px) {
-            .glass-card { border-radius: 16px; padding: 12px !important; }
+            .glass-card { border-radius: 20px; padding: 12px !important; }
             .btn-primary, .btn-success, .btn-blue, .btn-emerald {
                 padding: 6px 12px;
                 font-size: 11px;
                 border-radius: 10px;
             }
+            .toast { font-size: 12px; padding: 10px 16px; }
         }
         
-        .install-btn {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            border: none;
-            padding: 8px 18px;
+        /* Decorative dot pattern */
+        .dot-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.04) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        
+        /* File count badge */
+        .badge-count {
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+            color: #4f46e5;
+            padding: 2px 12px;
             border-radius: 50px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            display: none;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
-            animation: pulse 2s infinite;
-        }
-        
-        .install-btn.show { display: inline-flex; }
-        .install-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 24px rgba(245, 158, 11, 0.4);
-        }
-        
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3); }
-            50% { box-shadow: 0 4px 24px rgba(245, 158, 11, 0.5); }
-        }
-        
-        @media (display-mode: standalone) { .install-btn { display: none !important; } }
-        
-        .drop-zone {
-            border: 2px dashed rgba(148, 163, 184, 0.4);
-            border-radius: 18px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            background: rgba(248, 250, 252, 0.4);
-            cursor: pointer;
-        }
-        
-        .drop-zone:hover {
-            border-color: rgba(99, 102, 241, 0.4);
-            background: rgba(248, 250, 252, 0.7);
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #1e293b 0%, #4f46e5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 12px;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
 
 <!-- Toast Notification -->
-<div id="toast" class="toast"></div>
+<div id="toast" class="toast">
+    <span class="toast-icon" id="toastIcon">📌</span>
+    <span id="toastMessage">Pesan</span>
+</div>
 
 <div class="container max-w-5xl mx-auto w-full">
-    <div class="glass-card p-5 md:p-7">
+    <div class="glass-card p-6 md:p-8 dot-pattern">
         
         <!-- HEADER -->
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-            <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-200/50">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-7">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-indigo-200/40">
                     <i class="fas fa-layer-group"></i>
                 </div>
                 <div>
                     <h1 class="text-2xl md:text-3xl font-extrabold gradient-text tracking-tight">
-                        TXT Combiner
+                        TXT Combiner <span class="text-xs font-medium text-indigo-400 bg-indigo-50 px-2 py-0.5 rounded-full ml-1">Pro</span>
                     </h1>
-                    <p class="text-xs text-gray-500 hidden sm:block font-medium">Gabung & bersihkan duplikat file teks</p>
+                    <p class="text-xs text-gray-400 font-medium">Gabung & bersihkan duplikat file teks</p>
                 </div>
             </div>
             <button id="installBtn" class="install-btn">
@@ -357,7 +471,7 @@
             </button>
         </div>
 
-        <!-- Tombol aksi -->
+        <!-- Action Buttons -->
         <div class="flex flex-wrap gap-2 md:gap-3 mb-6">
             <button id="addFilesBtn" class="btn-primary">
                 <i class="fas fa-file-upload text-sm"></i> Pilih File
@@ -369,11 +483,11 @@
 
         <!-- Dropzone -->
         <div id="dropZone" class="drop-zone mb-6">
-            <div class="flex justify-between items-center mb-2">
-                <span class="text-sm font-semibold text-gray-700">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-sm font-semibold text-gray-600">
                     <i class="fas fa-folder-tree mr-2 text-indigo-400"></i> File Terupload
                 </span>
-                <span id="fileCount" class="text-xs bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full font-semibold">0 file</span>
+                <span id="fileCount" class="badge-count">0 file</span>
             </div>
             <div id="fileList" class="max-h-52 overflow-y-auto custom-scroll space-y-1.5 text-sm text-gray-600">
                 📭 Belum ada file
@@ -383,10 +497,10 @@
             </div>
         </div>
 
-        <!-- Hasil gabungan -->
+        <!-- Result Header -->
         <div class="flex flex-wrap justify-between items-center mb-3 gap-2">
-            <div class="flex items-center gap-2 flex-wrap">
-                <span class="font-bold text-gray-800 flex items-center gap-2 text-sm md:text-base">
+            <div class="flex items-center gap-3 flex-wrap">
+                <span class="font-bold text-gray-700 flex items-center gap-2 text-sm md:text-base">
                     <i class="fas fa-code-branch text-indigo-500"></i> Hasil Gabungan
                 </span>
                 <span id="outputFilename" class="filename-display">
@@ -406,28 +520,28 @@
         
         <!-- Output -->
         <div class="output-area custom-scroll">
-            <pre id="output" class="text-gray-200 text-sm md:text-base"></pre>
+            <pre id="output"></pre>
         </div>
         
-        <!-- STATISTIK -->
-        <div id="infoStat" class="mt-3 flex flex-wrap gap-2 justify-between items-center text-xs text-gray-600">
+        <!-- Stats -->
+        <div id="infoStat" class="mt-3 flex flex-wrap gap-2 justify-between items-center">
             <span class="stat-card">
                 <i class="fas fa-database text-indigo-400"></i> 
-                <span id="totalRawCount">0</span> baris awal
+                <span class="stat-value" id="totalRawCount">0</span> baris awal
             </span>
             <span class="stat-card">
                 <i class="fas fa-trash-alt text-red-400"></i> 
-                <span id="duplicateCount">0</span> duplikat
+                <span class="stat-value" id="duplicateCount">0</span> duplikat
             </span>
             <span class="stat-card">
                 <i class="fas fa-check-circle text-emerald-400"></i> 
-                <span id="uniqueCount">0</span> baris unik
+                <span class="stat-value" id="uniqueCount">0</span> baris unik
             </span>
         </div>
 
         <!-- Footer -->
-        <div class="text-center text-[11px] text-gray-400 mt-5 pt-3 border-t border-gray-200/50 font-medium">
-            Developer : I Nyoman Arta | © 2025 TXT Combiner Pro
+        <div class="text-center text-[11px] text-gray-400 mt-5 pt-3 border-t border-gray-200/40 font-medium">
+            Developer : I Nyoman Arta &mdash; © 2025 TXT Combiner Pro
         </div>
     </div>
 </div>
@@ -506,8 +620,19 @@
     // ======================== TOAST ========================
     function showToast(message, type = 'info') {
         const toast = document.getElementById('toast');
-        toast.textContent = message;
+        const toastIcon = document.getElementById('toastIcon');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        const icons = {
+            success: '✅',
+            error: '❌',
+            info: '📌'
+        };
+        
+        toastIcon.textContent = icons[type] || '📌';
+        toastMessage.textContent = message;
         toast.className = `toast show ${type}`;
+        
         clearTimeout(toast._timer);
         toast._timer = setTimeout(() => {
             toast.className = 'toast';
@@ -518,7 +643,7 @@
     function copyResult() {
         const text = outputPre.innerText;
         if (!text || text.trim() === '') {
-            showToast('❌ Tidak ada teks untuk disalin', 'error');
+            showToast('Tidak ada teks untuk disalin', 'error');
             return;
         }
         
@@ -547,7 +672,7 @@
             document.execCommand('copy');
             showToast(`📋 ${currentCombinedLines.length} baris berhasil disalin!`, 'success');
         } catch (e) {
-            showToast('❌ Gagal menyalin, silakan copy manual', 'error');
+            showToast('Gagal menyalin, silakan copy manual', 'error');
         }
         document.body.removeChild(textarea);
     }
@@ -570,7 +695,7 @@
     function renderFileList() {
         if (!selectedFiles.length) {
             fileListDiv.innerHTML = '📭 Belum ada file';
-            fileCountSpan.innerText = '0 file';
+            fileCountSpan.textContent = '0 file';
             updateOutputFilename();
             return;
         }
@@ -584,7 +709,7 @@
                     <span class="text-xs font-medium truncate max-w-[180px] md:max-w-xs" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</span>
                     <span class="text-[10px] text-gray-400 flex-shrink-0">(${(file.size/1024).toFixed(1)} KB)</span>
                 </div>
-                <button class="remove-file-btn text-red-400 hover:text-red-600 text-sm px-2 transition flex-shrink-0" data-index="${idx}">
+                <button class="remove-file-btn text-gray-400 hover:text-red-500 text-sm px-2 transition flex-shrink-0" data-index="${idx}">
                     <i class="fas fa-times-circle"></i>
                 </button>
             `;
@@ -592,7 +717,7 @@
         });
         fileListDiv.innerHTML = '';
         fileListDiv.appendChild(fragment);
-        fileCountSpan.innerText = `${selectedFiles.length} file`;
+        fileCountSpan.textContent = `${selectedFiles.length} file`;
         updateOutputFilename();
         
         document.querySelectorAll('.remove-file-btn').forEach(btn => {
@@ -660,10 +785,10 @@
     // ======================== PROSES UTAMA ========================
     async function processAllFiles() {
         if (selectedFiles.length === 0) {
-            outputPre.innerText = '';
-            totalRawSpan.innerText = '0';
-            duplicateSpan.innerText = '0';
-            uniqueSpan.innerText = '0';
+            outputPre.textContent = '';
+            totalRawSpan.textContent = '0';
+            duplicateSpan.textContent = '0';
+            uniqueSpan.textContent = '0';
             currentCombinedLines = [];
             updateOutputFilename();
             return;
@@ -708,12 +833,12 @@
         
         currentCombinedLines = sortedLines;
         
-        totalRawSpan.innerText = totalRaw;
-        duplicateSpan.innerText = duplicateRemoved;
-        uniqueSpan.innerText = sortedLines.length;
+        totalRawSpan.textContent = totalRaw;
+        duplicateSpan.textContent = duplicateRemoved;
+        uniqueSpan.textContent = sortedLines.length;
         
         const displayText = sortedLines.length > 0 ? sortedLines.join('\n') : '';
-        outputPre.innerText = displayText;
+        outputPre.textContent = displayText;
         
         updateOutputFilename();
     }
@@ -728,11 +853,10 @@
         if (!files) return;
         const txtFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.txt'));
         if (txtFiles.length === 0) {
-            showToast('❌ Hanya file .txt yang didukung', 'error');
+            showToast('Hanya file .txt yang didukung', 'error');
             return;
         }
         
-        // AUTO RESET
         selectedFiles = [];
         selectedFiles.push(...txtFiles);
         renderFileList();
@@ -743,11 +867,10 @@
     function addFolderFromInput(files) {
         const txtFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.txt'));
         if(txtFiles.length === 0) { 
-            showToast('❌ Folder tidak mengandung file .txt', 'error');
+            showToast('Folder tidak mengandung file .txt', 'error');
             return; 
         }
         
-        // AUTO RESET
         selectedFiles = [];
         selectedFiles.push(...txtFiles);
         renderFileList();
@@ -777,7 +900,7 @@
     
     downloadBtn.addEventListener('click', () => {
         if (currentCombinedLines.length === 0) {
-            showToast('❌ Tidak ada data untuk diunduh', 'error');
+            showToast('Tidak ada data untuk diunduh', 'error');
             return;
         }
         const blob = new Blob([currentCombinedLines.join('\n')], {type: 'text/plain'});
@@ -785,8 +908,10 @@
         link.href = URL.createObjectURL(blob);
         const downloadName = currentOutputName || 'Laporan_Gabungan.txt';
         link.download = downloadName;
+        document.body.appendChild(link);
         link.click();
-        URL.revokeObjectURL(link.href);
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
         showToast(`⬇️ File "${downloadName}" berhasil di-download`, 'success');
     });
 
@@ -835,14 +960,13 @@
         }
         
         if (filesToAdd.length) {
-            // AUTO RESET
             selectedFiles = [];
             selectedFiles.push(...filesToAdd);
             renderFileList();
             refreshCombine();
             showToast(`✅ ${filesToAdd.length} file berhasil diupload (auto reset)`, 'success');
         } else {
-            showToast('❌ Tidak ada file .txt', 'error');
+            showToast('Tidak ada file .txt', 'error');
         }
     });
     
@@ -854,7 +978,7 @@
 <script>
     (function registerSW() {
         const swCode = `
-const CACHE_NAME = 'txt-combiner-v2';
+const CACHE_NAME = 'txt-combiner-v3';
 const ASSETS = ['/', '/index.html'];
 
 self.addEventListener('install', (e) => {
