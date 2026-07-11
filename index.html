@@ -73,13 +73,6 @@
         .dot.error { background: #ef4444; animation: none; }
         @keyframes pulse-slow { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
         @keyframes pulse-fast { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
-        .drive-id {
-            background: #222;
-            color: #0f0;
-            padding: 2px 10px;
-            font-size: 13px;
-            border-radius: 2px;
-        }
         .tabs {
             display: flex;
             gap: 4px;
@@ -185,9 +178,6 @@
             line-height: 1.5;
             margin-top: 12px;
         }
-        .output-area .error-text { color: #ff6666; font-weight: bold; }
-        .output-area .warn-text { color: #fbbf24; }
-        .output-area .info-text { color: #66ccff; }
         .stats {
             display: flex;
             flex-wrap: wrap;
@@ -221,8 +211,8 @@
             font-size: 14px;
             border: 2px solid #888;
             background: #fff;
-            min-width: 180px;
-            max-width: 300px;
+            min-width: 200px;
+            max-width: 100%;
         }
         .filter-group select:focus {
             border-color: #4f46e5;
@@ -265,7 +255,7 @@
             .tab-btn { font-size: 13px; padding: 6px 12px; }
             .btn { font-size: 12px; padding: 4px 10px; }
             .output-area { font-size: 11px; min-height: 120px; }
-            .filter-group select { min-width: 120px; max-width: 100%; }
+            .filter-group select { min-width: 120px; }
         }
     </style>
 </head>
@@ -285,9 +275,8 @@
             <span class="dot idle" id="indicatorDot"></span>
             <span id="statusText">Idle</span>
         </div>
-        <span>
+        <span style="font-size:12px; color:#888;">
             <span style="background:#222;color:#fff;padding:0 8px;border-radius:2px;">Drive</span>
-            <span class="drive-id">1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ</span>
         </span>
     </div>
 
@@ -322,9 +311,9 @@
         <div class="output-area" id="manualOutput">Hasil gabungan akan muncul di sini.</div>
     </div>
 
-    <!-- TAB 2: DESA (DROPDOWN FOLDER) -->
+    <!-- TAB 2: DESA (DROPDOWN BERTINGKAT) -->
     <div class="tab-pane" id="tab-desa">
-        <p style="margin-bottom:10px;">Pilih folder dari daftar yang terdeteksi di Drive, lalu proses semua ZIP di dalamnya.</p>
+        <p style="margin-bottom:10px;">Pilih folder dari daftar (terstruktur: utama → tahun → bulan → desa).</p>
         <div class="filter-group">
             <label for="folderSelect">Folder</label>
             <select id="folderSelect">
@@ -334,6 +323,9 @@
             <span class="refresh-link" id="refreshFolderBtn">↻ Refresh</span>
             <span class="loading-text" id="desaLoading"></span>
         </div>
+        <p style="font-size:13px; color:#666; margin-bottom:10px;">
+            Path terpilih: <code id="pathPreview">(pilih folder)</code>
+        </p>
         <div class="output-area" id="desaOutput">Pilih folder dari dropdown, lalu klik "Proses Folder".</div>
     </div>
 
@@ -359,7 +351,7 @@
 
 <script>
     // ============================================================
-    // KONFIGURASI (URL APPS SCRIPT)
+    // KONFIGURASI (URL APPS SCRIPT) — GANTI DENGAN URL DEPLOY ANDA
     // ============================================================
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxy8Hiy2i0ukCftKaDcijSewoGmDBcIgOIdyppAGSf3LuPq0T3SZ24g-OESEJstHnuU/exec';
 
@@ -419,7 +411,6 @@
             Object.keys(panes).forEach(key => {
                 panes[key].classList.toggle('active', key === target);
             });
-            // Muat daftar folder ketika tab "desa" diaktifkan
             if (target === 'desa') {
                 loadFolderList();
             }
@@ -431,6 +422,7 @@
     // ============================================================
     const folderSelect = document.getElementById('folderSelect');
     const desaLoading = document.getElementById('desaLoading');
+    const pathPreview = document.getElementById('pathPreview');
 
     async function loadFolderList() {
         desaLoading.textContent = '⏳ Memuat daftar folder...';
@@ -444,10 +436,17 @@
 
             if (data.success && data.folders) {
                 folderSelect.innerHTML = '<option value="">-- Pilih folder --</option>';
+                // Grouping berdasarkan level (indentasi)
                 data.folders.forEach(f => {
                     const option = document.createElement('option');
                     option.value = f.path;
-                    option.textContent = f.display || f.path;
+                    // Tambahkan indentasi berdasarkan level
+                    let indent = '';
+                    for (let i = 0; i < f.level; i++) {
+                        indent += '  ';
+                    }
+                    option.textContent = indent + '📁 ' + f.display;
+                    option.title = f.path; // tooltip untuk path lengkap
                     folderSelect.appendChild(option);
                 });
                 desaLoading.textContent = '✅ ' + data.folders.length + ' folder ditemukan';
@@ -465,6 +464,12 @@
 
     document.getElementById('refreshFolderBtn').addEventListener('click', function() {
         loadFolderList();
+    });
+
+    // Preview path saat pilihan berubah
+    folderSelect.addEventListener('change', function() {
+        const val = this.value;
+        pathPreview.textContent = val || '(pilih folder)';
     });
 
     // ============================================================
@@ -883,6 +888,7 @@
     setStatus('idle', 'Idle');
     serverOutput.textContent = 'Klik tombol untuk menjalankan aksi server.';
     desaOutput.textContent = 'Pilih folder dari dropdown, lalu klik "Proses Folder".';
+    pathPreview.textContent = '(pilih folder)';
 
     // Muat folder list saat pertama kali
     loadFolderList();
