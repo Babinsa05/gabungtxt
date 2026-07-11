@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TXT Combiner Pro - 2 Tab + Download</title>
+    <title>TXT Combiner Pro - 2 Tab + Pilih Folder</title>
     <style>
         /* ===== GAYA KLASIK ===== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Courier New', Courier, monospace;
             background: #e8e8e8;
@@ -46,7 +42,6 @@
             color: #555;
             margin: 4px 0 16px 0;
         }
-        /* ===== INDICATOR ===== */
         .status-bar {
             background: #e8e8e8;
             border: 2px solid #333;
@@ -71,30 +66,12 @@
             background: #888;
             transition: background 0.2s;
         }
-        .dot.idle {
-            background: #10b981;
-            animation: pulse-slow 1.8s ease-in-out infinite;
-        }
-        .dot.running {
-            background: #f59e0b;
-            animation: pulse-fast 0.5s step-end infinite;
-        }
-        .dot.done {
-            background: #10b981;
-            animation: none;
-        }
-        .dot.error {
-            background: #ef4444;
-            animation: none;
-        }
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        @keyframes pulse-fast {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
-        }
+        .dot.idle { background: #10b981; animation: pulse-slow 1.8s ease-in-out infinite; }
+        .dot.running { background: #f59e0b; animation: pulse-fast 0.5s step-end infinite; }
+        .dot.done { background: #10b981; animation: none; }
+        .dot.error { background: #ef4444; animation: none; }
+        @keyframes pulse-slow { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+        @keyframes pulse-fast { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
         .drive-id {
             background: #222;
             color: #0f0;
@@ -103,7 +80,6 @@
             border-radius: 2px;
         }
 
-        /* ===== TAB SYSTEM ===== */
         .tabs {
             display: flex;
             gap: 4px;
@@ -119,28 +95,17 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 2px -2px 0 rgba(0,0,0,0.05);
-            transition: 0.1s;
             border-radius: 6px 6px 0 0;
         }
         .tab-btn.active {
             background: #fff;
-            box-shadow: 0 -2px 0 #fff, 0 2px 0 #fff;
             position: relative;
             z-index: 1;
         }
-        .tab-btn:hover {
-            background: #eee;
-        }
-        .tab-pane {
-            display: none;
-            padding: 10px 0;
-        }
-        .tab-pane.active {
-            display: block;
-        }
+        .tab-btn:hover { background: #eee; }
+        .tab-pane { display: none; padding: 10px 0; }
+        .tab-pane.active { display: block; }
 
-        /* ===== KOMPONEN ===== */
         .btn {
             background: #e0e0e0;
             border: 2px solid #333;
@@ -153,22 +118,9 @@
             transition: 0.05s linear;
             margin: 2px 4px 2px 0;
         }
-        .btn:hover {
-            background: #ccc;
-            box-shadow: 2px 2px 0 #888;
-            transform: translate(1px, 1px);
-        }
-        .btn:active {
-            background: #bbb;
-            box-shadow: 0 0 0 #888;
-            transform: translate(3px, 3px);
-        }
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: 2px 2px 0 #888 !important;
-        }
+        .btn:hover { background: #ccc; box-shadow: 2px 2px 0 #888; transform: translate(1px, 1px); }
+        .btn:active { background: #bbb; box-shadow: 0 0 0 #888; transform: translate(3px, 3px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: 2px 2px 0 #888 !important; }
         .btn-primary { background: #4f46e5; color: #fff; border-color: #2a1f9c; }
         .btn-primary:hover { background: #3b35b0; }
         .btn-success { background: #10b981; color: #fff; border-color: #0a7a55; }
@@ -183,6 +135,8 @@
         .btn-info:hover { background: #2563eb; }
         .btn-gray { background: #6b7280; color: #fff; border-color: #4b5563; }
         .btn-gray:hover { background: #4b5563; }
+        .btn-teal { background: #14b8a6; color: #fff; border-color: #0d9488; }
+        .btn-teal:hover { background: #0d9488; }
 
         .drop-zone {
             border: 3px dashed #888;
@@ -193,14 +147,9 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .drop-zone:hover {
-            background: #f0f0f0;
-            border-color: #333;
-        }
-        .drop-zone.dragover {
-            background: #e0e7ff;
-            border-color: #4f46e5;
-        }
+        .drop-zone:hover { background: #f0f0f0; border-color: #333; }
+        .drop-zone.dragover { background: #e0e7ff; border-color: #4f46e5; }
+
         .file-list {
             max-height: 160px;
             overflow-y: auto;
@@ -216,18 +165,15 @@
             padding: 3px 0;
             border-bottom: 1px dotted #ccc;
         }
-        .file-item:last-child {
-            border-bottom: none;
-        }
+        .file-item:last-child { border-bottom: none; }
         .file-item .remove {
             color: #ef4444;
             cursor: pointer;
             font-weight: bold;
             margin-left: 12px;
         }
-        .file-item .remove:hover {
-            color: #b91c1c;
-        }
+        .file-item .remove:hover { color: #b91c1c; }
+
         .output-area {
             background: #1a1a1a;
             color: #33ff33;
@@ -243,6 +189,10 @@
             line-height: 1.5;
             margin-top: 12px;
         }
+        .output-area .error-text { color: #ff6666; font-weight: bold; }
+        .output-area .warn-text { color: #fbbf24; }
+        .output-area .info-text { color: #66ccff; }
+
         .stats {
             display: flex;
             flex-wrap: wrap;
@@ -263,9 +213,72 @@
             font-size: 13px;
             color: #666;
         }
-        .footer .highlight {
+        .footer .highlight { color: #4f46e5; font-weight: 700; }
+
+        .url-config {
+            background: #fef9e7;
+            border: 1px solid #f59e0b;
+            padding: 10px 14px;
+            margin: 10px 0;
+            font-size: 13px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        .url-config code {
+            background: #222;
+            color: #0f0;
+            padding: 2px 8px;
+            border-radius: 3px;
+            word-break: break-all;
+        }
+        .url-config .edit-link {
             color: #4f46e5;
-            font-weight: 700;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .folder-select-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0 14px 0;
+            padding: 10px 14px;
+            background: #f0f4ff;
+            border: 2px solid #4f46e5;
+            border-radius: 6px;
+        }
+        .folder-select-group label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .folder-select-group select {
+            flex: 1;
+            padding: 6px 10px;
+            font-family: inherit;
+            font-size: 14px;
+            border: 2px solid #888;
+            background: #fff;
+            min-width: 200px;
+        }
+        .folder-select-group select:focus {
+            border-color: #4f46e5;
+            outline: none;
+        }
+        .folder-select-group .btn-refresh {
+            background: #ddd;
+            border: 2px solid #333;
+            padding: 5px 12px;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #888;
+        }
+        .folder-select-group .btn-refresh:hover {
+            background: #ccc;
         }
 
         @media (max-width: 600px) {
@@ -273,16 +286,17 @@
             .tab-btn { font-size: 13px; padding: 6px 12px; }
             .btn { font-size: 12px; padding: 4px 10px; }
             .output-area { font-size: 11px; min-height: 120px; }
+            .folder-select-group select { min-width: 120px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>
-        <span>📄 TXT Combiner Pro <small>2 Tab + Download</small></span>
+        <span>📄 TXT Combiner Pro <small>2 Tab + Pilih Folder</small></span>
         <span style="font-size:14px; font-weight:400;">I Nyoman Arta</span>
     </h1>
-    <div class="subtitle">Gabung &amp; bersihkan duplikat — langsung download hasilnya</div>
+    <div class="subtitle">Gabung &amp; bersihkan duplikat — pilih folder tertentu dari daftar</div>
 
     <!-- ===== STATUS INDICATOR ===== -->
     <div class="status-bar">
@@ -294,6 +308,14 @@
             <span style="background:#222;color:#fff;padding:0 8px;border-radius:2px;">📁 Drive</span>
             <span class="drive-id">1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ</span>
         </span>
+    </div>
+
+    <!-- ===== KONFIGURASI URL ===== -->
+    <div class="url-config" id="urlConfig">
+        <span>🔗 URL Apps Script:</span>
+        <code id="urlDisplay">https://script.google.com/macros/s/.../exec</code>
+        <span class="edit-link" id="editUrlBtn">✏️ Ganti URL</span>
+        <span style="font-size:12px; color:#888;">(jika gagal koneksi, pastikan URL benar)</span>
     </div>
 
     <!-- ===== TAB NAVIGATION ===== -->
@@ -333,12 +355,23 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- TAB 2: AKSI SERVER -->
+    <!-- TAB 2: AKSI SERVER (dengan Dropdown Pilih Folder) -->
     <!-- ============================================================ -->
     <div class="tab-pane" id="tab-server">
         <p style="margin-bottom:10px;"><strong>Semua aksi</strong> memanggil Google Apps Script via HTTP.</p>
+
+        <!-- ===== DROPDOWN PILIH FOLDER ===== -->
+        <div class="folder-select-group">
+            <label for="folderSelect">📂 Pilih folder:</label>
+            <select id="folderSelect">
+                <option value="">-- Pilih folder --</option>
+            </select>
+            <button class="btn btn-teal" id="btnProcessSpecific">▶ Proses Folder Terpilih</button>
+            <button class="btn-refresh" id="btnRefreshFolders" title="Refresh daftar folder">🔄 Refresh</button>
+        </div>
+
         <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
-            <button class="btn btn-primary" id="btnProcess">▶ Proses Manual</button>
+            <button class="btn btn-primary" id="btnProcess">▶ Proses Manual (Semua)</button>
             <button class="btn btn-success" id="btnTrigger">⏰ Buat Trigger</button>
             <button class="btn btn-danger" id="btnDeleteTriggers">🗑️ Hapus Trigger</button>
             <button class="btn btn-warning" id="btnTest">🧪 Test</button>
@@ -346,6 +379,7 @@
             <button class="btn btn-info" id="btnDeleteInfo">🧹 Hapus INFO_EXTRACT</button>
             <button class="btn btn-gray" id="btnClearServer">✖ Bersihkan Output</button>
         </div>
+
         <div class="output-area" id="serverOutput">📌 Klik tombol di atas untuk menjalankan aksi server.\n🔗 URL: https://script.google.com/macros/s/.../exec</div>
     </div>
 
@@ -358,9 +392,9 @@
 
 <script>
     // ============================================================
-    // KONFIGURASI
+    // KONFIGURASI — GANTI URL DI SINI
     // ============================================================
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0YxakYQY5IHyS_G8o7HGFg4HJnNPPZpYMWGgy_djgaY0HtwJKzzeSC4H0ikwa6tCp/exec';
+    let APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0YxakYQY5IHyS_G8o7HGFg4HJnNPPZpYMWGgy_djgaY0HtwJKzzeSC4H0ikwa6tCp/exec';
 
     // ============================================================
     // INDIKATOR
@@ -372,6 +406,23 @@
         dot.className = 'dot ' + state;
         statusText.textContent = text;
     }
+
+    // ============================================================
+    // TAMPILAN URL
+    // ============================================================
+    const urlDisplay = document.getElementById('urlDisplay');
+    urlDisplay.textContent = APPS_SCRIPT_URL;
+
+    document.getElementById('editUrlBtn').addEventListener('click', function() {
+        const newUrl = prompt('Masukkan URL Apps Script yang baru:', APPS_SCRIPT_URL);
+        if (newUrl && newUrl.trim() !== '') {
+            APPS_SCRIPT_URL = newUrl.trim();
+            urlDisplay.textContent = APPS_SCRIPT_URL;
+            document.getElementById('serverOutput').textContent = '🔗 URL diperbarui: ' + APPS_SCRIPT_URL + '\n\n📌 Klik tombol untuk menjalankan aksi.';
+            // Refresh daftar folder dengan URL baru
+            loadFolderList();
+        }
+    });
 
     // ============================================================
     // TAB SWITCHING
@@ -390,6 +441,10 @@
             Object.keys(panes).forEach(key => {
                 panes[key].classList.toggle('active', key === target);
             });
+            // Jika membuka tab server, refresh daftar folder
+            if (target === 'server') {
+                loadFolderList();
+            }
         });
     });
 
@@ -605,7 +660,6 @@
         }
         const dupCount = totalRaw - unique.length;
 
-        // Urutkan berdasarkan tanggal
         const withDate = unique.map(line => ({ line, date: extractDateFromLine(line) }));
         withDate.sort((a, b) => {
             if (a.date && b.date) return a.date - b.date;
@@ -615,18 +669,15 @@
         });
         const sorted = withDate.map(item => item.line);
 
-        // Tampilkan di output
         manualOutput.textContent = sorted.join('\n');
         statRaw.textContent = 'Baris awal: ' + totalRaw;
         statDup.textContent = 'Duplikat: ' + dupCount;
         statUnique.textContent = 'Baris unik: ' + sorted.length;
 
-        // ===== DOWNLOAD OTOMATIS =====
         if (sorted.length > 0) {
             const blob = new Blob([sorted.join('\n')], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            // Nama file berdasarkan file pertama atau default
             const baseName = selectedFiles[0]?.name.replace(/\.[^.]+$/, '') || 'gabungan';
             a.download = baseName + '_gabungan.txt';
             a.href = url;
@@ -642,9 +693,10 @@
     });
 
     // ============================================================
-    // AKSI SERVER (TAB 2)
+    // AKSI SERVER (TAB 2) — dengan Dropdown Pilih Folder
     // ============================================================
     const serverOutput = document.getElementById('serverOutput');
+    const folderSelect = document.getElementById('folderSelect');
     let isRunning = false;
 
     function appendServer(text, type) {
@@ -653,7 +705,54 @@
         serverOutput.scrollTop = serverOutput.scrollHeight;
     }
 
-    async function callServerAction(action, btnId) {
+    function appendServerError(text) {
+        serverOutput.textContent += '❌ ' + text + '\n';
+        serverOutput.scrollTop = serverOutput.scrollHeight;
+    }
+
+    // ===== LOAD DAFTAR FOLDER DARI DRIVE =====
+    async function loadFolderList() {
+        const select = document.getElementById('folderSelect');
+        const refreshBtn = document.getElementById('btnRefreshFolders');
+        refreshBtn.disabled = true;
+        refreshBtn.textContent = '⏳ ...';
+
+        try {
+            // Panggil Apps Script dengan action listFolders
+            const url = APPS_SCRIPT_URL + '?action=listFolders&t=' + Date.now();
+            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            const data = await response.json();
+
+            if (data.success && data.folders) {
+                select.innerHTML = '<option value="">-- Pilih folder --</option>';
+                data.folders.forEach(f => {
+                    const opt = document.createElement('option');
+                    opt.value = f.path;
+                    opt.textContent = f.display || f.path;
+                    select.appendChild(opt);
+                });
+                appendServer('📂 Daftar folder dimuat: ' + data.folders.length + ' folder', 'info');
+            } else {
+                select.innerHTML = '<option value="">-- Gagal memuat folder --</option>';
+                appendServer('⚠️ Gagal memuat daftar folder: ' + (data.message || 'unknown'), 'error');
+            }
+        } catch (err) {
+            select.innerHTML = '<option value="">-- Error memuat folder --</option>';
+            appendServer('❌ Gagal memuat daftar folder: ' + err.message, 'error');
+        } finally {
+            refreshBtn.disabled = false;
+            refreshBtn.textContent = '🔄 Refresh';
+        }
+    }
+
+    // Refresh folder saat tombol diklik
+    document.getElementById('btnRefreshFolders').addEventListener('click', function() {
+        loadFolderList();
+    });
+
+    // ===== PANGGIL APPS SCRIPT =====
+    async function callServerAction(action, btnId, extraParams = {}) {
         if (isRunning) {
             alert('⏳ Masih ada proses berjalan.');
             return;
@@ -665,15 +764,26 @@
         appendServer('⏳ Menjalankan: ' + action, 'info');
 
         try {
-            const url = APPS_SCRIPT_URL + '?action=' + encodeURIComponent(action) + '&t=' + Date.now();
+            let url = APPS_SCRIPT_URL + '?action=' + encodeURIComponent(action) + '&t=' + Date.now();
+            for (const [key, value] of Object.entries(extraParams)) {
+                if (value) url += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(value);
+            }
             const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            if (!response.ok) throw new Error('HTTP ' + response.status);
+            
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status + ' - ' + response.statusText);
+            }
+            
             const data = await response.json();
 
             if (data.success) {
                 setStatus('done', 'Selesai');
                 appendServer('✅ ' + data.message, 'info');
                 if (data.log) appendServer('📋 LOG:\n' + data.log, 'info');
+                // Jika aksi listFolders, muat ulang daftar
+                if (action === 'listFolders' && data.folders) {
+                    // sudah ditangani di loadFolderList
+                }
             } else {
                 setStatus('error', 'Error');
                 appendServer('❌ ERROR: ' + data.message, 'error');
@@ -681,8 +791,20 @@
             }
         } catch (err) {
             setStatus('error', 'Error');
-            appendServer('❌ FETCH ERROR: ' + err.message, 'error');
-            alert('❌ Gagal terhubung: ' + err.message);
+            let errorMsg = '❌ Gagal terhubung ke server.\n';
+            errorMsg += '🔍 Penyebab umum:\n';
+            errorMsg += '  1. URL Apps Script salah atau belum di-deploy.\n';
+            errorMsg += '  2. CORS: pastikan Web App di-set ke "Anyone".\n';
+            errorMsg += '  3. Koneksi internet terputus.\n';
+            errorMsg += '  4. Apps Script belum diizinkan akses Drive.\n';
+            errorMsg += '\n🔧 Solusi:\n';
+            errorMsg += '  • Klik "Ganti URL" di atas untuk perbaiki URL.\n';
+            errorMsg += '  • Buka URL di browser untuk test: ' + APPS_SCRIPT_URL + '?action=test\n';
+            errorMsg += '  • Periksa deployment Apps Script (Execute as: Me, Access: Anyone).\n';
+            errorMsg += '\n📌 Detail error: ' + err.message;
+            
+            appendServerError(errorMsg);
+            alert('❌ Gagal koneksi ke Apps Script.\n\n' + errorMsg);
         } finally {
             if (btn) { btn.disabled = false; isRunning = false; }
             setTimeout(() => {
@@ -693,7 +815,7 @@
         }
     }
 
-    // Tombol server
+    // ===== Tombol Server Biasa =====
     document.getElementById('btnProcess').addEventListener('click', function() {
         callServerAction('process', 'btnProcess');
     });
@@ -717,11 +839,31 @@
         setStatus('idle', 'Idle');
     });
 
+    // ===== Tombol Folder Spesifik (dari dropdown) =====
+    document.getElementById('btnProcessSpecific').addEventListener('click', function() {
+        const folderPath = folderSelect.value;
+        if (!folderPath) {
+            alert('Pilih folder terlebih dahulu dari daftar.');
+            return;
+        }
+        callServerAction('processSpecific', 'btnProcessSpecific', { folder: folderPath });
+    });
+
     // ============================================================
     // INISIALISASI
     // ============================================================
     setStatus('idle', 'Idle');
-    serverOutput.textContent = '📌 Klik tombol di atas untuk menjalankan aksi server.\n🔗 URL: ' + APPS_SCRIPT_URL + '\n📂 Drive ID: 1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ\n\n💡 Aksi yang tersedia:\n   process, trigger, deleteTriggers, test, restore, deleteInfo';
+    serverOutput.textContent = '📌 Klik tombol di atas untuk menjalankan aksi server.\n' +
+        '🔗 URL: ' + APPS_SCRIPT_URL + '\n' +
+        '📂 Drive ID: 1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ\n\n' +
+        '💡 Aksi yang tersedia:\n' +
+        '   process, trigger, deleteTriggers, test, restore, deleteInfo, processSpecific (folder)\n\n' +
+        '📁 Untuk folder spesifik, pilih dari dropdown lalu klik tombol hijau toska.';
+
+    // Muat daftar folder saat halaman dimuat
+    setTimeout(() => {
+        loadFolderList();
+    }, 500);
 </script>
 </body>
 </html>
