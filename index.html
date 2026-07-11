@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TXT Combiner Pro - 2 Tab + Pilih Folder</title>
+    <title>TXT Combiner Pro - Dropdown Folder</title>
     <style>
         /* ===== GAYA KLASIK ===== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -244,7 +244,7 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             margin: 10px 0 14px 0;
             padding: 10px 14px;
             background: #f0f4ff;
@@ -263,22 +263,22 @@
             border: 2px solid #888;
             background: #fff;
             min-width: 200px;
+            max-width: 400px;
         }
         .folder-select-group select:focus {
             border-color: #4f46e5;
             outline: none;
         }
-        .folder-select-group .btn-refresh {
-            background: #ddd;
-            border: 2px solid #333;
-            padding: 5px 12px;
-            font-family: inherit;
+        .folder-select-group .loading-text {
             font-size: 13px;
-            cursor: pointer;
-            box-shadow: 2px 2px 0 #888;
+            color: #666;
+            font-style: italic;
         }
-        .folder-select-group .btn-refresh:hover {
-            background: #ccc;
+        .folder-select-group .refresh-link {
+            color: #4f46e5;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: underline;
         }
 
         @media (max-width: 600px) {
@@ -286,17 +286,17 @@
             .tab-btn { font-size: 13px; padding: 6px 12px; }
             .btn { font-size: 12px; padding: 4px 10px; }
             .output-area { font-size: 11px; min-height: 120px; }
-            .folder-select-group select { min-width: 120px; }
+            .folder-select-group select { min-width: 120px; max-width: 100%; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>
-        <span>📄 TXT Combiner Pro <small>2 Tab + Pilih Folder</small></span>
+        <span>📄 TXT Combiner Pro <small>Dropdown Folder</small></span>
         <span style="font-size:14px; font-weight:400;">I Nyoman Arta</span>
     </h1>
-    <div class="subtitle">Gabung &amp; bersihkan duplikat — pilih folder tertentu dari daftar</div>
+    <div class="subtitle">Gabung &amp; bersihkan duplikat — pilih folder dari dropdown</div>
 
     <!-- ===== STATUS INDICATOR ===== -->
     <div class="status-bar">
@@ -355,19 +355,20 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- TAB 2: AKSI SERVER (dengan Dropdown Pilih Folder) -->
+    <!-- TAB 2: AKSI SERVER (dengan Dropdown Folder) -->
     <!-- ============================================================ -->
     <div class="tab-pane" id="tab-server">
         <p style="margin-bottom:10px;"><strong>Semua aksi</strong> memanggil Google Apps Script via HTTP.</p>
 
-        <!-- ===== DROPDOWN PILIH FOLDER ===== -->
+        <!-- ===== FOLDER SPESIFIK dengan DROPDOWN ===== -->
         <div class="folder-select-group">
             <label for="folderSelect">📂 Pilih folder:</label>
             <select id="folderSelect">
-                <option value="">-- Pilih folder --</option>
+                <option value="">-- Muat daftar folder --</option>
             </select>
             <button class="btn btn-teal" id="btnProcessSpecific">▶ Proses Folder Terpilih</button>
-            <button class="btn-refresh" id="btnRefreshFolders" title="Refresh daftar folder">🔄 Refresh</button>
+            <span class="refresh-link" id="refreshFolderBtn">🔄 Refresh</span>
+            <span class="loading-text" id="loadingFolderText"></span>
         </div>
 
         <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
@@ -394,7 +395,7 @@
     // ============================================================
     // KONFIGURASI — GANTI URL DI SINI
     // ============================================================
-    let APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0YxakYQY5IHyS_G8o7HGFg4HJnNPPZpYMWGgy_djgaY0HtwJKzzeSC4H0ikwa6tCp/exec';
+    let APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycbgyGNjwJGdx0obyiycwa04goM2kF2TjwvAeBxiehn0r55Ffh88hLluNnSoPATsKm/exec';
 
     // ============================================================
     // INDIKATOR
@@ -419,7 +420,7 @@
             APPS_SCRIPT_URL = newUrl.trim();
             urlDisplay.textContent = APPS_SCRIPT_URL;
             document.getElementById('serverOutput').textContent = '🔗 URL diperbarui: ' + APPS_SCRIPT_URL + '\n\n📌 Klik tombol untuk menjalankan aksi.';
-            // Refresh daftar folder dengan URL baru
+            // Refresh folder list after URL change
             loadFolderList();
         }
     });
@@ -441,7 +442,7 @@
             Object.keys(panes).forEach(key => {
                 panes[key].classList.toggle('active', key === target);
             });
-            // Jika membuka tab server, refresh daftar folder
+            // Load folder list when switching to server tab
             if (target === 'server') {
                 loadFolderList();
             }
@@ -693,10 +694,51 @@
     });
 
     // ============================================================
-    // AKSI SERVER (TAB 2) — dengan Dropdown Pilih Folder
+    // LOAD FOLDER LIST DARI APPS SCRIPT
+    // ============================================================
+    const folderSelect = document.getElementById('folderSelect');
+    const loadingText = document.getElementById('loadingFolderText');
+
+    async function loadFolderList() {
+        loadingText.textContent = '⏳ Memuat daftar folder...';
+        folderSelect.disabled = true;
+
+        try {
+            const url = APPS_SCRIPT_URL + '?action=listFolders&t=' + Date.now();
+            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            const data = await response.json();
+
+            if (data.success && data.folders) {
+                folderSelect.innerHTML = '<option value="">-- Pilih folder --</option>';
+                data.folders.forEach(f => {
+                    const option = document.createElement('option');
+                    option.value = f.path;
+                    option.textContent = f.display || f.path;
+                    folderSelect.appendChild(option);
+                });
+                loadingText.textContent = '✅ ' + data.folders.length + ' folder ditemukan';
+            } else {
+                loadingText.textContent = '❌ Gagal muat: ' + (data.message || '');
+                folderSelect.innerHTML = '<option value="">-- Gagal muat --</option>';
+            }
+        } catch (err) {
+            loadingText.textContent = '❌ Error: ' + err.message;
+            folderSelect.innerHTML = '<option value="">-- Error --</option>';
+        } finally {
+            folderSelect.disabled = false;
+        }
+    }
+
+    // Refresh button
+    document.getElementById('refreshFolderBtn').addEventListener('click', function() {
+        loadFolderList();
+    });
+
+    // ============================================================
+    // AKSI SERVER (TAB 2)
     // ============================================================
     const serverOutput = document.getElementById('serverOutput');
-    const folderSelect = document.getElementById('folderSelect');
     let isRunning = false;
 
     function appendServer(text, type) {
@@ -710,48 +752,6 @@
         serverOutput.scrollTop = serverOutput.scrollHeight;
     }
 
-    // ===== LOAD DAFTAR FOLDER DARI DRIVE =====
-    async function loadFolderList() {
-        const select = document.getElementById('folderSelect');
-        const refreshBtn = document.getElementById('btnRefreshFolders');
-        refreshBtn.disabled = true;
-        refreshBtn.textContent = '⏳ ...';
-
-        try {
-            // Panggil Apps Script dengan action listFolders
-            const url = APPS_SCRIPT_URL + '?action=listFolders&t=' + Date.now();
-            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            if (!response.ok) throw new Error('HTTP ' + response.status);
-            const data = await response.json();
-
-            if (data.success && data.folders) {
-                select.innerHTML = '<option value="">-- Pilih folder --</option>';
-                data.folders.forEach(f => {
-                    const opt = document.createElement('option');
-                    opt.value = f.path;
-                    opt.textContent = f.display || f.path;
-                    select.appendChild(opt);
-                });
-                appendServer('📂 Daftar folder dimuat: ' + data.folders.length + ' folder', 'info');
-            } else {
-                select.innerHTML = '<option value="">-- Gagal memuat folder --</option>';
-                appendServer('⚠️ Gagal memuat daftar folder: ' + (data.message || 'unknown'), 'error');
-            }
-        } catch (err) {
-            select.innerHTML = '<option value="">-- Error memuat folder --</option>';
-            appendServer('❌ Gagal memuat daftar folder: ' + err.message, 'error');
-        } finally {
-            refreshBtn.disabled = false;
-            refreshBtn.textContent = '🔄 Refresh';
-        }
-    }
-
-    // Refresh folder saat tombol diklik
-    document.getElementById('btnRefreshFolders').addEventListener('click', function() {
-        loadFolderList();
-    });
-
-    // ===== PANGGIL APPS SCRIPT =====
     async function callServerAction(action, btnId, extraParams = {}) {
         if (isRunning) {
             alert('⏳ Masih ada proses berjalan.');
@@ -780,10 +780,6 @@
                 setStatus('done', 'Selesai');
                 appendServer('✅ ' + data.message, 'info');
                 if (data.log) appendServer('📋 LOG:\n' + data.log, 'info');
-                // Jika aksi listFolders, muat ulang daftar
-                if (action === 'listFolders' && data.folders) {
-                    // sudah ditangani di loadFolderList
-                }
             } else {
                 setStatus('error', 'Error');
                 appendServer('❌ ERROR: ' + data.message, 'error');
@@ -843,7 +839,7 @@
     document.getElementById('btnProcessSpecific').addEventListener('click', function() {
         const folderPath = folderSelect.value;
         if (!folderPath) {
-            alert('Pilih folder terlebih dahulu dari daftar.');
+            alert('Pilih folder terlebih dahulu dari dropdown.');
             return;
         }
         callServerAction('processSpecific', 'btnProcessSpecific', { folder: folderPath });
@@ -857,13 +853,13 @@
         '🔗 URL: ' + APPS_SCRIPT_URL + '\n' +
         '📂 Drive ID: 1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ\n\n' +
         '💡 Aksi yang tersedia:\n' +
-        '   process, trigger, deleteTriggers, test, restore, deleteInfo, processSpecific (folder)\n\n' +
-        '📁 Untuk folder spesifik, pilih dari dropdown lalu klik tombol hijau toska.';
+        '   process, trigger, deleteTriggers, test, restore, deleteInfo, listFolders, processSpecific\n\n' +
+        '📁 Pilih folder dari dropdown, lalu klik "Proses Folder Terpilih".';
 
-    // Muat daftar folder saat halaman dimuat
+    // Load folder list otomatis setelah 1 detik
     setTimeout(() => {
         loadFolderList();
-    }, 500);
+    }, 1000);
 </script>
 </body>
 </html>
