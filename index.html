@@ -4,20 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>TXT Combiner Pro | Gabung & Bersihkan Duplikat</title>
-
-    <!-- PWA Manifest CDN -->
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRYVCBDb21iaW5lciBQcm8iLAogICJzaG9ydF9uYW1lIjogIlRYVENvbWJpbmVyIiwKICAiZGVzY3JpcHRpb24iOiAiR2FidW5nIGRhbiBiZXJzaWhrYW4gZHVwbGlrYXQgZmlsZSBUWFQiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2YwZjRmOCIsCiAgInRoZW1lX2NvbG9yIjogIiM0ZjQ2ZTUiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi5qcy5kZWxpdnIubmV0L2dwL2ZvbnQtYXdlc29tZS82LjAuMC9zdmdzL3NvbGlkL2xheWVyLWdyb3VwLnN2ZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4uanMuZGVsaXZyLm5ldC9ncC9mb250LWF3ZXNvbWUvNi4wLjAvc3Zncy9zb2xpZC9sYXllci1ncm91cC5zdmciLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXQp9">
-
     <link rel="icon" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/svgs/solid/layer-group.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/svgs/solid/layer-group.svg">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:opsz,wght@14..32,300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <!-- JSZip untuk ekstrak ZIP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -35,6 +28,1264 @@
             position: fixed;
             top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.06) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 80%, rgba(52,211,153,0.05) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(255,255,255,0.78);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px;
+            box-shadow: 0 25px 80px rgba(79,70,229,0.08), 0 10px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.4);
+            transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .glass-card:hover {
+            box-shadow: 0 30px 90px rgba(79,70,229,0.12), 0 10px 30px rgba(0,0,0,0.06);
+        }
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #1e293b 0%, #4f46e5 50%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            line-height: 1.1;
+        }
+        .brand-title .pro-badge {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            -webkit-text-fill-color: white;
+            padding: 2px 12px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-left: 6px;
+            vertical-align: middle;
+            box-shadow: 0 2px 8px rgba(79,70,229,0.25);
+        }
+        .brand-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            letter-spacing: 0.03em;
+        }
+        .footer-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            letter-spacing: 0.04em;
+        }
+        .footer-text .highlight {
+            font-weight: 600;
+            color: #6366f1;
+            -webkit-text-fill-color: #6366f1;
+        }
+        .btn-elegant {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            padding: 10px 22px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-elegant i { font-size: 0.9rem; }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            box-shadow: 0 4px 16px rgba(79,70,229,0.2);
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .btn-primary:hover::after { opacity: 1; }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(79,70,229,0.3);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            color: white;
+            box-shadow: 0 4px 16px rgba(16,185,129,0.2);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(16,185,129,0.3);
+        }
+        .btn-blue {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.2);
+        }
+        .btn-blue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(59,130,246,0.3);
+        }
+        .btn-emerald {
+            background: linear-gradient(135deg, #6ee7b7, #34d399);
+            color: white;
+            box-shadow: 0 4px 16px rgba(52,211,153,0.2);
+        }
+        .btn-emerald:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(52,211,153,0.3);
+        }
+        .btn-purple {
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 16px rgba(124,58,237,0.2);
+        }
+        .btn-purple:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(124,58,237,0.3);
+        }
+        .btn-drive {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+            box-shadow: 0 4px 16px rgba(236,72,153,0.25);
+        }
+        .btn-drive:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(236,72,153,0.35);
+        }
+        .btn-drive:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        .install-btn {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.02em;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1e293b;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+            display: none;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(245,158,11,0.25);
+            animation: pulse-glow 2.5s ease-in-out infinite;
+        }
+        .install-btn.show { display: inline-flex; }
+        .install-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 28px rgba(245,158,11,0.35);
+        }
+        @keyframes pulse-glow {
+            0%,100% { box-shadow: 0 4px 20px rgba(245,158,11,0.25); }
+            50% { box-shadow: 0 4px 32px rgba(245,158,11,0.4); }
+        }
+        @media (display-mode: standalone) { .install-btn { display: none !important; } }
+        .custom-scroll::-webkit-scrollbar { width:4px; height:4px; }
+        .custom-scroll::-webkit-scrollbar-track { background:rgba(226,232,240,0.3); border-radius:10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background:linear-gradient(135deg,#a5b4fc,#818cf8); border-radius:10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background:linear-gradient(135deg,#818cf8,#6366f1); }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+        }
+        .drop-zone {
+            border: 2px dashed rgba(148,163,184,0.25);
+            border-radius: 20px;
+            padding: 20px 24px;
+            transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+            background: rgba(248,250,252,0.2);
+            cursor: pointer;
+            position: relative;
+        }
+        .drop-zone:hover {
+            border-color: rgba(99,102,241,0.25);
+            background: rgba(248,250,252,0.4);
+        }
+        .dropzone-active {
+            border-color: #6366f1 !important;
+            background: rgba(99,102,241,0.06) !important;
+            transform: scale(1.005);
+        }
+        .file-item {
+            font-family: 'Inter', sans-serif;
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(226,232,240,0.3);
+            border-radius: 10px;
+            padding: 8px 14px;
+            transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+        .file-item:hover {
+            background: rgba(255,255,255,0.8);
+            border-color: rgba(99,102,241,0.2);
+            transform: translateX(4px);
+        }
+        .file-item .file-name {
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #1e293b;
+        }
+        .file-item .file-size {
+            font-weight: 400;
+            font-size: 0.65rem;
+            color: #94a3b8;
+        }
+        .file-item .file-source {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: #818cf8;
+            background: rgba(99,102,241,0.1);
+            padding: 1px 8px;
+            border-radius: 4px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 14px 28px;
+            border-radius: 16px;
+            background: rgba(15,23,42,0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.01em;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1);
+            z-index: 9999;
+            max-width: 440px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .toast.show { opacity:1; transform:translateY(0) scale(1); }
+        .toast.success { background:linear-gradient(135deg,rgba(16,185,129,0.95),rgba(6,148,102,0.95)); }
+        .toast.error { background:linear-gradient(135deg,rgba(239,68,68,0.95),rgba(220,38,38,0.95)); }
+        .toast.info { background:linear-gradient(135deg,rgba(59,130,246,0.95),rgba(37,99,235,0.95)); }
+        .toast-icon { font-size:1.1rem; flex-shrink:0; }
+        .output-area {
+            background: linear-gradient(145deg, #0f172a, #1a2332);
+            border-radius: 16px;
+            padding: 16px 18px;
+            min-height: 120px;
+            max-height: 320px;
+            overflow: auto;
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .output-area pre { color: #e2e8f0; }
+        .stats-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .stat-card {
+            font-family: 'Inter', sans-serif;
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 10px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.25);
+            flex: 1;
+            min-width: 100px;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            background: rgba(255,255,255,0.75);
+            transform: translateY(-1px);
+        }
+        .stat-card .stat-icon { font-size:0.85rem; flex-shrink:0; }
+        .stat-card .stat-label { font-size:0.7rem; font-weight:500; color:#94a3b8; letter-spacing:0.02em; }
+        .stat-card .stat-value { font-size:0.85rem; font-weight:700; color:#1e293b; min-width:20px; text-align:center; }
+        .stat-card .stat-divider { color:#e2e8f0; font-weight:300; }
+        .stat-raw .stat-icon { color:#6366f1; }
+        .stat-raw .stat-value { color:#4f46e5; }
+        .stat-duplicate .stat-icon { color:#ef4444; }
+        .stat-duplicate .stat-value { color:#dc2626; }
+        .stat-unique .stat-icon { color:#10b981; }
+        .stat-unique .stat-value { color:#059669; }
+        .filename-display {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 8px;
+            padding: 3px 12px;
+            color: #4f46e5;
+            border: 1px solid rgba(99,102,241,0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .badge-count {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: #4f46e5;
+            padding: 2px 10px;
+            border-radius: 50px;
+            background: rgba(99,102,241,0.08);
+        }
+        .dot-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(99,102,241,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .drop-hint {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.65rem;
+            color: #94a3b8;
+            letter-spacing: 0.02em;
+        }
+        .section-label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: #475569;
+            letter-spacing: 0.02em;
+        }
+        .empty-state {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-align: center;
+            padding: 8px 0;
+        }
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .server-status {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: #94a3b8;
+            padding: 4px 12px;
+            border-radius: 50px;
+            background: rgba(99,102,241,0.06);
+            border: 1px solid rgba(99,102,241,0.08);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .server-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .server-status .dot.idle { background: #94a3b8; }
+        .server-status .dot.running { background: #f59e0b; animation: pulse-dot 0.8s ease-in-out infinite; }
+        .server-status .dot.done { background: #10b981; }
+        .server-status .dot.error { background: #ef4444; }
+        @keyframes pulse-dot {
+            0%,100% { opacity:1; transform:scale(1); }
+            50% { opacity:0.3; transform:scale(0.8); }
+        }
+        @media (max-width:768px) {
+            body { padding:12px; }
+            .glass-card { border-radius:24px; padding:16px !important; }
+            .brand-title { font-size:1.5rem; }
+            .brand-title .pro-badge { font-size:0.45rem; padding:1px 10px; }
+            .btn-elegant { padding:8px 16px; font-size:0.7rem; border-radius:12px; }
+            .toast { left:16px; right:16px; bottom:16px; font-size:0.8rem; padding:12px 18px; }
+            .file-item { padding:6px 12px; flex-wrap:wrap; }
+            .file-item .file-source { font-size:0.5rem; }
+            .output-area { max-height:200px; padding:12px 14px; }
+            .filename-display { font-size:0.6rem; padding:2px 10px; }
+            .drop-zone { padding:14px 16px; }
+            .stat-card { padding:6px 12px; min-width:80px; flex:1; }
+            .stat-card .stat-label { font-size:0.6rem; }
+            .stat-card .stat-value { font-size:0.75rem; }
+            .stat-card .stat-icon { font-size:0.7rem; }
+        }
+        @media (max-width:480px) {
+            .glass-card { border-radius:20px; padding:12px !important; }
+            .brand-title { font-size:1.2rem; }
+            .brand-title .pro-badge { font-size:0.4rem; padding:1px 8px; }
+            .btn-elegant { padding:6px 12px; font-size:0.65rem; border-radius:10px; }
+            .btn-elegant i { font-size:0.7rem; }
+            .toast { font-size:0.75rem; padding:10px 16px; }
+            .stat-card { padding:4px 10px; min-width:60px; gap:4px; }
+            .stat-card .stat-label { font-size:0.55rem; }
+            .stat-card .stat-value { font-size:0.7rem; }
+            .stat-card .stat-icon { font-size:0.6rem; }
+            .stat-card .stat-divider { display:none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="toast" class="toast">
+        <span class="toast-icon" id="toastIcon">📌</span>
+        <span id="toastMessage">Pesan</span>
+    </div>
+    <div class="container max-w-5xl mx-auto w-full">
+        <div class="glass-card p-6 md:p-8 dot-pattern">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-200/40 flex-shrink-0">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <h1 class="brand-title">
+                            TXT Combiner
+                            <span class="pro-badge">Pro</span>
+                        </h1>
+                        <p class="brand-subtitle">Gabung &amp; bersihkan duplikat</p>
+                    </div>
+                </div>
+                <button id="installBtn" class="install-btn">
+                    <i class="fas fa-download"></i> Install
+                </button>
+            </div>
+            <div class="flex flex-wrap gap-2 md:gap-3 mb-5">
+                <button id="addFilesBtn" class="btn-elegant btn-primary">
+                    <i class="fas fa-file-upload"></i> File
+                </button>
+                <button id="addFolderBtn" class="btn-elegant btn-emerald">
+                    <i class="fas fa-folder-open"></i> Folder
+                </button>
+                <button id="addZipBtn" class="btn-elegant btn-purple">
+                    <i class="fas fa-file-archive"></i> ZIP (banyak)
+                </button>
+                <button id="clearAllBtn" class="btn-elegant" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">
+                    <i class="fas fa-trash-alt"></i> Hapus Semua
+                </button>
+                <button id="processDriveBtn" class="btn-elegant btn-drive">
+                    <i class="fas fa-server"></i> Proses Manual
+                </button>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-gray-200/20">
+                <div class="server-status">
+                    <span class="dot idle" id="statusDot"></span>
+                    <span id="statusText">Siap</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-gray-400">
+                    <i class="fas fa-cloud"></i>
+                    <span>Drive: <span class="font-mono text-indigo-500 text-[10px]">1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ</span></span>
+                </div>
+            </div>
+            <div id="dropZone" class="drop-zone mb-5">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="section-label">
+                        <i class="fas fa-folder-tree mr-1.5 text-indigo-400"></i> File
+                    </span>
+                    <span id="fileCount" class="badge-count">0</span>
+                </div>
+                <div id="fileList" class="max-h-48 overflow-y-auto custom-scroll space-y-1">
+                    <div class="empty-state">📭 Belum ada file</div>
+                </div>
+                <div class="drop-hint text-center mt-2.5">
+                    <i class="fas fa-cloud-upload-alt mr-1"></i> Drag &amp; drop file / folder / ZIP (banyak) di sini
+                </div>
+            </div>
+            <div class="flex flex-wrap justify-between items-center mb-2.5 gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="section-label flex items-center gap-1.5">
+                        <i class="fas fa-code-branch text-indigo-500"></i> Hasil
+                    </span>
+                    <span id="outputFilename" class="filename-display">
+                        <i class="fas fa-file-alt text-[10px]"></i>
+                        <span id="filenameText">-</span>
+                    </span>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                    <button id="copyBtn" class="btn-elegant btn-blue" style="padding:8px 16px; font-size:0.7rem;">
+                        <i class="fas fa-copy"></i> Salin
+                    </button>
+                    <button id="downloadBtn" class="btn-elegant btn-success" style="padding:8px 16px; font-size:0.7rem;">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+            <div class="output-area custom-scroll">
+                <pre id="output"></pre>
+            </div>
+            <div class="stats-wrapper">
+                <div class="stat-card stat-raw">
+                    <i class="fas fa-database stat-icon"></i>
+                    <span class="stat-label">Baris Awal</span>
+                    <span class="stat-divider">|</span>
+                    <span class="stat-value" id="totalRawCount">0</span>
+                </div>
+                <div class="stat-card stat-duplicate">
+                    <i class="fas fa-trash-alt stat-icon"></i>
+                    <span class="stat-label">Duplikat</span>
+                    <span class="stat-divider">|</span>
+                    <span class="stat-value" id="duplicateCount">0</span>
+                </div>
+                <div class="stat-card stat-unique">
+                    <i class="fas fa-check-circle stat-icon"></i>
+                    <span class="stat-label">Baris Unik</span>
+                    <span class="stat-divider">|</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+            </div>
+            <div class="text-center mt-4 pt-2.5 border-t border-gray-200/30">
+                <span class="footer-text">
+                    <span class="highlight">I Nyoman Arta</span> &middot; &copy; 2025
+                </span>
+            </div>
+        </div>
+    </div>
+    <script>
+        // ============================================================
+        // KONFIGURASI APPS SCRIPT (URL BARU)
+        // ============================================================
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0YxakYQY5IHyS_G8o7HGFg4HJnNPPZpYMWGgy_djgaY0HtwJKzzeSC4H0ikwa6tCp/exec';
+
+        // ============================================================
+        // PWA INSTALL
+        // ============================================================
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.classList.add('show');
+        });
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const result = await deferredPrompt.userChoice;
+                if (result.outcome === 'accepted') {
+                    showToast('✅ Aplikasi berhasil diinstall!', 'success');
+                    installBtn.classList.remove('show');
+                } else {
+                    showToast('❌ Install dibatalkan', 'error');
+                }
+                deferredPrompt = null;
+            }
+        });
+        window.addEventListener('appinstalled', () => {
+            showToast('🎉 Aplikasi terinstal!', 'success');
+            installBtn.classList.remove('show');
+        });
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            installBtn.classList.remove('show');
+        }
+
+        // ============================================================
+        // SERVICE WORKER
+        // ============================================================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('✅ SW registered:', reg))
+                    .catch(err => console.log('❌ SW failed:', err));
+            });
+        }
+
+        // ============================================================
+        // CORE APP
+        // ============================================================
+        let selectedFiles = [];
+        let fileSources = {};
+        let currentCombinedLines = [];
+        let currentOutputName = '';
+
+        const dropZone = document.getElementById('dropZone');
+        const fileListDiv = document.getElementById('fileList');
+        const fileCountSpan = document.getElementById('fileCount');
+        const outputPre = document.getElementById('output');
+        const totalRawSpan = document.getElementById('totalRawCount');
+        const duplicateSpan = document.getElementById('duplicateCount');
+        const uniqueSpan = document.getElementById('uniqueCount');
+        const addFilesBtn = document.getElementById('addFilesBtn');
+        const addFolderBtn = document.getElementById('addFolderBtn');
+        const addZipBtn = document.getElementById('addZipBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const filenameText = document.getElementById('filenameText');
+        const processDriveBtn = document.getElementById('processDriveBtn');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMessage = document.getElementById('toastMessage');
+            const icons = { success: '✅', error: '❌', info: '📌' };
+            toastIcon.textContent = icons[type] || '📌';
+            toastMessage.textContent = message;
+            toast.className = `toast show ${type}`;
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.className = 'toast', 3500);
+        }
+
+        function setStatus(state, text) {
+            const dot = document.getElementById('statusDot');
+            dot.className = 'dot ' + state;
+            statusText.textContent = text;
+        }
+
+        function copyResult() {
+            const text = outputPre.innerText;
+            if (!text || text.trim() === '') { showToast('Tidak ada teks', 'error'); return; }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text)
+                    .then(() => showToast(`📋 ${currentCombinedLines.length} baris disalin`, 'success'))
+                    .catch(() => fallbackCopy(text));
+            } else { fallbackCopy(text); }
+        }
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(`📋 ${currentCombinedLines.length} baris disalin`, 'success');
+            } catch (e) { showToast('Gagal menyalin', 'error'); }
+            document.body.removeChild(textarea);
+        }
+
+        function updateOutputFilename() {
+            if (selectedFiles.length === 0) {
+                currentOutputName = '';
+                filenameText.textContent = '-';
+                return;
+            }
+            const firstName = selectedFiles[0].name;
+            const nameWithoutExt = firstName.replace(/\.txt$/i, '');
+            const outputName = nameWithoutExt + '_gabungan.txt';
+            currentOutputName = outputName;
+            filenameText.textContent = outputName;
+        }
+
+        function renderFileList() {
+            if (!selectedFiles.length) {
+                fileListDiv.innerHTML = '<div class="empty-state">📭 Belum ada file</div>';
+                fileCountSpan.textContent = '0';
+                updateOutputFilename();
+                return;
+            }
+            const fragment = document.createDocumentFragment();
+            selectedFiles.forEach((file, idx) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                const source = fileSources[file.name] || 'TXT';
+                const sourceLabel = source !== 'TXT' ? `<span class="file-source">📦 ${source}</span>` : '';
+                fileItem.innerHTML = `
+                    <div class="flex items-center gap-2 truncate flex-1 min-w-0">
+                        <i class="fas fa-file-alt text-indigo-400 text-[11px] flex-shrink-0"></i>
+                        <span class="file-name truncate max-w-[140px] md:max-w-xs" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</span>
+                        <span class="file-size flex-shrink-0">(${(file.size/1024).toFixed(1)} KB)</span>
+                        ${sourceLabel}
+                    </div>
+                    <button class="remove-file-btn text-gray-400 hover:text-red-500 text-xs px-1.5 transition flex-shrink-0" data-index="${idx}">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                `;
+                fragment.appendChild(fileItem);
+            });
+            fileListDiv.innerHTML = '';
+            fileListDiv.appendChild(fragment);
+            fileCountSpan.textContent = selectedFiles.length;
+            updateOutputFilename();
+
+            document.querySelectorAll('.remove-file-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const idx = parseInt(this.getAttribute('data-index'));
+                    if (!isNaN(idx)) {
+                        const fileName = selectedFiles[idx].name;
+                        selectedFiles.splice(idx, 1);
+                        delete fileSources[fileName];
+                        renderFileList();
+                        processAllFiles();
+                        showToast('🗑️ File dihapus', 'info');
+                    }
+                });
+            });
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, m => {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function extractDateFromLine(line) {
+            const patterns = [
+                /(\d{4})-(\d{1,2})-(\d{1,2})/,
+                /(\d{1,2})\/(\d{1,2})\/(\d{4})/,
+                /(\d{1,2})-(\d{1,2})-(\d{4})/,
+                /(\d{1,2})\.(\d{1,2})\.(\d{4})/,
+                /(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i,
+                /([A-Za-z]+),\s+(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i
+            ];
+            for (let pat of patterns) {
+                const match = line.match(pat);
+                if (match) {
+                    if (pat.toString().includes('Januari')) {
+                        const bulanMap = { januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5, juli: 6, agustus: 7,
+                            september: 8, oktober: 9, november: 10, desember: 11 };
+                        let bulanStr = match[2].toLowerCase();
+                        let bulan = bulanMap[bulanStr] !== undefined ? bulanMap[bulanStr] : 0;
+                        let tahun = parseInt(match[3]);
+                        let hari = parseInt(match[1]);
+                        return new Date(tahun, bulan, hari);
+                    } else if (pat.toString().includes('Kamis') || pat.toString().includes('Senin')) {
+                        const bulanMap = { januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5, juli: 6, agustus: 7,
+                            september: 8, oktober: 9, november: 10, desember: 11 };
+                        let hari = parseInt(match[2]);
+                        let bulanStr = match[3].toLowerCase();
+                        let bulan = bulanMap[bulanStr] !== undefined ? bulanMap[bulanStr] : 0;
+                        let tahun = parseInt(match[4]);
+                        return new Date(tahun, bulan, hari);
+                    } else {
+                        let y, m, d;
+                        if (match[1].length === 4) {
+                            y = parseInt(match[1]);
+                            m = parseInt(match[2]) - 1;
+                            d = parseInt(match[3]);
+                        } else {
+                            if (match[3] && match[3].length === 4) {
+                                d = parseInt(match[1]);
+                                m = parseInt(match[2]) - 1;
+                                y = parseInt(match[3]);
+                            } else if (match[2] && match[2].length === 4) {
+                                d = parseInt(match[3]);
+                                m = parseInt(match[1]) - 1;
+                                y = parseInt(match[2]);
+                            } else {
+                                d = parseInt(match[1]);
+                                m = parseInt(match[2]) - 1;
+                                y = parseInt(match[3]);
+                            }
+                        }
+                        if (!isNaN(y) && !isNaN(m) && !isNaN(d)) return new Date(y, m, d);
+                    }
+                }
+            }
+            return null;
+        }
+
+        async function processAllFiles() {
+            if (selectedFiles.length === 0) {
+                outputPre.textContent = '';
+                totalRawSpan.textContent = '0';
+                duplicateSpan.textContent = '0';
+                uniqueSpan.textContent = '0';
+                currentCombinedLines = [];
+                updateOutputFilename();
+                return;
+            }
+            let allLinesRaw = [];
+            for (const file of selectedFiles) {
+                if (!file.name.endsWith('.txt') && file.type !== 'text/plain') continue;
+                try {
+                    const text = await file.text();
+                    const lines = text.split(/\r?\n/);
+                    for (let line of lines) {
+                        let trimmed = line.trim();
+                        if (trimmed !== "") allLinesRaw.push(trimmed);
+                    }
+                } catch (e) { console.warn(e); }
+            }
+            const totalRaw = allLinesRaw.length;
+            const uniqueLines = [];
+            const seenSet = new Set();
+            for (const ln of allLinesRaw) {
+                const key = ln.toLowerCase();
+                if (!seenSet.has(key)) {
+                    seenSet.add(key);
+                    uniqueLines.push(ln);
+                }
+            }
+            const duplicateRemoved = totalRaw - uniqueLines.length;
+            const linesWithDate = uniqueLines.map(line => ({ line, date: extractDateFromLine(line) }));
+            linesWithDate.sort((a, b) => {
+                if (a.date && b.date) return a.date - b.date;
+                if (a.date) return -1;
+                if (b.date) return 1;
+                return 0;
+            });
+            const sortedLines = linesWithDate.map(item => item.line);
+            currentCombinedLines = sortedLines;
+            totalRawSpan.textContent = totalRaw;
+            duplicateSpan.textContent = duplicateRemoved;
+            uniqueSpan.textContent = sortedLines.length;
+            const displayText = sortedLines.length > 0 ? sortedLines.join('\n') : '';
+            outputPre.textContent = displayText;
+            updateOutputFilename();
+        }
+
+        async function refreshCombine() {
+            await processAllFiles();
+        }
+
+        // ============================================================
+        // PROSES MANUAL - PANGGIL APPS SCRIPT
+        // ============================================================
+        async function triggerDriveProcess() {
+            if (processDriveBtn.disabled) return;
+            processDriveBtn.disabled = true;
+            processDriveBtn.innerHTML = '<span class="spinner"></span> Memproses...';
+            setStatus('running', 'Sedang memproses Drive...');
+            showToast('⏳ Memproses folder Drive...', 'info');
+            try {
+                const url = APPS_SCRIPT_URL + '?action=process&t=' + Date.now();
+                const response = await fetch(url, {
+                    method: 'GET',
+                    mode: 'cors',
+                    cache: 'no-cache'
+                });
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status + ' - ' + response.statusText);
+                }
+                const data = await response.json();
+                if (data.success) {
+                    setStatus('done', '✅ Selesai');
+                    showToast(data.message || '✅ Proses selesai!', 'success');
+                    let outputMsg = '📁 HASIL PROSES DRIVE\n';
+                    outputMsg += '═'.repeat(40) + '\n';
+                    outputMsg += '✅ ' + (data.message || 'Semua folder selesai diproses.') + '\n';
+                    if (data.log) {
+                        outputMsg += '\n📋 LOG:\n' + data.log;
+                    }
+                    outputPre.textContent = outputMsg;
+                } else {
+                    setStatus('error', '❌ Gagal');
+                    showToast(data.message || '❌ Gagal memproses Drive', 'error');
+                    outputPre.textContent = '❌ ERROR: ' + (data.message || 'Gagal memproses folder Drive.');
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
+                setStatus('error', '❌ Error koneksi');
+                showToast('❌ Gagal terhubung ke server: ' + err.message, 'error');
+                outputPre.textContent = '❌ Gagal terhubung ke Apps Script.\n\n' +
+                    'Pastikan:\n' +
+                    '1. URL Apps Script benar: ' + APPS_SCRIPT_URL + '\n' +
+                    '2. Apps Script sudah di-deploy dengan doGet()\n' +
+                    '3. Koneksi internet aktif\n' +
+                    '4. CORS tidak menghalangi (akses publik)\n\n' +
+                    'Detail error: ' + err.message;
+            } finally {
+                processDriveBtn.disabled = false;
+                processDriveBtn.innerHTML = '<i class="fas fa-server"></i> Proses Manual';
+                setTimeout(() => {
+                    if (statusDot.className.includes('done') || statusDot.className.includes('error')) {
+                        setStatus('idle', 'Siap');
+                    }
+                }, 5000);
+            }
+        }
+
+        // ======================== EKSTRAK ZIP ========================
+        async function extractZipFiles(zipFile, zipName) {
+            try {
+                const arrayBuffer = await zipFile.arrayBuffer();
+                const zip = await JSZip.loadAsync(arrayBuffer);
+                const txtFiles = [];
+                const filePromises = [];
+                zip.forEach((relativePath, zipEntry) => {
+                    if (!zipEntry.dir && /\.txt$/i.test(relativePath)) {
+                        filePromises.push(
+                            zipEntry.async('blob').then(blob => {
+                                const fileName = relativePath.split('/').pop() || relativePath;
+                                const file = new File([blob], fileName, { type: 'text/plain' });
+                                file._sourceZip = zipName;
+                                txtFiles.push(file);
+                            })
+                        );
+                    }
+                });
+                await Promise.all(filePromises);
+                if (txtFiles.length === 0) {
+                    showToast(`⚠️ ZIP "${zipName}" tidak mengandung file .txt`, 'error');
+                    return [];
+                }
+                return txtFiles;
+            } catch (err) {
+                console.error('Gagal ekstrak ZIP:', err);
+                showToast(`❌ Gagal membaca ZIP "${zipName}": ${err.message}`, 'error');
+                return [];
+            }
+        }
+
+        async function handleZipUpload(files) {
+            if (!files || files.length === 0) return;
+            const zipFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.zip'));
+            if (zipFiles.length === 0) {
+                showToast('Tidak ada file .zip yang dipilih', 'error');
+                return;
+            }
+            showToast(`⏳ Mengekstrak ${zipFiles.length} ZIP...`, 'info');
+            let allTxtFiles = [];
+            for (const zf of zipFiles) {
+                const extracted = await extractZipFiles(zf, zf.name);
+                if (extracted.length > 0) {
+                    extracted.forEach(f => {
+                        fileSources[f.name] = zf.name;
+                    });
+                    allTxtFiles.push(...extracted);
+                }
+            }
+            if (allTxtFiles.length === 0) {
+                showToast('Tidak ada file .txt ditemukan di semua ZIP', 'error');
+                return;
+            }
+            const existingNames = new Set(selectedFiles.map(f => f.name));
+            let addedCount = 0;
+            for (const f of allTxtFiles) {
+                if (!existingNames.has(f.name)) {
+                    selectedFiles.push(f);
+                    existingNames.add(f.name);
+                    addedCount++;
+                } else {
+                    let idx = 1;
+                    let newName = f.name;
+                    while (existingNames.has(newName)) {
+                        const base = f.name.replace(/\.txt$/i, '');
+                        newName = `${base}_${idx}.txt`;
+                        idx++;
+                    }
+                    const renamedFile = new File([f], newName, { type: 'text/plain' });
+                    renamedFile._sourceZip = f._sourceZip;
+                    fileSources[newName] = f._sourceZip;
+                    selectedFiles.push(renamedFile);
+                    existingNames.add(newName);
+                    addedCount++;
+                }
+            }
+            renderFileList();
+            await refreshCombine();
+            showToast(`✅ ${addedCount} file .txt diekstrak dari ${zipFiles.length} ZIP`, 'success');
+        }
+
+        // ======================== INPUT HANDLER ========================
+        function addFilesFromInput(files) {
+            if (!files) return;
+            const txtFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.txt'));
+            if (txtFiles.length === 0) {
+                showToast('Hanya file .txt yang didukung', 'error');
+                return;
+            }
+            const existingNames = new Set(selectedFiles.map(f => f.name));
+            let added = 0;
+            for (const f of txtFiles) {
+                if (!existingNames.has(f.name)) {
+                    selectedFiles.push(f);
+                    fileSources[f.name] = 'TXT';
+                    existingNames.add(f.name);
+                    added++;
+                } else {
+                    let idx = 1;
+                    let newName = f.name;
+                    while (existingNames.has(newName)) {
+                        const base = f.name.replace(/\.txt$/i, '');
+                        newName = `${base}_${idx}.txt`;
+                        idx++;
+                    }
+                    const renamedFile = new File([f], newName, { type: 'text/plain' });
+                    fileSources[newName] = 'TXT';
+                    selectedFiles.push(renamedFile);
+                    existingNames.add(newName);
+                    added++;
+                }
+            }
+            renderFileList();
+            refreshCombine();
+            showToast(`✅ ${added} file diupload`, 'success');
+        }
+
+        function addFolderFromInput(files) {
+            const txtFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.txt'));
+            if (txtFiles.length === 0) {
+                showToast('Folder tidak mengandung file .txt', 'error');
+                return;
+            }
+            const existingNames = new Set(selectedFiles.map(f => f.name));
+            let added = 0;
+            for (const f of txtFiles) {
+                if (!existingNames.has(f.name)) {
+                    selectedFiles.push(f);
+                    fileSources[f.name] = 'Folder';
+                    existingNames.add(f.name);
+                    added++;
+                } else {
+                    let idx = 1;
+                    let newName = f.name;
+                    while (existingNames.has(newName)) {
+                        const base = f.name.replace(/\.txt$/i, '');
+                        newName = `${base}_${idx}.txt`;
+                        idx++;
+                    }
+                    const renamedFile = new File([f], newName, { type: 'text/plain' });
+                    fileSources[newName] = 'Folder';
+                    selectedFiles.push(renamedFile);
+                    existingNames.add(newName);
+                    added++;
+                }
+            }
+            renderFileList();
+            refreshCombine();
+            showToast(`✅ ${added} file dari folder`, 'success');
+        }
+
+        // ======================== EVENT LISTENERS ========================
+        addFilesBtn.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = '.txt';
+            input.onchange = (e) => addFilesFromInput(e.target.files);
+            input.click();
+        });
+
+        addFolderBtn.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.webkitdirectory = true;
+            input.directory = true;
+            input.onchange = (e) => addFolderFromInput(e.target.files);
+            input.click();
+        });
+
+        addZipBtn.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = '.zip';
+            input.onchange = (e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    handleZipUpload(e.target.files);
+                }
+            };
+            input.click();
+        });
+
+        clearAllBtn.addEventListener('click', () => {
+            if (selectedFiles.length === 0) {
+                showToast('Tidak ada file untuk dihapus', 'info');
+                return;
+            }
+            selectedFiles = [];
+            fileSources = {};
+            renderFileList();
+            processAllFiles();
+            showToast('🗑️ Semua file dihapus', 'info');
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            if (currentCombinedLines.length === 0) {
+                showToast('Tidak ada data', 'error');
+                return;
+            }
+            const blob = new Blob([currentCombinedLines.join('\n')], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            const downloadName = currentOutputName || 'Laporan_Gabungan.txt';
+            link.download = downloadName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+            showToast(`⬇️ ${downloadName}`, 'success');
+        });
+
+        copyBtn.addEventListener('click', copyResult);
+        processDriveBtn.addEventListener('click', triggerDriveProcess);
+
+        // ======================== DRAG & DROP ========================
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dropzone-active');
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dropzone-active');
+        });
+
+        dropZone.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dropzone-active');
+            const items = e.dataTransfer.items;
+            let filesToAdd = [];
+            let zipFiles = [];
+            const processEntry = async (entry) => {
+                if (entry.isFile) {
+                    const file = await new Promise((resolve) => entry.file(resolve));
+                    if (file.name.toLowerCase().endsWith('.txt')) {
+                        filesToAdd.push(file);
+                    } else if (file.name.toLowerCase().endsWith('.zip')) {
+                        zipFiles.push(file);
+                    }
+                } else if (entry.isDirectory) {
+                    const reader = entry.createReader();
+                    const entries = await new Promise((resolve) => reader.readEntries(resolve));
+                    for (const ent of entries) {
+                        await processEntry(ent);
+                    }
+                }
+            };
+            for (let i = 0; i < items.length; i++) {
+                const entry = items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : null;
+                if (entry) {
+                    await processEntry(entry);
+                }
+            }
+            if (zipFiles.length > 0) {
+                let allExtracted = [];
+                for (const zf of zipFiles) {
+                    const extracted = await extractZipFiles(zf, zf.name);
+                    if (extracted.length > 0) {
+                        extracted.forEach(f => {
+                            fileSources[f.name] = zf.name;
+                        });
+                        allExtracted.push(...extracted);
+                    }
+                }
+                if (allExtracted.length > 0) {
+                    filesToAdd.push(...allExtracted);
+                    showToast(`✅ ${allExtracted.length} file .txt diekstrak dari ZIP`, 'success');
+                }
+            }
+            if (filesToAdd.length) {
+                const existingNames = new Set(selectedFiles.map(f => f.name));
+                let added = 0;
+                for (const f of filesToAdd) {
+                    if (!existingNames.has(f.name)) {
+                        selectedFiles.push(f);
+                        if (!fileSources[f.name]) fileSources[f.name] = 'Drag';
+                        existingNames.add(f.name);
+                        added++;
+                    } else {
+                        let idx = 1;
+                        let newName = f.name;
+                        while (existingNames.has(newName)) {
+                            const base = f.name.replace(/\.txt$/i, '');
+                            newName = `${base}_${idx}.txt`;
+                            idx++;
+                        }
+                        const renamedFile = new File([f], newName, { type: 'text/plain' });
+                        renamedFile._sourceZip = f._sourceZip || 'Drag';
+                        fileSources[newName] = f._sourceZip || 'Drag';
+                        selectedFiles.push(renamedFile);
+                        existingNames.add(newName);
+                        added++;
+                    }
+                }
+                renderFileList();
+                refreshCombine();
+                if (zipFiles.length === 0) {
+                    showToast(`✅ ${added} file diupload`, 'success');
+                }
+            } else {
+                showToast('Tidak ada file .txt atau ZIP yang valid', 'error');
+            }
+        });
+
+        // ======================== INISIALISASI ========================
+        renderFileList();
+    </script>
+    <script>
+        (function registerSW() {
+            const swCode = `
+        const CACHE_NAME = 'txt-combiner-v3';
+        const ASSETS = [
+            '/',
+            '/index.html',
+            'https://cdn.tailwindcss.com',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
+            'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:opsz,wght@14..32,300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap'
+        ];
+        self.addEventListener('install', (e) => {
+            e.waitUntil(
+                caches.open(CACHE_NAME)
+                    .then(cache => cache.addAll(ASSETS).catch(err => console.log('⚠️ Cache error:', err)))
+                    .then(() => self.skipWaiting())
+            );
+        });
+        self.addEventListener('activate', (e) => {
+            e.waitUntil(
+                caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))
+                .then(() => self.clients.claim())
+            );
+        });
+        self.addEventListener('fetch', (e) => {
+            e.respondWith(
+                caches.match(e.request)
+                    .then(res => res || fetch(e.request))
+                    .catch(() => new Response('Offline', { status: 503 }))
+            );
+        });
+        `;
+            try {
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register(swUrl)
+                        .then(reg => console.log('✅ SW registered'))
+                        .catch(() => console.log('❌ SW failed'));
+                }
+            } catch (e) { console.log('⚠️ SW skipped'); }
+        })();
+    </script>
+</body>
+</html>            background: radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.06) 0%, transparent 60%),
                         radial-gradient(ellipse at 70% 80%, rgba(52,211,153,0.05) 0%, transparent 60%);
             z-index: 0;
             pointer-events: none;
