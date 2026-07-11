@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TXT Combiner Pro - 2 Tab</title>
+    <title>TXT Combiner Pro - 2 Tab + Download</title>
     <style>
         /* ===== GAYA KLASIK ===== */
         * {
@@ -71,7 +71,6 @@
             background: #888;
             transition: background 0.2s;
         }
-        /* Status states */
         .dot.idle {
             background: #10b981;
             animation: pulse-slow 1.8s ease-in-out infinite;
@@ -280,10 +279,10 @@
 <body>
 <div class="container">
     <h1>
-        <span>📄 TXT Combiner Pro <small>2 Tab</small></span>
+        <span>📄 TXT Combiner Pro <small>2 Tab + Download</small></span>
         <span style="font-size:14px; font-weight:400;">I Nyoman Arta</span>
     </h1>
-    <div class="subtitle">Gabung &amp; bersihkan duplikat — manual atau via server</div>
+    <div class="subtitle">Gabung &amp; bersihkan duplikat — langsung download hasilnya</div>
 
     <!-- ===== STATUS INDICATOR ===== -->
     <div class="status-bar">
@@ -304,10 +303,10 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- TAB 1: MANUAL GABUNG -->
+    <!-- TAB 1: MANUAL GABUNG + DOWNLOAD -->
     <!-- ============================================================ -->
     <div class="tab-pane active" id="tab-manual">
-        <p style="margin-bottom:8px;"><strong>Drag &amp; drop file .txt atau folder berisi .txt</strong> (atau klik area di bawah).</p>
+        <p style="margin-bottom:8px;"><strong>Drag &amp; drop file .txt atau folder</strong> (atau klik area di bawah).</p>
         <div class="drop-zone" id="dropZone">
             <div style="pointer-events:none;">
                 <span style="font-size:20px;">📂</span><br>
@@ -319,7 +318,7 @@
             <button class="btn btn-primary" id="addFilesBtn">➕ Tambah File</button>
             <button class="btn btn-success" id="addFolderBtn">📁 Tambah Folder</button>
             <button class="btn btn-danger" id="clearFilesBtn">✖ Hapus Semua</button>
-            <button class="btn btn-warning" id="processManualBtn">🔄 Gabungkan Sekarang</button>
+            <button class="btn btn-warning" id="processManualBtn">⬇️ Gabung & Download</button>
         </div>
 
         <div class="file-list" id="fileList">📭 Belum ada file.</div>
@@ -330,7 +329,7 @@
             <span id="statUnique">Baris unik: 0</span>
         </div>
 
-        <div class="output-area" id="manualOutput">📌 Hasil gabungan akan muncul di sini.\nKlik "Gabungkan Sekarang" setelah menambahkan file.</div>
+        <div class="output-area" id="manualOutput">📌 Hasil gabungan akan muncul di sini.\nKlik "Gabung & Download" setelah menambahkan file.</div>
     </div>
 
     <!-- ============================================================ -->
@@ -423,7 +422,6 @@
                 const idx = parseInt(this.dataset.idx);
                 selectedFiles.splice(idx, 1);
                 renderFileList();
-                // tidak otomatis proses ulang
             });
         });
     }
@@ -459,7 +457,6 @@
             const entry = items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : null;
             if (entry) processEntry(entry);
         }
-        // Tunggu sebentar lalu tambahkan
         setTimeout(() => {
             if (files.length) {
                 selectedFiles = selectedFiles.concat(files);
@@ -512,7 +509,7 @@
         setStatus('idle', 'Idle');
     });
 
-    // Ekstrak tanggal (sama seperti sebelumnya)
+    // Ekstrak tanggal
     function extractDateFromLine(line) {
         const patterns = [
             /(\d{4})-(\d{1,2})-(\d{1,2})/,
@@ -569,7 +566,7 @@
         return null;
     }
 
-    // Proses manual gabung
+    // Proses manual + DOWNLOAD OTOMATIS
     document.getElementById('processManualBtn').addEventListener('click', async function() {
         if (selectedFiles.length === 0) {
             manualOutput.textContent = '⚠️ Tidak ada file. Tambahkan file terlebih dahulu.';
@@ -618,11 +615,27 @@
         });
         const sorted = withDate.map(item => item.line);
 
-        // Tampilkan hasil
+        // Tampilkan di output
         manualOutput.textContent = sorted.join('\n');
         statRaw.textContent = 'Baris awal: ' + totalRaw;
         statDup.textContent = 'Duplikat: ' + dupCount;
         statUnique.textContent = 'Baris unik: ' + sorted.length;
+
+        // ===== DOWNLOAD OTOMATIS =====
+        if (sorted.length > 0) {
+            const blob = new Blob([sorted.join('\n')], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            // Nama file berdasarkan file pertama atau default
+            const baseName = selectedFiles[0]?.name.replace(/\.[^.]+$/, '') || 'gabungan';
+            a.download = baseName + '_gabungan.txt';
+            a.href = url;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 2000);
+            manualOutput.textContent += '\n\n⬇️ File berhasil didownload!';
+        }
 
         setStatus('done', 'Selesai');
         setTimeout(() => setStatus('idle', 'Idle'), 3000);
@@ -707,9 +720,7 @@
     // ============================================================
     // INISIALISASI
     // ============================================================
-    // Set status awal
     setStatus('idle', 'Idle');
-    // Tampilkan info di server tab
     serverOutput.textContent = '📌 Klik tombol di atas untuk menjalankan aksi server.\n🔗 URL: ' + APPS_SCRIPT_URL + '\n📂 Drive ID: 1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ\n\n💡 Aksi yang tersedia:\n   process, trigger, deleteTriggers, test, restore, deleteInfo';
 </script>
 </body>
