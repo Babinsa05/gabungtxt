@@ -2,29 +2,36 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TXT Combiner Pro - 2 Tab</title>
     <style>
-        /* GAYA KLASIK */
+        /* ===== GAYA KLASIK ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: 'Courier New', Courier, monospace;
-            background: #f0f0f0;
+            background: #e8e8e8;
             padding: 20px;
-            margin: 0;
         }
         .container {
             max-width: 960px;
-            margin: auto;
-            background: #ffffff;
+            margin: 0 auto;
+            background: #fff;
             border: 3px solid #222;
-            padding: 24px 28px;
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.15);
+            padding: 20px 24px;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
         }
         h1 {
-            font-size: 26px;
+            font-size: 24px;
             border-bottom: 3px solid #222;
-            padding-bottom: 10px;
-            margin-top: 0;
-            font-weight: 700;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
         h1 small {
             font-size: 14px;
@@ -33,107 +40,119 @@
             padding: 2px 14px;
             border-radius: 4px;
             font-weight: 400;
-            margin-left: 8px;
         }
         .subtitle {
             font-size: 14px;
             color: #555;
-            margin-top: -6px;
-            margin-bottom: 22px;
-            border-left: 4px solid #888;
-            padding-left: 12px;
+            margin: 4px 0 16px 0;
         }
-        .tabs {
-            display: flex;
-            gap: 4px;
-            margin: 16px 0 12px 0;
-            border-bottom: 2px solid #aaa;
-            padding-bottom: 8px;
-        }
-        .tab-btn {
-            background: #e0e0e0;
-            border: 2px solid #888;
-            border-bottom: none;
-            padding: 8px 24px;
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: inset 0 -4px 0 #888;
-            transition: 0.1s;
-            border-radius: 8px 8px 0 0;
-        }
-        .tab-btn.active {
-            background: #fff;
-            border-color: #222;
-            box-shadow: none;
-            border-bottom: 2px solid #fff;
-            margin-bottom: -2px;
-        }
-        .tab-btn:hover {
-            background: #ccc;
-        }
-        .tab-content {
-            display: none;
-            padding-top: 16px;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        /* GAYA SERVER TAB */
+        /* ===== INDICATOR ===== */
         .status-bar {
             background: #e8e8e8;
             border: 2px solid #333;
             padding: 8px 14px;
-            font-size: 14px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
             margin-bottom: 16px;
+            font-size: 14px;
         }
-        .status-dot {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dot {
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
+            border: 2px solid #333;
             background: #888;
-            margin-right: 6px;
-            vertical-align: middle;
-            border: 1px solid #555;
+            transition: background 0.2s;
         }
-        .status-dot.idle { background: #888; }
-        .status-dot.running { background: #f59e0b; animation: blink 0.8s step-end infinite; }
-        .status-dot.done { background: #10b981; }
-        .status-dot.error { background: #ef4444; }
-        @keyframes blink {
+        /* Status states */
+        .dot.idle {
+            background: #10b981;
+            animation: pulse-slow 1.8s ease-in-out infinite;
+        }
+        .dot.running {
+            background: #f59e0b;
+            animation: pulse-fast 0.5s step-end infinite;
+        }
+        .dot.done {
+            background: #10b981;
+            animation: none;
+        }
+        .dot.error {
+            background: #ef4444;
+            animation: none;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        @keyframes pulse-fast {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.2; }
         }
         .drive-id {
             background: #222;
             color: #0f0;
-            font-family: monospace;
             padding: 2px 10px;
             font-size: 13px;
             border-radius: 2px;
         }
-        .btn-group {
+
+        /* ===== TAB SYSTEM ===== */
+        .tabs {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 14px 0 18px 0;
+            gap: 4px;
+            border-bottom: 2px solid #222;
+            margin-bottom: 20px;
         }
+        .tab-btn {
+            background: #ddd;
+            border: 2px solid #222;
+            border-bottom: none;
+            padding: 8px 20px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 2px -2px 0 rgba(0,0,0,0.05);
+            transition: 0.1s;
+            border-radius: 6px 6px 0 0;
+        }
+        .tab-btn.active {
+            background: #fff;
+            box-shadow: 0 -2px 0 #fff, 0 2px 0 #fff;
+            position: relative;
+            z-index: 1;
+        }
+        .tab-btn:hover {
+            background: #eee;
+        }
+        .tab-pane {
+            display: none;
+            padding: 10px 0;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* ===== KOMPONEN ===== */
         .btn {
             background: #e0e0e0;
             border: 2px solid #333;
-            padding: 8px 18px;
+            padding: 6px 16px;
             font-family: inherit;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             box-shadow: 3px 3px 0 #888;
             transition: 0.05s linear;
+            margin: 2px 4px 2px 0;
         }
         .btn:hover {
             background: #ccc;
@@ -151,113 +170,51 @@
             transform: none !important;
             box-shadow: 2px 2px 0 #888 !important;
         }
-        .btn-process { background: #4f46e5; color: #fff; border-color: #2a1f9c; }
-        .btn-process:hover { background: #3b35b0; }
-        .btn-trigger { background: #10b981; color: #fff; border-color: #0a7a55; }
-        .btn-trigger:hover { background: #0d9668; }
-        .btn-delete { background: #ef4444; color: #fff; border-color: #a82424; }
-        .btn-delete:hover { background: #d12e2e; }
-        .btn-test { background: #f59e0b; color: #fff; border-color: #b3740a; }
-        .btn-test:hover { background: #d48a08; }
-        .btn-restore { background: #8b5cf6; color: #fff; border-color: #5b21b6; }
-        .btn-restore:hover { background: #7c3aed; }
+        .btn-primary { background: #4f46e5; color: #fff; border-color: #2a1f9c; }
+        .btn-primary:hover { background: #3b35b0; }
+        .btn-success { background: #10b981; color: #fff; border-color: #0a7a55; }
+        .btn-success:hover { background: #0d9668; }
+        .btn-danger { background: #ef4444; color: #fff; border-color: #a82424; }
+        .btn-danger:hover { background: #d12e2e; }
+        .btn-warning { background: #f59e0b; color: #fff; border-color: #b3740a; }
+        .btn-warning:hover { background: #d48a08; }
+        .btn-purple { background: #8b5cf6; color: #fff; border-color: #5b21b6; }
+        .btn-purple:hover { background: #7c3aed; }
         .btn-info { background: #3b82f6; color: #fff; border-color: #1d4ed8; }
         .btn-info:hover { background: #2563eb; }
-        .btn-clear { background: #6b7280; color: #fff; border-color: #4b5563; }
-        .btn-clear:hover { background: #4b5563; }
+        .btn-gray { background: #6b7280; color: #fff; border-color: #4b5563; }
+        .btn-gray:hover { background: #4b5563; }
 
-        .output-area {
-            background: #1a1a1a;
-            color: #33ff33;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            padding: 14px 16px;
-            border: 3px solid #333;
-            min-height: 220px;
-            max-height: 420px;
-            overflow: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            line-height: 1.6;
-        }
-        .footer {
-            margin-top: 18px;
-            font-size: 13px;
-            color: #666;
-            border-top: 2px solid #ccc;
-            padding-top: 12px;
-            text-align: center;
-            font-weight: 500;
-        }
-        .footer .highlight {
-            color: #4f46e5;
-            font-weight: 700;
-        }
-        .badge {
-            background: #222;
-            color: #fff;
-            padding: 0 10px;
-            border-radius: 3px;
-            font-size: 11px;
-        }
-        .legend {
-            font-size: 12px;
-            color: #555;
-            margin-top: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            border-top: 1px solid #ddd;
-            padding-top: 8px;
-        }
-        .legend span {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .legend .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            border: 1px solid #888;
-            display: inline-block;
-        }
-        .legend .dot.green { background: #10b981; }
-        .legend .dot.yellow { background: #f59e0b; }
-        .legend .dot.red { background: #ef4444; }
-        .legend .dot.gray { background: #888; }
-
-        /* GAYA MANUAL TAB */
         .drop-zone {
-            border: 3px dashed #666;
+            border: 3px dashed #888;
             padding: 24px;
             text-align: center;
+            margin: 12px 0 16px 0;
             background: #fafafa;
             cursor: pointer;
-            margin-bottom: 16px;
             transition: 0.2s;
         }
         .drop-zone:hover {
             background: #f0f0f0;
-            border-color: #222;
+            border-color: #333;
         }
         .drop-zone.dragover {
-            background: #e0e0ff;
+            background: #e0e7ff;
             border-color: #4f46e5;
         }
         .file-list {
-            background: #f8f8f8;
-            border: 1px solid #aaa;
-            padding: 8px 12px;
-            max-height: 150px;
-            overflow: auto;
+            max-height: 160px;
+            overflow-y: auto;
+            background: #f5f5f5;
+            border: 1px solid #ccc;
+            padding: 6px 10px;
+            margin: 8px 0 12px 0;
             font-size: 13px;
-            margin-bottom: 12px;
         }
         .file-item {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            padding: 3px 0;
             border-bottom: 1px dotted #ccc;
         }
         .file-item:last-child {
@@ -267,263 +224,295 @@
             color: #ef4444;
             cursor: pointer;
             font-weight: bold;
+            margin-left: 12px;
         }
-        .manual-stats {
+        .file-item .remove:hover {
+            color: #b91c1c;
+        }
+        .output-area {
+            background: #1a1a1a;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            padding: 12px 16px;
+            border: 3px solid #333;
+            min-height: 160px;
+            max-height: 300px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.5;
+            margin-top: 12px;
+        }
+        .stats {
             display: flex;
-            gap: 20px;
-            font-size: 14px;
-            margin: 8px 0 12px 0;
             flex-wrap: wrap;
+            gap: 12px;
+            margin: 12px 0 6px 0;
+            font-size: 14px;
         }
-        .manual-stats span {
+        .stats span {
             background: #eee;
             padding: 4px 12px;
             border: 1px solid #aaa;
         }
-        .manual-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
+        .footer {
+            margin-top: 20px;
+            border-top: 2px solid #ccc;
+            padding-top: 12px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
         }
-        .btn-manual {
-            background: #e0e0e0;
-            border: 2px solid #333;
-            padding: 6px 16px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 3px 3px 0 #888;
-            transition: 0.05s linear;
+        .footer .highlight {
+            color: #4f46e5;
+            font-weight: 700;
         }
-        .btn-manual:hover {
-            background: #ccc;
-            box-shadow: 2px 2px 0 #888;
-            transform: translate(1px, 1px);
-        }
-        .btn-manual:active {
-            background: #bbb;
-            box-shadow: 0 0 0 #888;
-            transform: translate(3px, 3px);
-        }
-        .btn-manual-primary { background: #4f46e5; color: #fff; border-color: #2a1f9c; }
-        .btn-manual-success { background: #10b981; color: #fff; border-color: #0a7a55; }
-        .btn-manual-danger { background: #ef4444; color: #fff; border-color: #a82424; }
-        .btn-manual-warning { background: #f59e0b; color: #fff; border-color: #b3740a; }
 
         @media (max-width: 600px) {
-            .container { padding: 14px 16px; }
-            .btn, .btn-manual { padding: 6px 12px; font-size: 12px; }
-            h1 { font-size: 20px; }
-            .status-bar { font-size: 12px; flex-direction: column; gap: 4px; }
-            .output-area { font-size: 11px; min-height: 150px; max-height: 300px; }
-            .tab-btn { padding: 6px 16px; font-size: 14px; }
+            .container { padding: 14px; }
+            .tab-btn { font-size: 13px; padding: 6px 12px; }
+            .btn { font-size: 12px; padding: 4px 10px; }
+            .output-area { font-size: 11px; min-height: 120px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>
-        📄 TXT Combiner Pro
-        <small>2 Tab</small>
+        <span>📄 TXT Combiner Pro <small>2 Tab</small></span>
+        <span style="font-size:14px; font-weight:400;">I Nyoman Arta</span>
     </h1>
-    <div class="subtitle">🚀 Tab 1: Aksi Server (Apps Script) | Tab 2: Manual Gabung TXT Lokal</div>
+    <div class="subtitle">Gabung &amp; bersihkan duplikat — manual atau via server</div>
 
-    <!-- TAB NAVIGASI -->
+    <!-- ===== STATUS INDICATOR ===== -->
+    <div class="status-bar">
+        <div class="status-indicator">
+            <span class="dot idle" id="indicatorDot"></span>
+            <span id="statusText">Idle</span>
+        </div>
+        <span>
+            <span style="background:#222;color:#fff;padding:0 8px;border-radius:2px;">📁 Drive</span>
+            <span class="drive-id">1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ</span>
+        </span>
+    </div>
+
+    <!-- ===== TAB NAVIGATION ===== -->
     <div class="tabs">
-        <button class="tab-btn active" data-tab="tab1">🖥️ Aksi Server</button>
-        <button class="tab-btn" data-tab="tab2">📂 Manual Gabung TXT</button>
+        <button class="tab-btn active" data-tab="manual">📂 Gabung Manual</button>
+        <button class="tab-btn" data-tab="server">⚙️ Aksi Server</button>
     </div>
 
-    <!-- ================================================ -->
-    <!-- TAB 1: AKSI SERVER -->
-    <!-- ================================================ -->
-    <div id="tab1" class="tab-content active">
-        <div class="status-bar">
-            <span>
-                <span class="status-dot idle" id="statusDot"></span>
-                <span id="statusText">Siap</span>
-            </span>
-            <span>
-                <span class="badge">📁 Drive ID</span>
-                <span class="drive-id">1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ</span>
-            </span>
-        </div>
-
-        <div class="btn-group">
-            <button class="btn btn-process" id="btnProcess">▶ Proses Manual</button>
-            <button class="btn btn-trigger" id="btnTrigger">⏰ Buat Trigger</button>
-            <button class="btn btn-delete" id="btnDeleteTriggers">🗑️ Hapus Trigger</button>
-            <button class="btn btn-test" id="btnTest">🧪 Test</button>
-            <button class="btn btn-restore" id="btnRestore">↩️ Restore ZIP</button>
-            <button class="btn btn-info" id="btnDeleteInfo">🧹 Hapus INFO_EXTRACT</button>
-            <button class="btn btn-clear" id="btnClear">✖ Bersihkan Output</button>
-        </div>
-
-        <div class="legend">
-            <span><span class="dot gray"></span> Idle</span>
-            <span><span class="dot yellow"></span> Running</span>
-            <span><span class="dot green"></span> Selesai</span>
-            <span><span class="dot red"></span> Error</span>
-            <span style="color:#888;">|</span>
-            <span style="color:#888;">Semua aksi memanggil Apps Script via HTTP</span>
-        </div>
-
-        <div class="output-area" id="output">📌 Klik tombol di atas untuk menjalankan aksi.\n🔗 Menghubungi Apps Script...</div>
-    </div>
-
-    <!-- ================================================ -->
-    <!-- TAB 2: MANUAL GABUNG TXT -->
-    <!-- ================================================ -->
-    <div id="tab2" class="tab-content">
+    <!-- ============================================================ -->
+    <!-- TAB 1: MANUAL GABUNG -->
+    <!-- ============================================================ -->
+    <div class="tab-pane active" id="tab-manual">
+        <p style="margin-bottom:8px;"><strong>Drag &amp; drop file .txt atau folder berisi .txt</strong> (atau klik area di bawah).</p>
         <div class="drop-zone" id="dropZone">
-            <strong>📂 Drag &amp; drop file .txt atau ZIP di sini</strong><br>
-            <span style="font-size:12px;color:#666;">atau klik untuk memilih file (bisa banyak)</span>
+            <div style="pointer-events:none;">
+                <span style="font-size:20px;">📂</span><br>
+                <span style="font-size:14px;">Tarik file .txt atau folder ke sini</span>
+            </div>
         </div>
 
-        <div class="file-list" id="fileList">
-            <div style="color:#888;">Belum ada file</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
+            <button class="btn btn-primary" id="addFilesBtn">➕ Tambah File</button>
+            <button class="btn btn-success" id="addFolderBtn">📁 Tambah Folder</button>
+            <button class="btn btn-danger" id="clearFilesBtn">✖ Hapus Semua</button>
+            <button class="btn btn-warning" id="processManualBtn">🔄 Gabungkan Sekarang</button>
         </div>
 
-        <div class="manual-stats">
-            <span>📄 Baris Awal: <strong id="manualRaw">0</strong></span>
-            <span>🗑️ Duplikat: <strong id="manualDup">0</strong></span>
-            <span>✅ Baris Unik: <strong id="manualUniq">0</strong></span>
+        <div class="file-list" id="fileList">📭 Belum ada file.</div>
+
+        <div class="stats">
+            <span id="statRaw">Baris awal: 0</span>
+            <span id="statDup">Duplikat: 0</span>
+            <span id="statUnique">Baris unik: 0</span>
         </div>
 
-        <div class="manual-actions">
-            <button class="btn-manual btn-manual-primary" id="manualGabung">🔗 Gabungkan</button>
-            <button class="btn-manual btn-manual-success" id="manualDownload">⬇️ Download Hasil</button>
-            <button class="btn-manual btn-manual-danger" id="manualClear">🗑️ Hapus Semua File</button>
-            <button class="btn-manual btn-manual-warning" id="manualCopy">📋 Salin Hasil</button>
-        </div>
-
-        <div class="output-area" id="manualOutput" style="min-height:150px;">📭 Hasil gabungan akan muncul di sini.</div>
+        <div class="output-area" id="manualOutput">📌 Hasil gabungan akan muncul di sini.\nKlik "Gabungkan Sekarang" setelah menambahkan file.</div>
     </div>
 
-    <!-- FOOTER -->
+    <!-- ============================================================ -->
+    <!-- TAB 2: AKSI SERVER -->
+    <!-- ============================================================ -->
+    <div class="tab-pane" id="tab-server">
+        <p style="margin-bottom:10px;"><strong>Semua aksi</strong> memanggil Google Apps Script via HTTP.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+            <button class="btn btn-primary" id="btnProcess">▶ Proses Manual</button>
+            <button class="btn btn-success" id="btnTrigger">⏰ Buat Trigger</button>
+            <button class="btn btn-danger" id="btnDeleteTriggers">🗑️ Hapus Trigger</button>
+            <button class="btn btn-warning" id="btnTest">🧪 Test</button>
+            <button class="btn btn-purple" id="btnRestore">↩️ Restore ZIP</button>
+            <button class="btn btn-info" id="btnDeleteInfo">🧹 Hapus INFO_EXTRACT</button>
+            <button class="btn btn-gray" id="btnClearServer">✖ Bersihkan Output</button>
+        </div>
+        <div class="output-area" id="serverOutput">📌 Klik tombol di atas untuk menjalankan aksi server.\n🔗 URL: https://script.google.com/macros/s/.../exec</div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
     <div class="footer">
         <span class="highlight">I Nyoman Arta</span> &middot; &copy; 2025 &middot; 
-        <span style="font-weight:400;">2 Tab: Server + Manual Gabung</span>
+        <span style="font-weight:400;">Indikator berkedip sesuai status</span>
     </div>
 </div>
 
 <script>
-    // ================================================================
+    // ============================================================
+    // KONFIGURASI
+    // ============================================================
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0YxakYQY5IHyS_G8o7HGFg4HJnNPPZpYMWGgy_djgaY0HtwJKzzeSC4H0ikwa6tCp/exec';
+
+    // ============================================================
+    // INDIKATOR
+    // ============================================================
+    const dot = document.getElementById('indicatorDot');
+    const statusText = document.getElementById('statusText');
+
+    function setStatus(state, text) {
+        dot.className = 'dot ' + state;
+        statusText.textContent = text;
+    }
+
+    // ============================================================
     // TAB SWITCHING
-    // ================================================================
-    document.querySelectorAll('.tab-btn').forEach(btn => {
+    // ============================================================
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const panes = {
+        manual: document.getElementById('tab-manual'),
+        server: document.getElementById('tab-server')
+    };
+
+    tabBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            tabBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            const tabId = this.getAttribute('data-tab');
-            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            const target = this.dataset.tab;
+            Object.keys(panes).forEach(key => {
+                panes[key].classList.toggle('active', key === target);
+            });
         });
     });
 
-    // ================================================================
-    // KONFIGURASI APPS SCRIPT (TAB 1)
-    // ================================================================
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0YxakYQY5IHyS_G8o7HGFg4HJnNPPZpYMWGgy_djgaY0HtwJKzzeSC4H0ikwa6tCp/exec';
-
-    const output = document.getElementById('output');
-    const statusDot = document.getElementById('statusDot');
-    const statusText = document.getElementById('statusText');
-    let isRunning = false;
-
-    function setStatus(state, text) {
-        statusDot.className = 'status-dot ' + state;
-        statusText.textContent = text;
-    }
-    function appendOutput(text, type) {
-        const prefix = type === 'error' ? '❌ ' : type === 'info' ? 'ℹ️ ' : '';
-        output.textContent += prefix + text + '\n';
-        output.scrollTop = output.scrollHeight;
-    }
-    function clearOutput() {
-        output.textContent = '';
-    }
-
-    async function callAppsScript(action, btnId) {
-        if (isRunning) {
-            alert('⏳ Masih ada proses berjalan. Tunggu sebentar.');
-            return;
-        }
-        const btn = document.getElementById(btnId);
-        if (btn) { btn.disabled = true; isRunning = true; }
-        setStatus('running', 'Memproses...');
-        appendOutput('⏳ Menjalankan: ' + action, 'info');
-        try {
-            const url = APPS_SCRIPT_URL + '?action=' + encodeURIComponent(action) + '&t=' + Date.now();
-            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            if (!response.ok) throw new Error('HTTP ' + response.status + ' - ' + response.statusText);
-            const data = await response.json();
-            if (data.success) {
-                setStatus('done', '✅ Selesai');
-                appendOutput('✅ ' + data.message, 'info');
-                if (data.log) appendOutput('📋 LOG:\n' + data.log, 'info');
-            } else {
-                setStatus('error', '❌ Gagal');
-                appendOutput('❌ ERROR: ' + data.message, 'error');
-                alert('❌ ' + data.message);
-            }
-        } catch (err) {
-            setStatus('error', '❌ Error');
-            appendOutput('❌ FETCH ERROR: ' + err.message, 'error');
-            alert('❌ Gagal terhubung ke server:\n' + err.message);
-        } finally {
-            if (btn) { btn.disabled = false; isRunning = false; }
-            setTimeout(() => {
-                const c = statusDot.className;
-                if (c.includes('done') || c.includes('error')) setStatus('idle', 'Siap');
-            }, 4000);
-        }
-    }
-
-    document.getElementById('btnProcess').addEventListener('click', function() { callAppsScript('process', 'btnProcess'); });
-    document.getElementById('btnTrigger').addEventListener('click', function() { callAppsScript('trigger', 'btnTrigger'); });
-    document.getElementById('btnDeleteTriggers').addEventListener('click', function() { callAppsScript('deleteTriggers', 'btnDeleteTriggers'); });
-    document.getElementById('btnTest').addEventListener('click', function() { callAppsScript('test', 'btnTest'); });
-    document.getElementById('btnRestore').addEventListener('click', function() { callAppsScript('restore', 'btnRestore'); });
-    document.getElementById('btnDeleteInfo').addEventListener('click', function() { callAppsScript('deleteInfo', 'btnDeleteInfo'); });
-    document.getElementById('btnClear').addEventListener('click', function() {
-        clearOutput();
-        appendOutput('🧹 Output dibersihkan.', 'info');
-        setStatus('idle', 'Siap');
-    });
-
-    // Inisialisasi Tab 1
-    appendOutput('📌 TXT Combiner Pro — semua aksi siap digunakan.');
-    appendOutput('🔗 URL: ' + APPS_SCRIPT_URL);
-    appendOutput('📂 Folder ID: 1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ');
-    appendOutput('');
-    appendOutput('💡 Klik tombol untuk menjalankan fungsi di Apps Script:');
-    appendOutput('   • Proses Manual → processZipFiles()');
-    appendOutput('   • Buat Trigger → createDailyTrigger()');
-    appendOutput('   • Hapus Trigger → deleteAllTriggers()');
-    appendOutput('   • Test → testProcess()');
-    appendOutput('   • Restore ZIP → restoreZipNames()');
-    appendOutput('   • Hapus INFO_EXTRACT → deleteInfoExtractFiles()');
-    appendOutput('');
-    setStatus('idle', 'Siap');
-
-    // ================================================================
-    // TAB 2: MANUAL GABUNG TXT (Fungsi Lokal)
-    // ================================================================
-    let manualFiles = [];
-    let manualLines = [];
-    let manualCombined = [];
-
+    // ============================================================
+    // MANUAL GABUNG (TAB 1)
+    // ============================================================
+    let selectedFiles = [];
     const dropZone = document.getElementById('dropZone');
     const fileListDiv = document.getElementById('fileList');
     const manualOutput = document.getElementById('manualOutput');
-    const manualRaw = document.getElementById('manualRaw');
-    const manualDup = document.getElementById('manualDup');
-    const manualUniq = document.getElementById('manualUniq');
+    const statRaw = document.getElementById('statRaw');
+    const statDup = document.getElementById('statDup');
+    const statUnique = document.getElementById('statUnique');
 
-    // Ekstrak teks dari file
+    function renderFileList() {
+        if (selectedFiles.length === 0) {
+            fileListDiv.innerHTML = '📭 Belum ada file.';
+            return;
+        }
+        let html = '';
+        selectedFiles.forEach((f, i) => {
+            html += `<div class="file-item">
+                <span>📄 ${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
+                <span class="remove" data-idx="${i}">✖</span>
+            </div>`;
+        });
+        fileListDiv.innerHTML = html;
+        document.querySelectorAll('.file-item .remove').forEach(el => {
+            el.addEventListener('click', function() {
+                const idx = parseInt(this.dataset.idx);
+                selectedFiles.splice(idx, 1);
+                renderFileList();
+                // tidak otomatis proses ulang
+            });
+        });
+    }
+
+    // Drag & drop
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        const items = e.dataTransfer.items;
+        const files = [];
+        const processEntry = async (entry) => {
+            if (entry.isFile) {
+                const file = await new Promise(resolve => entry.file(resolve));
+                if (file.name.toLowerCase().endsWith('.txt')) {
+                    files.push(file);
+                }
+            } else if (entry.isDirectory) {
+                const reader = entry.createReader();
+                const entries = await new Promise(resolve => reader.readEntries(resolve));
+                for (let ent of entries) {
+                    await processEntry(ent);
+                }
+            }
+        };
+        for (let i = 0; i < items.length; i++) {
+            const entry = items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : null;
+            if (entry) processEntry(entry);
+        }
+        // Tunggu sebentar lalu tambahkan
+        setTimeout(() => {
+            if (files.length) {
+                selectedFiles = selectedFiles.concat(files);
+                renderFileList();
+                setStatus('idle', 'Idle');
+            }
+        }, 200);
+    });
+
+    // Tombol tambah file
+    document.getElementById('addFilesBtn').addEventListener('click', function() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.multiple = true;
+        input.accept = '.txt';
+        input.onchange = function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length) {
+                selectedFiles = selectedFiles.concat(files);
+                renderFileList();
+                setStatus('idle', 'Idle');
+            }
+        };
+        input.click();
+    });
+
+    document.getElementById('addFolderBtn').addEventListener('click', function() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.webkitdirectory = true;
+        input.directory = true;
+        input.onchange = function(e) {
+            const files = Array.from(e.target.files).filter(f => f.name.toLowerCase().endsWith('.txt'));
+            if (files.length) {
+                selectedFiles = selectedFiles.concat(files);
+                renderFileList();
+                setStatus('idle', 'Idle');
+            }
+        };
+        input.click();
+    });
+
+    document.getElementById('clearFilesBtn').addEventListener('click', function() {
+        selectedFiles = [];
+        renderFileList();
+        manualOutput.textContent = '🧹 Semua file dihapus.';
+        statRaw.textContent = 'Baris awal: 0';
+        statDup.textContent = 'Duplikat: 0';
+        statUnique.textContent = 'Baris unik: 0';
+        setStatus('idle', 'Idle');
+    });
+
+    // Ekstrak tanggal (sama seperti sebelumnya)
     function extractDateFromLine(line) {
         const patterns = [
             /(\d{4})-(\d{1,2})-(\d{1,2})/,
@@ -537,24 +526,40 @@
             const match = line.match(pat);
             if (match) {
                 if (pat.toString().includes('Januari')) {
-                    const bulanMap = { januari:0, februari:1, maret:2, april:3, mei:4, juni:5, juli:6, agustus:7, september:8, oktober:9, november:10, desember:11 };
-                    let hari = parseInt(match[1]), bulan = bulanMap[match[2].toLowerCase()], tahun = parseInt(match[3]);
+                    const bulanMap = { januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5, juli: 6, agustus: 7,
+                        september: 8, oktober: 9, november: 10, desember: 11 };
+                    let bulanStr = match[2].toLowerCase();
+                    let bulan = bulanMap[bulanStr] !== undefined ? bulanMap[bulanStr] : 0;
+                    let tahun = parseInt(match[3]);
+                    let hari = parseInt(match[1]);
                     return new Date(tahun, bulan, hari);
                 } else if (pat.toString().includes('Kamis') || pat.toString().includes('Senin')) {
-                    const bulanMap = { januari:0, februari:1, maret:2, april:3, mei:4, juni:5, juli:6, agustus:7, september:8, oktober:9, november:10, desember:11 };
-                    let hari = parseInt(match[2]), bulan = bulanMap[match[3].toLowerCase()], tahun = parseInt(match[4]);
+                    const bulanMap = { januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5, juli: 6, agustus: 7,
+                        september: 8, oktober: 9, november: 10, desember: 11 };
+                    let hari = parseInt(match[2]);
+                    let bulanStr = match[3].toLowerCase();
+                    let bulan = bulanMap[bulanStr] !== undefined ? bulanMap[bulanStr] : 0;
+                    let tahun = parseInt(match[4]);
                     return new Date(tahun, bulan, hari);
                 } else {
-                    let y,m,d;
+                    let y, m, d;
                     if (match[1].length === 4) {
-                        y = parseInt(match[1]); m = parseInt(match[2])-1; d = parseInt(match[3]);
+                        y = parseInt(match[1]);
+                        m = parseInt(match[2]) - 1;
+                        d = parseInt(match[3]);
                     } else {
                         if (match[3] && match[3].length === 4) {
-                            d = parseInt(match[1]); m = parseInt(match[2])-1; y = parseInt(match[3]);
+                            d = parseInt(match[1]);
+                            m = parseInt(match[2]) - 1;
+                            y = parseInt(match[3]);
                         } else if (match[2] && match[2].length === 4) {
-                            d = parseInt(match[3]); m = parseInt(match[1])-1; y = parseInt(match[2]);
+                            d = parseInt(match[3]);
+                            m = parseInt(match[1]) - 1;
+                            y = parseInt(match[2]);
                         } else {
-                            d = parseInt(match[1]); m = parseInt(match[2])-1; y = parseInt(match[3]);
+                            d = parseInt(match[1]);
+                            m = parseInt(match[2]) - 1;
+                            y = parseInt(match[3]);
                         }
                     }
                     if (!isNaN(y) && !isNaN(m) && !isNaN(d)) return new Date(y, m, d);
@@ -564,199 +569,148 @@
         return null;
     }
 
-    function processManualFiles() {
+    // Proses manual gabung
+    document.getElementById('processManualBtn').addEventListener('click', async function() {
+        if (selectedFiles.length === 0) {
+            manualOutput.textContent = '⚠️ Tidak ada file. Tambahkan file terlebih dahulu.';
+            setStatus('error', 'Error');
+            setTimeout(() => setStatus('idle', 'Idle'), 3000);
+            return;
+        }
+
+        setStatus('running', 'Memproses...');
         let allLines = [];
-        for (const file of manualFiles) {
+        for (const file of selectedFiles) {
             try {
-                const text = file.content;
+                const text = await file.text();
                 const lines = text.split(/\r?\n/);
                 for (let line of lines) {
                     const trimmed = line.trim();
-                    if (trimmed !== '') allLines.push(trimmed);
+                    if (trimmed) allLines.push(trimmed);
                 }
-            } catch(e) {}
+            } catch (e) {
+                manualOutput.textContent = '❌ Gagal baca file: ' + file.name;
+                setStatus('error', 'Error');
+                setTimeout(() => setStatus('idle', 'Idle'), 3000);
+                return;
+            }
         }
-        manualLines = allLines;
+
         const totalRaw = allLines.length;
         const unique = [];
         const seen = new Set();
-        for (const ln of allLines) {
-            const key = ln.toLowerCase();
-            if (!seen.has(key)) { seen.add(key); unique.push(ln); }
+        for (const line of allLines) {
+            const key = line.toLowerCase();
+            if (!seen.has(key)) {
+                seen.add(key);
+                unique.push(line);
+            }
         }
         const dupCount = totalRaw - unique.length;
+
+        // Urutkan berdasarkan tanggal
         const withDate = unique.map(line => ({ line, date: extractDateFromLine(line) }));
-        withDate.sort((a,b) => {
+        withDate.sort((a, b) => {
             if (a.date && b.date) return a.date - b.date;
             if (a.date) return -1;
             if (b.date) return 1;
             return 0;
         });
-        manualCombined = withDate.map(item => item.line);
-
-        // Update stats
-        manualRaw.textContent = totalRaw;
-        manualDup.textContent = dupCount;
-        manualUniq.textContent = manualCombined.length;
+        const sorted = withDate.map(item => item.line);
 
         // Tampilkan hasil
-        if (manualCombined.length > 0) {
-            manualOutput.textContent = manualCombined.join('\n');
-        } else {
-            manualOutput.textContent = '📭 Tidak ada baris yang valid.';
-        }
+        manualOutput.textContent = sorted.join('\n');
+        statRaw.textContent = 'Baris awal: ' + totalRaw;
+        statDup.textContent = 'Duplikat: ' + dupCount;
+        statUnique.textContent = 'Baris unik: ' + sorted.length;
+
+        setStatus('done', 'Selesai');
+        setTimeout(() => setStatus('idle', 'Idle'), 3000);
+    });
+
+    // ============================================================
+    // AKSI SERVER (TAB 2)
+    // ============================================================
+    const serverOutput = document.getElementById('serverOutput');
+    let isRunning = false;
+
+    function appendServer(text, type) {
+        const prefix = type === 'error' ? '❌ ' : type === 'info' ? 'ℹ️ ' : '';
+        serverOutput.textContent += prefix + text + '\n';
+        serverOutput.scrollTop = serverOutput.scrollHeight;
     }
 
-    function renderFileList() {
-        if (manualFiles.length === 0) {
-            fileListDiv.innerHTML = '<div style="color:#888;">Belum ada file</div>';
+    async function callServerAction(action, btnId) {
+        if (isRunning) {
+            alert('⏳ Masih ada proses berjalan.');
             return;
         }
-        let html = '';
-        manualFiles.forEach((f, idx) => {
-            html += `<div class="file-item">
-                <span>📄 ${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
-                <span class="remove" data-idx="${idx}">✖</span>
-            </div>`;
-        });
-        fileListDiv.innerHTML = html;
-        document.querySelectorAll('.file-item .remove').forEach(el => {
-            el.addEventListener('click', function() {
-                const idx = parseInt(this.getAttribute('data-idx'));
-                manualFiles.splice(idx, 1);
-                renderFileList();
-                processManualFiles();
-            });
-        });
-    }
+        const btn = document.getElementById(btnId);
+        if (btn) { btn.disabled = true; isRunning = true; }
 
-    // Baca file
-    async function readFile(file) {
-        const text = await file.text();
-        return { name: file.name, size: file.size, content: text };
-    }
+        setStatus('running', 'Memproses...');
+        appendServer('⏳ Menjalankan: ' + action, 'info');
 
-    async function handleFiles(files) {
-        const newFiles = [];
-        for (const f of files) {
-            if (f.name.toLowerCase().endsWith('.txt')) {
-                const content = await f.text();
-                newFiles.push({ name: f.name, size: f.size, content: content });
-            } else if (f.name.toLowerCase().endsWith('.zip')) {
-                // Ekstrak ZIP (gunakan JSZip)
-                try {
-                    const zip = await JSZip.loadAsync(f);
-                    const txtPromises = [];
-                    zip.forEach((relativePath, zipEntry) => {
-                        if (!zipEntry.dir && /\.txt$/i.test(relativePath)) {
-                            txtPromises.push(zipEntry.async('string').then(text => {
-                                const fileName = relativePath.split('/').pop() || relativePath;
-                                return { name: fileName, size: text.length, content: text };
-                            }));
-                        }
-                    });
-                    const extracted = await Promise.all(txtPromises);
-                    newFiles.push(...extracted);
-                } catch (e) {
-                    alert('Gagal ekstrak ZIP: ' + f.name);
-                }
+        try {
+            const url = APPS_SCRIPT_URL + '?action=' + encodeURIComponent(action) + '&t=' + Date.now();
+            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            const data = await response.json();
+
+            if (data.success) {
+                setStatus('done', 'Selesai');
+                appendServer('✅ ' + data.message, 'info');
+                if (data.log) appendServer('📋 LOG:\n' + data.log, 'info');
+            } else {
+                setStatus('error', 'Error');
+                appendServer('❌ ERROR: ' + data.message, 'error');
+                alert('❌ ' + data.message);
             }
+        } catch (err) {
+            setStatus('error', 'Error');
+            appendServer('❌ FETCH ERROR: ' + err.message, 'error');
+            alert('❌ Gagal terhubung: ' + err.message);
+        } finally {
+            if (btn) { btn.disabled = false; isRunning = false; }
+            setTimeout(() => {
+                if (dot.className.includes('done') || dot.className.includes('error')) {
+                    setStatus('idle', 'Idle');
+                }
+            }, 4000);
         }
-        manualFiles.push(...newFiles);
-        renderFileList();
-        processManualFiles();
     }
 
-    // Event drop zone
-    dropZone.addEventListener('click', () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.multiple = true;
-        input.accept = '.txt,.zip';
-        input.onchange = (e) => {
-            if (e.target.files.length > 0) handleFiles(e.target.files);
-        };
-        input.click();
+    // Tombol server
+    document.getElementById('btnProcess').addEventListener('click', function() {
+        callServerAction('process', 'btnProcess');
+    });
+    document.getElementById('btnTrigger').addEventListener('click', function() {
+        callServerAction('trigger', 'btnTrigger');
+    });
+    document.getElementById('btnDeleteTriggers').addEventListener('click', function() {
+        callServerAction('deleteTriggers', 'btnDeleteTriggers');
+    });
+    document.getElementById('btnTest').addEventListener('click', function() {
+        callServerAction('test', 'btnTest');
+    });
+    document.getElementById('btnRestore').addEventListener('click', function() {
+        callServerAction('restore', 'btnRestore');
+    });
+    document.getElementById('btnDeleteInfo').addEventListener('click', function() {
+        callServerAction('deleteInfo', 'btnDeleteInfo');
+    });
+    document.getElementById('btnClearServer').addEventListener('click', function() {
+        serverOutput.textContent = '🧹 Output server dibersihkan.';
+        setStatus('idle', 'Idle');
     });
 
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dragover');
-    });
-    dropZone.addEventListener('dragleave', () => {
-        dropZone.classList.remove('dragover');
-    });
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-        if (e.dataTransfer.files.length > 0) {
-            handleFiles(e.dataTransfer.files);
-        }
-    });
-
-    // Tombol manual
-    document.getElementById('manualGabung').addEventListener('click', function() {
-        if (manualFiles.length === 0) {
-            alert('Tidak ada file untuk digabung.');
-            return;
-        }
-        processManualFiles();
-        alert('✅ Gabungan selesai! ' + manualCombined.length + ' baris unik.');
-    });
-
-    document.getElementById('manualDownload').addEventListener('click', function() {
-        if (manualCombined.length === 0) {
-            alert('Tidak ada hasil untuk di-download.');
-            return;
-        }
-        const blob = new Blob([manualCombined.join('\n')], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'gabungan_manual.txt';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-    });
-
-    document.getElementById('manualClear').addEventListener('click', function() {
-        if (manualFiles.length === 0) return;
-        manualFiles = [];
-        manualLines = [];
-        manualCombined = [];
-        renderFileList();
-        manualOutput.textContent = '📭 File dihapus.';
-        manualRaw.textContent = '0';
-        manualDup.textContent = '0';
-        manualUniq.textContent = '0';
-    });
-
-    document.getElementById('manualCopy').addEventListener('click', function() {
-        const text = manualOutput.textContent;
-        if (!text || text.trim() === '' || text.includes('📭')) {
-            alert('Tidak ada teks untuk disalin.');
-            return;
-        }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(() => alert('✅ Teks disalin!'));
-        } else {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            alert('✅ Teks disalin!');
-        }
-    });
-
-    // Inisialisasi Tab 2
-    manualOutput.textContent = '📭 Belum ada file. Drag & drop atau klik untuk menambahkan file .txt / .zip.';
-
-    // Service Worker (opsional)
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-    }
+    // ============================================================
+    // INISIALISASI
+    // ============================================================
+    // Set status awal
+    setStatus('idle', 'Idle');
+    // Tampilkan info di server tab
+    serverOutput.textContent = '📌 Klik tombol di atas untuk menjalankan aksi server.\n🔗 URL: ' + APPS_SCRIPT_URL + '\n📂 Drive ID: 1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ\n\n💡 Aksi yang tersedia:\n   process, trigger, deleteTriggers, test, restore, deleteInfo';
 </script>
 </body>
 </html>
