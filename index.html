@@ -221,7 +221,8 @@
             font-size: 14px;
             border: 2px solid #888;
             background: #fff;
-            min-width: 120px;
+            min-width: 180px;
+            max-width: 300px;
         }
         .filter-group select:focus {
             border-color: #4f46e5;
@@ -231,6 +232,12 @@
             font-size: 13px;
             color: #666;
             font-style: italic;
+        }
+        .filter-group .refresh-link {
+            color: #4f46e5;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: underline;
         }
         .footer {
             margin-top: 20px;
@@ -258,7 +265,7 @@
             .tab-btn { font-size: 13px; padding: 6px 12px; }
             .btn { font-size: 12px; padding: 4px 10px; }
             .output-area { font-size: 11px; min-height: 120px; }
-            .filter-group select { min-width: 80px; }
+            .filter-group select { min-width: 120px; max-width: 100%; }
         }
     </style>
 </head>
@@ -270,7 +277,7 @@
             <button class="install-btn" id="installBtn">Install App</button>
         </span>
     </h1>
-    <div class="subtitle">Gabung file TXT per Desa — pilih Tahun, Bulan, Desa</div>
+    <div class="subtitle">Gabung file TXT per Desa — pilih folder dari Drive</div>
 
     <!-- STATUS INDICATOR -->
     <div class="status-bar">
@@ -315,50 +322,19 @@
         <div class="output-area" id="manualOutput">Hasil gabungan akan muncul di sini.</div>
     </div>
 
-    <!-- TAB 2: DESA -->
+    <!-- TAB 2: DESA (DROPDOWN FOLDER) -->
     <div class="tab-pane" id="tab-desa">
-        <p style="margin-bottom:10px;">Pilih Tahun, Bulan, dan Desa — lalu proses semua ZIP di folder tersebut.</p>
+        <p style="margin-bottom:10px;">Pilih folder dari daftar yang terdeteksi di Drive, lalu proses semua ZIP di dalamnya.</p>
         <div class="filter-group">
-            <label for="tahunSelect">Tahun</label>
-            <select id="tahunSelect">
-                <option value="">-- Pilih --</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
+            <label for="folderSelect">Folder</label>
+            <select id="folderSelect">
+                <option value="">-- Muat daftar --</option>
             </select>
-            <label for="bulanSelect">Bulan</label>
-            <select id="bulanSelect">
-                <option value="">-- Pilih --</option>
-                <option value="Januari">Januari</option>
-                <option value="Februari">Februari</option>
-                <option value="Maret">Maret</option>
-                <option value="April">April</option>
-                <option value="Mei">Mei</option>
-                <option value="Juni">Juni</option>
-                <option value="Juli">Juli</option>
-                <option value="Agustus">Agustus</option>
-                <option value="September">September</option>
-                <option value="Oktober">Oktober</option>
-                <option value="November">November</option>
-                <option value="Desember">Desember</option>
-            </select>
-            <label for="desaSelect">Desa</label>
-            <select id="desaSelect">
-                <option value="">-- Pilih --</option>
-                <option value="Desa A">Desa A</option>
-                <option value="Desa B">Desa B</option>
-                <option value="Desa C">Desa C</option>
-                <option value="Desa D">Desa D</option>
-            </select>
-            <button class="btn btn-teal" id="btnProcessDesa">Proses Desa</button>
+            <button class="btn btn-teal" id="btnProcessDesa">Proses Folder</button>
+            <span class="refresh-link" id="refreshFolderBtn">↻ Refresh</span>
             <span class="loading-text" id="desaLoading"></span>
         </div>
-        <p style="font-size:13px; color:#666; margin-bottom:10px;">
-            Path: <code id="pathPreview">(pilih desa, tahun, bulan)</code>
-        </p>
-        <div class="output-area" id="desaOutput">Pilih Tahun, Bulan, Desa, lalu klik "Proses Desa".</div>
+        <div class="output-area" id="desaOutput">Pilih folder dari dropdown, lalu klik "Proses Folder".</div>
     </div>
 
     <!-- TAB 3: SERVER -->
@@ -383,7 +359,7 @@
 
 <script>
     // ============================================================
-    // KONFIGURASI (URL APPS SCRIPT — TIDAK DITAMPILKAN)
+    // KONFIGURASI (URL APPS SCRIPT)
     // ============================================================
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxy8Hiy2i0ukCftKaDcijSewoGmDBcIgOIdyppAGSf3LuPq0T3SZ24g-OESEJstHnuU/exec';
 
@@ -443,32 +419,53 @@
             Object.keys(panes).forEach(key => {
                 panes[key].classList.toggle('active', key === target);
             });
+            // Muat daftar folder ketika tab "desa" diaktifkan
+            if (target === 'desa') {
+                loadFolderList();
+            }
         });
     });
 
     // ============================================================
-    // PREVIEW PATH DESA
+    // LOAD FOLDER LIST DARI APPS SCRIPT
     // ============================================================
-    const tahunSelect = document.getElementById('tahunSelect');
-    const bulanSelect = document.getElementById('bulanSelect');
-    const desaSelect = document.getElementById('desaSelect');
-    const pathPreview = document.getElementById('pathPreview');
+    const folderSelect = document.getElementById('folderSelect');
+    const desaLoading = document.getElementById('desaLoading');
 
-    function updatePathPreview() {
-        const tahun = tahunSelect.value;
-        const bulan = bulanSelect.value;
-        const desa = desaSelect.value;
-        let path = '';
-        if (desa) path += desa;
-        if (tahun) path += (path ? '/' : '') + tahun;
-        if (bulan) path += (path ? '/' : '') + bulan;
-        pathPreview.textContent = path || '(pilih desa, tahun, bulan)';
+    async function loadFolderList() {
+        desaLoading.textContent = '⏳ Memuat daftar folder...';
+        folderSelect.disabled = true;
+
+        try {
+            const url = APPS_SCRIPT_URL + '?action=listFolders&t=' + Date.now();
+            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            const data = await response.json();
+
+            if (data.success && data.folders) {
+                folderSelect.innerHTML = '<option value="">-- Pilih folder --</option>';
+                data.folders.forEach(f => {
+                    const option = document.createElement('option');
+                    option.value = f.path;
+                    option.textContent = f.display || f.path;
+                    folderSelect.appendChild(option);
+                });
+                desaLoading.textContent = '✅ ' + data.folders.length + ' folder ditemukan';
+            } else {
+                desaLoading.textContent = '❌ Gagal muat: ' + (data.message || '');
+                folderSelect.innerHTML = '<option value="">-- Gagal muat --</option>';
+            }
+        } catch (err) {
+            desaLoading.textContent = '❌ Error: ' + err.message;
+            folderSelect.innerHTML = '<option value="">-- Error --</option>';
+        } finally {
+            folderSelect.disabled = false;
+        }
     }
 
-    tahunSelect.addEventListener('change', updatePathPreview);
-    bulanSelect.addEventListener('change', updatePathPreview);
-    desaSelect.addEventListener('change', updatePathPreview);
-    updatePathPreview();
+    document.getElementById('refreshFolderBtn').addEventListener('click', function() {
+        loadFolderList();
+    });
 
     // ============================================================
     // MANUAL GABUNG (TAB 1) - DENGAN EKSTRAK ZIP
@@ -503,7 +500,7 @@
         });
     }
 
-    // Drag & drop — dukung .txt dan .zip
+    // Drag & drop
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
     dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('dragover'); });
     dropZone.addEventListener('drop', async (e) => {
@@ -534,7 +531,6 @@
             if (entry) await processEntry(entry);
         }
 
-        // Ekstrak ZIP
         let txtFromZips = [];
         if (zipFiles.length > 0) {
             manualOutput.textContent = '⏳ Mengekstrak ' + zipFiles.length + ' ZIP...';
@@ -542,31 +538,24 @@
                 try {
                     const arrayBuffer = await zipFile.arrayBuffer();
                     const zip = await JSZip.loadAsync(arrayBuffer);
+                    const promises = [];
                     zip.forEach((relativePath, zipEntry) => {
                         if (!zipEntry.dir && /\.txt$/i.test(relativePath)) {
-                            // kita push file .txt ke txtFromZips
-                            const promise = zipEntry.async('blob').then(blob => {
+                            const p = zipEntry.async('blob').then(blob => {
                                 const fileName = relativePath.split('/').pop() || relativePath;
                                 const file = new File([blob], fileName, { type: 'text/plain' });
                                 txtFromZips.push(file);
                             });
-                            // simpan promise untuk dijalankan nanti
-                            window._zipPromises = window._zipPromises || [];
-                            window._zipPromises.push(promise);
+                            promises.push(p);
                         }
                     });
-                    // Tunggu semua promise selesai
-                    if (window._zipPromises) {
-                        await Promise.all(window._zipPromises);
-                        window._zipPromises = [];
-                    }
+                    await Promise.all(promises);
                 } catch (err) {
                     manualOutput.textContent = '❌ Gagal ekstrak ZIP: ' + zipFile.name;
                 }
             }
         }
 
-        // Gabungkan semua file
         const allFiles = files.concat(txtFromZips);
         if (allFiles.length) {
             selectedFiles = selectedFiles.concat(allFiles);
@@ -849,16 +838,13 @@
         setStatus('idle', 'Idle');
     });
 
-    // Tombol Proses Desa
+    // Tombol Proses Desa (dari dropdown)
     document.getElementById('btnProcessDesa').addEventListener('click', function() {
-        const tahun = tahunSelect.value;
-        const bulan = bulanSelect.value;
-        const desa = desaSelect.value;
-        if (!desa || !tahun || !bulan) {
-            alert('Pilih Desa, Tahun, dan Bulan.');
+        const folderPath = folderSelect.value;
+        if (!folderPath) {
+            alert('Pilih folder terlebih dahulu dari dropdown.');
             return;
         }
-        const folderPath = desa + '/' + tahun + '/' + bulan;
         const loading = document.getElementById('desaLoading');
         loading.textContent = '⏳ Memproses ' + folderPath + '...';
         callServerAction('processSpecific', 'btnProcessDesa', { folder: folderPath }, desaOutput)
@@ -866,7 +852,7 @@
     });
 
     // ============================================================
-    // SERVICE WORKER (PWA) — DAFTAR OFFLINE
+    // SERVICE WORKER (PWA)
     // ============================================================
     if ('serviceWorker' in navigator) {
         const swCode = `
@@ -896,7 +882,10 @@
     // ============================================================
     setStatus('idle', 'Idle');
     serverOutput.textContent = 'Klik tombol untuk menjalankan aksi server.';
-    desaOutput.textContent = 'Pilih Tahun, Bulan, Desa, lalu klik "Proses Desa".';
+    desaOutput.textContent = 'Pilih folder dari dropdown, lalu klik "Proses Folder".';
+
+    // Muat folder list saat pertama kali
+    loadFolderList();
 </script>
 
 <!-- Sertakan JSZip untuk ekstrak ZIP -->
