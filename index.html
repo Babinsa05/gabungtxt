@@ -2,10 +2,11 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TXT Combiner Pro - Dropdown Folder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>TXT Combiner Pro - Desa</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRYVCBDb21iaW5lciBQcm8iLAogICJzaG9ydF9uYW1lIjogIlRYVENvbWJpbmVyIiwKICAiZGVzY3JpcHRpb24iOiAiR2FidW5nIGZpbGUgVFhUIGRlc2EiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2YwZjRmOCIsCiAgInRoZW1lX2NvbG9yIjogIiMxZTI5M2IiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi5qcy5kZWxpdnIubmV0L2dwL2ZvbnQtYXdlc29tZS82LjAuMC9zdmdzL3NvbGlkL2ZvbGRlci1vcGVuLnN2ZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0=">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/svgs/solid/folder-open.svg" type="image/svg+xml">
     <style>
-        /* ===== GAYA KLASIK ===== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -79,7 +80,6 @@
             font-size: 13px;
             border-radius: 2px;
         }
-
         .tabs {
             display: flex;
             gap: 4px;
@@ -105,7 +105,6 @@
         .tab-btn:hover { background: #eee; }
         .tab-pane { display: none; padding: 10px 0; }
         .tab-pane.active { display: block; }
-
         .btn {
             background: #e0e0e0;
             border: 2px solid #333;
@@ -137,7 +136,6 @@
         .btn-gray:hover { background: #4b5563; }
         .btn-teal { background: #14b8a6; color: #fff; border-color: #0d9488; }
         .btn-teal:hover { background: #0d9488; }
-
         .drop-zone {
             border: 3px dashed #888;
             padding: 24px;
@@ -149,7 +147,6 @@
         }
         .drop-zone:hover { background: #f0f0f0; border-color: #333; }
         .drop-zone.dragover { background: #e0e7ff; border-color: #4f46e5; }
-
         .file-list {
             max-height: 160px;
             overflow-y: auto;
@@ -173,7 +170,6 @@
             margin-left: 12px;
         }
         .file-item .remove:hover { color: #b91c1c; }
-
         .output-area {
             background: #1a1a1a;
             color: #33ff33;
@@ -192,7 +188,6 @@
         .output-area .error-text { color: #ff6666; font-weight: bold; }
         .output-area .warn-text { color: #fbbf24; }
         .output-area .info-text { color: #66ccff; }
-
         .stats {
             display: flex;
             flex-wrap: wrap;
@@ -205,42 +200,7 @@
             padding: 4px 12px;
             border: 1px solid #aaa;
         }
-        .footer {
-            margin-top: 20px;
-            border-top: 2px solid #ccc;
-            padding-top: 12px;
-            text-align: center;
-            font-size: 13px;
-            color: #666;
-        }
-        .footer .highlight { color: #4f46e5; font-weight: 700; }
-
-        .url-config {
-            background: #fef9e7;
-            border: 1px solid #f59e0b;
-            padding: 10px 14px;
-            margin: 10px 0;
-            font-size: 13px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 8px;
-        }
-        .url-config code {
-            background: #222;
-            color: #0f0;
-            padding: 2px 8px;
-            border-radius: 3px;
-            word-break: break-all;
-        }
-        .url-config .edit-link {
-            color: #4f46e5;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
-        .folder-select-group {
+        .filter-group {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
@@ -251,151 +211,208 @@
             border: 2px solid #4f46e5;
             border-radius: 6px;
         }
-        .folder-select-group label {
+        .filter-group label {
             font-weight: 600;
             font-size: 14px;
         }
-        .folder-select-group select {
-            flex: 1;
+        .filter-group select {
             padding: 6px 10px;
             font-family: inherit;
             font-size: 14px;
             border: 2px solid #888;
             background: #fff;
-            min-width: 200px;
-            max-width: 400px;
+            min-width: 120px;
         }
-        .folder-select-group select:focus {
+        .filter-group select:focus {
             border-color: #4f46e5;
             outline: none;
         }
-        .folder-select-group .loading-text {
+        .filter-group .loading-text {
             font-size: 13px;
             color: #666;
             font-style: italic;
         }
-        .folder-select-group .refresh-link {
-            color: #4f46e5;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: underline;
+        .footer {
+            margin-top: 20px;
+            border-top: 2px solid #ccc;
+            padding-top: 12px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
         }
-
+        .footer .highlight { color: #4f46e5; font-weight: 700; }
+        .install-btn {
+            background: #222;
+            color: #fff;
+            border: 2px solid #333;
+            padding: 4px 14px;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #888;
+            display: none;
+        }
+        .install-btn.show { display: inline-block; }
         @media (max-width: 600px) {
             .container { padding: 14px; }
             .tab-btn { font-size: 13px; padding: 6px 12px; }
             .btn { font-size: 12px; padding: 4px 10px; }
             .output-area { font-size: 11px; min-height: 120px; }
-            .folder-select-group select { min-width: 120px; max-width: 100%; }
+            .filter-group select { min-width: 80px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>
-        <span>📄 TXT Combiner Pro <small>Dropdown Folder</small></span>
-        <span style="font-size:14px; font-weight:400;">I Nyoman Arta</span>
+        <span>TXT Combiner <small>Desa</small></span>
+        <span style="font-size:14px; font-weight:400;">
+            <button class="install-btn" id="installBtn">Install App</button>
+        </span>
     </h1>
-    <div class="subtitle">Gabung &amp; bersihkan duplikat — pilih folder dari dropdown</div>
+    <div class="subtitle">Gabung file TXT per Desa — pilih Tahun, Bulan, Desa</div>
 
-    <!-- ===== STATUS INDICATOR ===== -->
+    <!-- STATUS INDICATOR -->
     <div class="status-bar">
         <div class="status-indicator">
             <span class="dot idle" id="indicatorDot"></span>
             <span id="statusText">Idle</span>
         </div>
         <span>
-            <span style="background:#222;color:#fff;padding:0 8px;border-radius:2px;">📁 Drive</span>
+            <span style="background:#222;color:#fff;padding:0 8px;border-radius:2px;">Drive</span>
             <span class="drive-id">1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ</span>
         </span>
     </div>
 
-    <!-- ===== KONFIGURASI URL ===== -->
-    <div class="url-config" id="urlConfig">
-        <span>🔗 URL Apps Script:</span>
-        <code id="urlDisplay">https://script.google.com/macros/s/.../exec</code>
-        <span class="edit-link" id="editUrlBtn">✏️ Ganti URL</span>
-        <span style="font-size:12px; color:#888;">(jika gagal koneksi, pastikan URL benar)</span>
-    </div>
-
-    <!-- ===== TAB NAVIGATION ===== -->
+    <!-- TABS -->
     <div class="tabs">
-        <button class="tab-btn active" data-tab="manual">📂 Gabung Manual</button>
-        <button class="tab-btn" data-tab="server">⚙️ Aksi Server</button>
+        <button class="tab-btn active" data-tab="manual">Gabung Manual</button>
+        <button class="tab-btn" data-tab="desa">Gabung Desa</button>
+        <button class="tab-btn" data-tab="server">Server</button>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- TAB 1: MANUAL GABUNG + DOWNLOAD -->
-    <!-- ============================================================ -->
+    <!-- TAB 1: MANUAL -->
     <div class="tab-pane active" id="tab-manual">
-        <p style="margin-bottom:8px;"><strong>Drag &amp; drop file .txt atau folder</strong> (atau klik area di bawah).</p>
+        <p style="margin-bottom:8px;">Drag & drop file .txt atau .zip (banyak). ZIP akan diekstrak otomatis.</p>
         <div class="drop-zone" id="dropZone">
             <div style="pointer-events:none;">
                 <span style="font-size:20px;">📂</span><br>
-                <span style="font-size:14px;">Tarik file .txt atau folder ke sini</span>
+                <span style="font-size:14px;">Tarik file .txt atau .zip ke sini</span>
             </div>
         </div>
-
         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
-            <button class="btn btn-primary" id="addFilesBtn">➕ Tambah File</button>
-            <button class="btn btn-success" id="addFolderBtn">📁 Tambah Folder</button>
-            <button class="btn btn-danger" id="clearFilesBtn">✖ Hapus Semua</button>
-            <button class="btn btn-warning" id="processManualBtn">⬇️ Gabung & Download</button>
+            <button class="btn btn-primary" id="addFilesBtn">Tambah File</button>
+            <button class="btn btn-success" id="addFolderBtn">Tambah Folder</button>
+            <button class="btn btn-danger" id="clearFilesBtn">Hapus Semua</button>
+            <button class="btn btn-warning" id="processManualBtn">Gabung & Download</button>
         </div>
-
-        <div class="file-list" id="fileList">📭 Belum ada file.</div>
-
+        <div class="file-list" id="fileList">Belum ada file.</div>
         <div class="stats">
             <span id="statRaw">Baris awal: 0</span>
             <span id="statDup">Duplikat: 0</span>
             <span id="statUnique">Baris unik: 0</span>
         </div>
-
-        <div class="output-area" id="manualOutput">📌 Hasil gabungan akan muncul di sini.\nKlik "Gabung & Download" setelah menambahkan file.</div>
+        <div class="output-area" id="manualOutput">Hasil gabungan akan muncul di sini.</div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- TAB 2: AKSI SERVER (dengan Dropdown Folder) -->
-    <!-- ============================================================ -->
-    <div class="tab-pane" id="tab-server">
-        <p style="margin-bottom:10px;"><strong>Semua aksi</strong> memanggil Google Apps Script via HTTP.</p>
-
-        <!-- ===== FOLDER SPESIFIK dengan DROPDOWN ===== -->
-        <div class="folder-select-group">
-            <label for="folderSelect">📂 Pilih folder:</label>
-            <select id="folderSelect">
-                <option value="">-- Muat daftar folder --</option>
+    <!-- TAB 2: DESA -->
+    <div class="tab-pane" id="tab-desa">
+        <p style="margin-bottom:10px;">Pilih Tahun, Bulan, dan Desa — lalu proses semua ZIP di folder tersebut.</p>
+        <div class="filter-group">
+            <label for="tahunSelect">Tahun</label>
+            <select id="tahunSelect">
+                <option value="">-- Pilih --</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
             </select>
-            <button class="btn btn-teal" id="btnProcessSpecific">▶ Proses Folder Terpilih</button>
-            <span class="refresh-link" id="refreshFolderBtn">🔄 Refresh</span>
-            <span class="loading-text" id="loadingFolderText"></span>
+            <label for="bulanSelect">Bulan</label>
+            <select id="bulanSelect">
+                <option value="">-- Pilih --</option>
+                <option value="Januari">Januari</option>
+                <option value="Februari">Februari</option>
+                <option value="Maret">Maret</option>
+                <option value="April">April</option>
+                <option value="Mei">Mei</option>
+                <option value="Juni">Juni</option>
+                <option value="Juli">Juli</option>
+                <option value="Agustus">Agustus</option>
+                <option value="September">September</option>
+                <option value="Oktober">Oktober</option>
+                <option value="November">November</option>
+                <option value="Desember">Desember</option>
+            </select>
+            <label for="desaSelect">Desa</label>
+            <select id="desaSelect">
+                <option value="">-- Pilih --</option>
+                <option value="Desa A">Desa A</option>
+                <option value="Desa B">Desa B</option>
+                <option value="Desa C">Desa C</option>
+                <option value="Desa D">Desa D</option>
+            </select>
+            <button class="btn btn-teal" id="btnProcessDesa">Proses Desa</button>
+            <span class="loading-text" id="desaLoading"></span>
         </div>
-
-        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
-            <button class="btn btn-primary" id="btnProcess">▶ Proses Manual (Semua)</button>
-            <button class="btn btn-success" id="btnTrigger">⏰ Buat Trigger</button>
-            <button class="btn btn-danger" id="btnDeleteTriggers">🗑️ Hapus Trigger</button>
-            <button class="btn btn-warning" id="btnTest">🧪 Test</button>
-            <button class="btn btn-purple" id="btnRestore">↩️ Restore ZIP</button>
-            <button class="btn btn-info" id="btnDeleteInfo">🧹 Hapus INFO_EXTRACT</button>
-            <button class="btn btn-gray" id="btnClearServer">✖ Bersihkan Output</button>
-        </div>
-
-        <div class="output-area" id="serverOutput">📌 Klik tombol di atas untuk menjalankan aksi server.\n🔗 URL: https://script.google.com/macros/s/.../exec</div>
+        <p style="font-size:13px; color:#666; margin-bottom:10px;">
+            Path: <code id="pathPreview">(pilih desa, tahun, bulan)</code>
+        </p>
+        <div class="output-area" id="desaOutput">Pilih Tahun, Bulan, Desa, lalu klik "Proses Desa".</div>
     </div>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- TAB 3: SERVER -->
+    <div class="tab-pane" id="tab-server">
+        <p style="margin-bottom:10px;">Semua aksi memanggil Google Apps Script via HTTP.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+            <button class="btn btn-primary" id="btnProcess">Proses Semua</button>
+            <button class="btn btn-success" id="btnTrigger">Buat Trigger</button>
+            <button class="btn btn-danger" id="btnDeleteTriggers">Hapus Trigger</button>
+            <button class="btn btn-warning" id="btnTest">Test</button>
+            <button class="btn btn-purple" id="btnRestore">Restore ZIP</button>
+            <button class="btn btn-info" id="btnDeleteInfo">Hapus INFO_EXTRACT</button>
+            <button class="btn btn-gray" id="btnClearServer">Bersihkan</button>
+        </div>
+        <div class="output-area" id="serverOutput">Klik tombol untuk menjalankan aksi server.</div>
+    </div>
+
     <div class="footer">
-        <span class="highlight">I Nyoman Arta</span> &middot; &copy; 2025 &middot; 
-        <span style="font-weight:400;">Indikator berkedip sesuai status</span>
+        <span class="highlight">I Nyoman Arta</span> &middot; 2025 &middot; Klasik + PWA
     </div>
 </div>
 
 <script>
     // ============================================================
-    // KONFIGURASI — GANTI URL DI SINI
+    // KONFIGURASI (URL APPS SCRIPT — TIDAK DITAMPILKAN)
     // ============================================================
-    let APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycbgyGNjwJGdx0obyiycwa04goM2kF2TjwvAeBxiehn0r55Ffh88hLluNnSoPATsKm/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxy8Hiy2i0ukCftKaDcijSewoGmDBcIgOIdyppAGSf3LuPq0T3SZ24g-OESEJstHnuU/exec';
+
+    // ============================================================
+    // PWA INSTALL
+    // ============================================================
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.classList.add('show');
+    });
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const result = await deferredPrompt.userChoice;
+            if (result.outcome === 'accepted') {
+                installBtn.classList.remove('show');
+            }
+            deferredPrompt = null;
+        }
+    });
+    window.addEventListener('appinstalled', () => {
+        installBtn.classList.remove('show');
+    });
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        installBtn.classList.remove('show');
+    }
 
     // ============================================================
     // INDIKATOR
@@ -409,28 +426,12 @@
     }
 
     // ============================================================
-    // TAMPILAN URL
-    // ============================================================
-    const urlDisplay = document.getElementById('urlDisplay');
-    urlDisplay.textContent = APPS_SCRIPT_URL;
-
-    document.getElementById('editUrlBtn').addEventListener('click', function() {
-        const newUrl = prompt('Masukkan URL Apps Script yang baru:', APPS_SCRIPT_URL);
-        if (newUrl && newUrl.trim() !== '') {
-            APPS_SCRIPT_URL = newUrl.trim();
-            urlDisplay.textContent = APPS_SCRIPT_URL;
-            document.getElementById('serverOutput').textContent = '🔗 URL diperbarui: ' + APPS_SCRIPT_URL + '\n\n📌 Klik tombol untuk menjalankan aksi.';
-            // Refresh folder list after URL change
-            loadFolderList();
-        }
-    });
-
-    // ============================================================
     // TAB SWITCHING
     // ============================================================
     const tabBtns = document.querySelectorAll('.tab-btn');
     const panes = {
         manual: document.getElementById('tab-manual'),
+        desa: document.getElementById('tab-desa'),
         server: document.getElementById('tab-server')
     };
 
@@ -442,15 +443,35 @@
             Object.keys(panes).forEach(key => {
                 panes[key].classList.toggle('active', key === target);
             });
-            // Load folder list when switching to server tab
-            if (target === 'server') {
-                loadFolderList();
-            }
         });
     });
 
     // ============================================================
-    // MANUAL GABUNG (TAB 1)
+    // PREVIEW PATH DESA
+    // ============================================================
+    const tahunSelect = document.getElementById('tahunSelect');
+    const bulanSelect = document.getElementById('bulanSelect');
+    const desaSelect = document.getElementById('desaSelect');
+    const pathPreview = document.getElementById('pathPreview');
+
+    function updatePathPreview() {
+        const tahun = tahunSelect.value;
+        const bulan = bulanSelect.value;
+        const desa = desaSelect.value;
+        let path = '';
+        if (desa) path += desa;
+        if (tahun) path += (path ? '/' : '') + tahun;
+        if (bulan) path += (path ? '/' : '') + bulan;
+        pathPreview.textContent = path || '(pilih desa, tahun, bulan)';
+    }
+
+    tahunSelect.addEventListener('change', updatePathPreview);
+    bulanSelect.addEventListener('change', updatePathPreview);
+    desaSelect.addEventListener('change', updatePathPreview);
+    updatePathPreview();
+
+    // ============================================================
+    // MANUAL GABUNG (TAB 1) - DENGAN EKSTRAK ZIP
     // ============================================================
     let selectedFiles = [];
     const dropZone = document.getElementById('dropZone');
@@ -462,13 +483,13 @@
 
     function renderFileList() {
         if (selectedFiles.length === 0) {
-            fileListDiv.innerHTML = '📭 Belum ada file.';
+            fileListDiv.innerHTML = 'Belum ada file.';
             return;
         }
         let html = '';
         selectedFiles.forEach((f, i) => {
             html += `<div class="file-item">
-                <span>📄 ${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
+                <span>${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
                 <span class="remove" data-idx="${i}">✖</span>
             </div>`;
         });
@@ -482,24 +503,23 @@
         });
     }
 
-    // Drag & drop
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dragover');
-    });
-    dropZone.addEventListener('dragleave', () => {
-        dropZone.classList.remove('dragover');
-    });
-    dropZone.addEventListener('drop', (e) => {
+    // Drag & drop — dukung .txt dan .zip
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('dragover'); });
+    dropZone.addEventListener('drop', async (e) => {
         e.preventDefault();
         dropZone.classList.remove('dragover');
         const items = e.dataTransfer.items;
         const files = [];
+        const zipFiles = [];
         const processEntry = async (entry) => {
             if (entry.isFile) {
                 const file = await new Promise(resolve => entry.file(resolve));
-                if (file.name.toLowerCase().endsWith('.txt')) {
+                const name = file.name.toLowerCase();
+                if (name.endsWith('.txt')) {
                     files.push(file);
+                } else if (name.endsWith('.zip')) {
+                    zipFiles.push(file);
                 }
             } else if (entry.isDirectory) {
                 const reader = entry.createReader();
@@ -511,15 +531,51 @@
         };
         for (let i = 0; i < items.length; i++) {
             const entry = items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : null;
-            if (entry) processEntry(entry);
+            if (entry) await processEntry(entry);
         }
-        setTimeout(() => {
-            if (files.length) {
-                selectedFiles = selectedFiles.concat(files);
-                renderFileList();
-                setStatus('idle', 'Idle');
+
+        // Ekstrak ZIP
+        let txtFromZips = [];
+        if (zipFiles.length > 0) {
+            manualOutput.textContent = '⏳ Mengekstrak ' + zipFiles.length + ' ZIP...';
+            for (const zipFile of zipFiles) {
+                try {
+                    const arrayBuffer = await zipFile.arrayBuffer();
+                    const zip = await JSZip.loadAsync(arrayBuffer);
+                    zip.forEach((relativePath, zipEntry) => {
+                        if (!zipEntry.dir && /\.txt$/i.test(relativePath)) {
+                            // kita push file .txt ke txtFromZips
+                            const promise = zipEntry.async('blob').then(blob => {
+                                const fileName = relativePath.split('/').pop() || relativePath;
+                                const file = new File([blob], fileName, { type: 'text/plain' });
+                                txtFromZips.push(file);
+                            });
+                            // simpan promise untuk dijalankan nanti
+                            window._zipPromises = window._zipPromises || [];
+                            window._zipPromises.push(promise);
+                        }
+                    });
+                    // Tunggu semua promise selesai
+                    if (window._zipPromises) {
+                        await Promise.all(window._zipPromises);
+                        window._zipPromises = [];
+                    }
+                } catch (err) {
+                    manualOutput.textContent = '❌ Gagal ekstrak ZIP: ' + zipFile.name;
+                }
             }
-        }, 200);
+        }
+
+        // Gabungkan semua file
+        const allFiles = files.concat(txtFromZips);
+        if (allFiles.length) {
+            selectedFiles = selectedFiles.concat(allFiles);
+            renderFileList();
+            setStatus('idle', 'Idle');
+            manualOutput.textContent = '✅ ' + allFiles.length + ' file .txt siap (termasuk dari ' + zipFiles.length + ' ZIP).';
+        } else {
+            manualOutput.textContent = '⚠️ Tidak ditemukan file .txt.';
+        }
     });
 
     // Tombol tambah file
@@ -527,13 +583,38 @@
         const input = document.createElement('input');
         input.type = 'file';
         input.multiple = true;
-        input.accept = '.txt';
-        input.onchange = function(e) {
-            const files = Array.from(e.target.files);
-            if (files.length) {
-                selectedFiles = selectedFiles.concat(files);
+        input.accept = '.txt,.zip';
+        input.onchange = async function(e) {
+            const rawFiles = Array.from(e.target.files);
+            const txtFiles = rawFiles.filter(f => f.name.toLowerCase().endsWith('.txt'));
+            const zipFiles = rawFiles.filter(f => f.name.toLowerCase().endsWith('.zip'));
+            let txtFromZips = [];
+            for (const zf of zipFiles) {
+                try {
+                    const arrayBuffer = await zf.arrayBuffer();
+                    const zip = await JSZip.loadAsync(arrayBuffer);
+                    const promises = [];
+                    zip.forEach((relativePath, zipEntry) => {
+                        if (!zipEntry.dir && /\.txt$/i.test(relativePath)) {
+                            const p = zipEntry.async('blob').then(blob => {
+                                const fileName = relativePath.split('/').pop() || relativePath;
+                                const file = new File([blob], fileName, { type: 'text/plain' });
+                                txtFromZips.push(file);
+                            });
+                            promises.push(p);
+                        }
+                    });
+                    await Promise.all(promises);
+                } catch (err) {
+                    manualOutput.textContent = '❌ Gagal ekstrak ZIP: ' + zf.name;
+                }
+            }
+            const all = txtFiles.concat(txtFromZips);
+            if (all.length) {
+                selectedFiles = selectedFiles.concat(all);
                 renderFileList();
                 setStatus('idle', 'Idle');
+                manualOutput.textContent = '✅ ' + all.length + ' file ditambahkan (termasuk dari ' + zipFiles.length + ' ZIP).';
             }
         };
         input.click();
@@ -558,14 +639,13 @@
     document.getElementById('clearFilesBtn').addEventListener('click', function() {
         selectedFiles = [];
         renderFileList();
-        manualOutput.textContent = '🧹 Semua file dihapus.';
+        manualOutput.textContent = 'Semua file dihapus.';
         statRaw.textContent = 'Baris awal: 0';
         statDup.textContent = 'Duplikat: 0';
         statUnique.textContent = 'Baris unik: 0';
         setStatus('idle', 'Idle');
     });
 
-    // Ekstrak tanggal
     function extractDateFromLine(line) {
         const patterns = [
             /(\d{4})-(\d{1,2})-(\d{1,2})/,
@@ -622,15 +702,13 @@
         return null;
     }
 
-    // Proses manual + DOWNLOAD OTOMATIS
     document.getElementById('processManualBtn').addEventListener('click', async function() {
         if (selectedFiles.length === 0) {
-            manualOutput.textContent = '⚠️ Tidak ada file. Tambahkan file terlebih dahulu.';
+            manualOutput.textContent = 'Tidak ada file. Tambahkan file terlebih dahulu.';
             setStatus('error', 'Error');
             setTimeout(() => setStatus('idle', 'Idle'), 3000);
             return;
         }
-
         setStatus('running', 'Memproses...');
         let allLines = [];
         for (const file of selectedFiles) {
@@ -642,13 +720,12 @@
                     if (trimmed) allLines.push(trimmed);
                 }
             } catch (e) {
-                manualOutput.textContent = '❌ Gagal baca file: ' + file.name;
+                manualOutput.textContent = 'Gagal baca file: ' + file.name;
                 setStatus('error', 'Error');
                 setTimeout(() => setStatus('idle', 'Idle'), 3000);
                 return;
             }
         }
-
         const totalRaw = allLines.length;
         const unique = [];
         const seen = new Set();
@@ -660,7 +737,6 @@
             }
         }
         const dupCount = totalRaw - unique.length;
-
         const withDate = unique.map(line => ({ line, date: extractDateFromLine(line) }));
         withDate.sort((a, b) => {
             if (a.date && b.date) return a.date - b.date;
@@ -686,82 +762,35 @@
             a.click();
             document.body.removeChild(a);
             setTimeout(() => URL.revokeObjectURL(url), 2000);
-            manualOutput.textContent += '\n\n⬇️ File berhasil didownload!';
+            manualOutput.textContent += '\n\nFile berhasil didownload!';
         }
-
         setStatus('done', 'Selesai');
         setTimeout(() => setStatus('idle', 'Idle'), 3000);
     });
 
     // ============================================================
-    // LOAD FOLDER LIST DARI APPS SCRIPT
+    // AKSI SERVER (TAB 2 & 3)
     // ============================================================
-    const folderSelect = document.getElementById('folderSelect');
-    const loadingText = document.getElementById('loadingFolderText');
-
-    async function loadFolderList() {
-        loadingText.textContent = '⏳ Memuat daftar folder...';
-        folderSelect.disabled = true;
-
-        try {
-            const url = APPS_SCRIPT_URL + '?action=listFolders&t=' + Date.now();
-            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            if (!response.ok) throw new Error('HTTP ' + response.status);
-            const data = await response.json();
-
-            if (data.success && data.folders) {
-                folderSelect.innerHTML = '<option value="">-- Pilih folder --</option>';
-                data.folders.forEach(f => {
-                    const option = document.createElement('option');
-                    option.value = f.path;
-                    option.textContent = f.display || f.path;
-                    folderSelect.appendChild(option);
-                });
-                loadingText.textContent = '✅ ' + data.folders.length + ' folder ditemukan';
-            } else {
-                loadingText.textContent = '❌ Gagal muat: ' + (data.message || '');
-                folderSelect.innerHTML = '<option value="">-- Gagal muat --</option>';
-            }
-        } catch (err) {
-            loadingText.textContent = '❌ Error: ' + err.message;
-            folderSelect.innerHTML = '<option value="">-- Error --</option>';
-        } finally {
-            folderSelect.disabled = false;
-        }
-    }
-
-    // Refresh button
-    document.getElementById('refreshFolderBtn').addEventListener('click', function() {
-        loadFolderList();
-    });
-
-    // ============================================================
-    // AKSI SERVER (TAB 2)
-    // ============================================================
+    const desaOutput = document.getElementById('desaOutput');
     const serverOutput = document.getElementById('serverOutput');
     let isRunning = false;
 
-    function appendServer(text, type) {
+    function appendOutput(outputEl, text, type) {
         const prefix = type === 'error' ? '❌ ' : type === 'info' ? 'ℹ️ ' : '';
-        serverOutput.textContent += prefix + text + '\n';
-        serverOutput.scrollTop = serverOutput.scrollHeight;
+        outputEl.textContent += prefix + text + '\n';
+        outputEl.scrollTop = outputEl.scrollHeight;
     }
 
-    function appendServerError(text) {
-        serverOutput.textContent += '❌ ' + text + '\n';
-        serverOutput.scrollTop = serverOutput.scrollHeight;
-    }
-
-    async function callServerAction(action, btnId, extraParams = {}) {
+    async function callServerAction(action, btnId, extraParams = {}, outputEl = serverOutput) {
         if (isRunning) {
-            alert('⏳ Masih ada proses berjalan.');
+            alert('Masih ada proses berjalan.');
             return;
         }
         const btn = document.getElementById(btnId);
         if (btn) { btn.disabled = true; isRunning = true; }
 
         setStatus('running', 'Memproses...');
-        appendServer('⏳ Menjalankan: ' + action, 'info');
+        appendOutput(outputEl, 'Menjalankan: ' + action, 'info');
 
         try {
             let url = APPS_SCRIPT_URL + '?action=' + encodeURIComponent(action) + '&t=' + Date.now();
@@ -769,38 +798,23 @@
                 if (value) url += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(value);
             }
             const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            
-            if (!response.ok) {
-                throw new Error('HTTP ' + response.status + ' - ' + response.statusText);
-            }
-            
+            if (!response.ok) throw new Error('HTTP ' + response.status);
             const data = await response.json();
 
             if (data.success) {
                 setStatus('done', 'Selesai');
-                appendServer('✅ ' + data.message, 'info');
-                if (data.log) appendServer('📋 LOG:\n' + data.log, 'info');
+                appendOutput(outputEl, '✅ ' + data.message, 'info');
+                if (data.log) appendOutput(outputEl, 'LOG:\n' + data.log, 'info');
             } else {
                 setStatus('error', 'Error');
-                appendServer('❌ ERROR: ' + data.message, 'error');
+                appendOutput(outputEl, 'ERROR: ' + data.message, 'error');
                 alert('❌ ' + data.message);
             }
         } catch (err) {
             setStatus('error', 'Error');
-            let errorMsg = '❌ Gagal terhubung ke server.\n';
-            errorMsg += '🔍 Penyebab umum:\n';
-            errorMsg += '  1. URL Apps Script salah atau belum di-deploy.\n';
-            errorMsg += '  2. CORS: pastikan Web App di-set ke "Anyone".\n';
-            errorMsg += '  3. Koneksi internet terputus.\n';
-            errorMsg += '  4. Apps Script belum diizinkan akses Drive.\n';
-            errorMsg += '\n🔧 Solusi:\n';
-            errorMsg += '  • Klik "Ganti URL" di atas untuk perbaiki URL.\n';
-            errorMsg += '  • Buka URL di browser untuk test: ' + APPS_SCRIPT_URL + '?action=test\n';
-            errorMsg += '  • Periksa deployment Apps Script (Execute as: Me, Access: Anyone).\n';
-            errorMsg += '\n📌 Detail error: ' + err.message;
-            
-            appendServerError(errorMsg);
-            alert('❌ Gagal koneksi ke Apps Script.\n\n' + errorMsg);
+            const errorMsg = 'Gagal koneksi: ' + err.message;
+            appendOutput(outputEl, errorMsg, 'error');
+            alert('Gagal koneksi:\n' + errorMsg);
         } finally {
             if (btn) { btn.disabled = false; isRunning = false; }
             setTimeout(() => {
@@ -811,7 +825,7 @@
         }
     }
 
-    // ===== Tombol Server Biasa =====
+    // Tombol Server
     document.getElementById('btnProcess').addEventListener('click', function() {
         callServerAction('process', 'btnProcess');
     });
@@ -831,35 +845,61 @@
         callServerAction('deleteInfo', 'btnDeleteInfo');
     });
     document.getElementById('btnClearServer').addEventListener('click', function() {
-        serverOutput.textContent = '🧹 Output server dibersihkan.';
+        serverOutput.textContent = 'Output server dibersihkan.';
         setStatus('idle', 'Idle');
     });
 
-    // ===== Tombol Folder Spesifik (dari dropdown) =====
-    document.getElementById('btnProcessSpecific').addEventListener('click', function() {
-        const folderPath = folderSelect.value;
-        if (!folderPath) {
-            alert('Pilih folder terlebih dahulu dari dropdown.');
+    // Tombol Proses Desa
+    document.getElementById('btnProcessDesa').addEventListener('click', function() {
+        const tahun = tahunSelect.value;
+        const bulan = bulanSelect.value;
+        const desa = desaSelect.value;
+        if (!desa || !tahun || !bulan) {
+            alert('Pilih Desa, Tahun, dan Bulan.');
             return;
         }
-        callServerAction('processSpecific', 'btnProcessSpecific', { folder: folderPath });
+        const folderPath = desa + '/' + tahun + '/' + bulan;
+        const loading = document.getElementById('desaLoading');
+        loading.textContent = '⏳ Memproses ' + folderPath + '...';
+        callServerAction('processSpecific', 'btnProcessDesa', { folder: folderPath }, desaOutput)
+            .finally(() => { loading.textContent = ''; });
     });
+
+    // ============================================================
+    // SERVICE WORKER (PWA) — DAFTAR OFFLINE
+    // ============================================================
+    if ('serviceWorker' in navigator) {
+        const swCode = `
+        const CACHE = 'txt-combiner-v1';
+        const ASSETS = ['/'];
+        self.addEventListener('install', e => {
+            e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+        });
+        self.addEventListener('activate', e => {
+            e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+        });
+        self.addEventListener('fetch', e => {
+            e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+        });
+        `;
+        try {
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+            navigator.serviceWorker.register(swUrl)
+                .then(() => console.log('SW registered'))
+                .catch(() => console.log('SW failed'));
+        } catch (e) { console.log('SW skip'); }
+    }
 
     // ============================================================
     // INISIALISASI
     // ============================================================
     setStatus('idle', 'Idle');
-    serverOutput.textContent = '📌 Klik tombol di atas untuk menjalankan aksi server.\n' +
-        '🔗 URL: ' + APPS_SCRIPT_URL + '\n' +
-        '📂 Drive ID: 1fZBe0ICQEmcIx2dIpsiOCZIMmkbZIkVQ\n\n' +
-        '💡 Aksi yang tersedia:\n' +
-        '   process, trigger, deleteTriggers, test, restore, deleteInfo, listFolders, processSpecific\n\n' +
-        '📁 Pilih folder dari dropdown, lalu klik "Proses Folder Terpilih".';
-
-    // Load folder list otomatis setelah 1 detik
-    setTimeout(() => {
-        loadFolderList();
-    }, 1000);
+    serverOutput.textContent = 'Klik tombol untuk menjalankan aksi server.';
+    desaOutput.textContent = 'Pilih Tahun, Bulan, Desa, lalu klik "Proses Desa".';
 </script>
+
+<!-- Sertakan JSZip untuk ekstrak ZIP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </body>
 </html>
