@@ -3,331 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>TXT Combiner Pro - Desa (2 Level)</title>
+    <title>TXT Combiner Pro</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRYVCBDb21iaW5lciBQcm8iLAogICJzaG9ydF9uYW1lIjogIlRYVENvbWJpbmVyIiwKICAiZGVzY3JpcHRpb24iOiAiR2FidW5nIGZpbGUgVFhUIGRlc2EiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2YwZjRmOCIsCiAgInRoZW1lX2NvbG9yIjogIiMxZTI5M2IiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi5qcy5kZWxpdnIubmV0L2dwL2ZvbnQtYXdlc29tZS82LjAuMC9zdmdzL3NvbGlkL2ZvbGRlci1vcGVuLnN2ZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0=">
     <link rel="icon" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/svgs/solid/folder-open.svg" type="image/svg+xml">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Courier New', Courier, monospace;
-            background: #e8e8e8;
-            padding: 20px;
-        }
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            background: #fff;
-            border: 3px solid #222;
-            padding: 20px 24px;
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
-        }
-        h1 {
-            font-size: 24px;
-            border-bottom: 3px solid #222;
-            padding-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        h1 small {
-            font-size: 14px;
-            background: #222;
-            color: #fff;
-            padding: 2px 14px;
-            border-radius: 4px;
-            font-weight: 400;
-        }
-        .subtitle {
-            font-size: 14px;
-            color: #555;
-            margin: 4px 0 16px 0;
-        }
-        .status-bar {
-            background: #e8e8e8;
-            border: 2px solid #333;
-            padding: 8px 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-            font-size: 14px;
-        }
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .dot {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid #333;
-            background: #888;
-            transition: background 0.2s;
-        }
-        .dot.idle { background: #10b981; animation: pulse-slow 1.8s ease-in-out infinite; }
-        .dot.running { background: #f59e0b; animation: pulse-fast 0.5s step-end infinite; }
-        .dot.done { background: #10b981; animation: none; }
-        .dot.error { background: #ef4444; animation: none; }
-        @keyframes pulse-slow { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
-        @keyframes pulse-fast { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
-        .tabs {
-            display: flex;
-            gap: 4px;
-            border-bottom: 2px solid #222;
-            margin-bottom: 20px;
-        }
-        .tab-btn {
-            background: #ddd;
-            border: 2px solid #222;
-            border-bottom: none;
-            padding: 8px 20px;
-            font-family: inherit;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 6px 6px 0 0;
-        }
-        .tab-btn.active {
-            background: #fff;
-            position: relative;
-            z-index: 1;
-        }
-        .tab-btn:hover { background: #eee; }
-        .tab-pane { display: none; padding: 10px 0; }
-        .tab-pane.active { display: block; }
-        .btn {
-            background: #e0e0e0;
-            border: 2px solid #333;
-            padding: 6px 16px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 3px 3px 0 #888;
-            transition: 0.05s linear;
-            margin: 2px 4px 2px 0;
-        }
-        .btn:hover { background: #ccc; box-shadow: 2px 2px 0 #888; transform: translate(1px, 1px); }
-        .btn:active { background: #bbb; box-shadow: 0 0 0 #888; transform: translate(3px, 3px); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: 2px 2px 0 #888 !important; }
-        .btn-primary { background: #4f46e5; color: #fff; border-color: #2a1f9c; }
-        .btn-primary:hover { background: #3b35b0; }
-        .btn-success { background: #10b981; color: #fff; border-color: #0a7a55; }
-        .btn-success:hover { background: #0d9668; }
-        .btn-danger { background: #ef4444; color: #fff; border-color: #a82424; }
-        .btn-danger:hover { background: #d12e2e; }
-        .btn-warning { background: #f59e0b; color: #fff; border-color: #b3740a; }
-        .btn-warning:hover { background: #d48a08; }
-        .btn-purple { background: #8b5cf6; color: #fff; border-color: #5b21b6; }
-        .btn-purple:hover { background: #7c3aed; }
-        .btn-info { background: #3b82f6; color: #fff; border-color: #1d4ed8; }
-        .btn-info:hover { background: #2563eb; }
-        .btn-gray { background: #6b7280; color: #fff; border-color: #4b5563; }
-        .btn-gray:hover { background: #4b5563; }
-        .btn-teal { background: #14b8a6; color: #fff; border-color: #0d9488; }
-        .btn-teal:hover { background: #0d9488; }
-        .drop-zone {
-            border: 3px dashed #888;
-            padding: 24px;
-            text-align: center;
-            margin: 12px 0 16px 0;
-            background: #fafafa;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .drop-zone:hover { background: #f0f0f0; border-color: #333; }
-        .drop-zone.dragover { background: #e0e7ff; border-color: #4f46e5; }
-        .file-list {
-            max-height: 160px;
-            overflow-y: auto;
-            background: #f5f5f5;
-            border: 1px solid #ccc;
-            padding: 6px 10px;
-            margin: 8px 0 12px 0;
-            font-size: 13px;
-        }
-        .file-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 3px 0;
-            border-bottom: 1px dotted #ccc;
-        }
-        .file-item:last-child { border-bottom: none; }
-        .file-item .remove {
-            color: #ef4444;
-            cursor: pointer;
-            font-weight: bold;
-            margin-left: 12px;
-        }
-        .file-item .remove:hover { color: #b91c1c; }
-        .output-area {
-            background: #1a1a1a;
-            color: #33ff33;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            padding: 12px 16px;
-            border: 3px solid #333;
-            min-height: 160px;
-            max-height: 300px;
-            overflow: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            line-height: 1.5;
-            margin-top: 12px;
-        }
-        .stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 12px 0 6px 0;
-            font-size: 14px;
-        }
-        .stats span {
-            background: #eee;
-            padding: 4px 12px;
-            border: 1px solid #aaa;
-        }
-        
-        .filter-group {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-            margin: 10px 0 14px 0;
-            padding: 14px 16px;
-            background: #f0f4ff;
-            border: 2px solid #4f46e5;
-            border-radius: 6px;
-        }
-        .filter-group label {
-            font-weight: 600;
-            font-size: 14px;
-            min-width: 50px;
-        }
-        .filter-group select {
-            padding: 6px 10px;
-            font-family: inherit;
-            font-size: 14px;
-            border: 2px solid #888;
-            background: #fff;
-            min-width: 150px;
-            max-width: 200px;
-            flex: 1;
-        }
-        .filter-group select:focus {
-            border-color: #4f46e5;
-            outline: none;
-        }
-        .filter-group select:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .filter-group .loading-text {
-            font-size: 13px;
-            color: #666;
-            font-style: italic;
-        }
-        .filter-group .refresh-link {
-            color: #4f46e5;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: underline;
-        }
-        
-        select option.processed {
-            background-color: #d1fae5 !important;
-            color: #065f46 !important;
-            font-weight: 600;
-        }
-        select option.processed:hover {
-            background-color: #a7f3d0 !important;
-        }
-        select option.unprocessed {
-            background-color: #ffffff;
-            color: #374151;
-        }
-        select option.unprocessed:hover {
-            background-color: #f3f4f6;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 2px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .status-badge.processed {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        .status-badge.unprocessed {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-        
-        .path-preview-container {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 10px;
-            padding: 6px 12px;
-            background: #f8f8f8;
-            border-radius: 4px;
-        }
-        .path-preview-container code {
-            background: #e8e8e8;
-            padding: 2px 8px;
-            border-radius: 3px;
-            font-size: 13px;
-            color: #222;
-        }
-        
-        .footer {
-            margin-top: 20px;
-            border-top: 2px solid #ccc;
-            padding-top: 12px;
-            text-align: center;
-            font-size: 13px;
-            color: #666;
-        }
-        .footer .highlight { color: #4f46e5; font-weight: 700; }
-        .install-btn {
-            background: #222;
-            color: #fff;
-            border: 2px solid #333;
-            padding: 4px 14px;
-            font-family: inherit;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 2px 2px 0 #888;
-            display: none;
-        }
-        .install-btn.show { display: inline-block; }
-        
-        @media (max-width: 600px) {
-            .container { padding: 14px; }
-            .tab-btn { font-size: 13px; padding: 6px 12px; }
-            .btn { font-size: 12px; padding: 4px 10px; }
-            .output-area { font-size: 11px; min-height: 120px; }
-            .filter-group select { min-width: 100px; max-width: 150px; }
-            .filter-group { padding: 10px 12px; }
-        }
-    </style>
 </head>
 <body>
 <div class="container">
     <h1>
-        <span>TXT Combiner <small>Desa 2 Level</small></span>
-        <span style="font-size:14px; font-weight:400;">
-            <button class="install-btn" id="installBtn">Install App</button>
-        </span>
+        <span>TXT Combiner <small>Desa</small></span>
+        <button class="install-btn" id="installBtn">Install App</button>
     </h1>
     <div class="subtitle">Gabung file TXT per Desa — pilih Bulan → Desa</div>
 
@@ -349,803 +34,477 @@
 
     <!-- TAB 1: MANUAL -->
     <div class="tab-pane active" id="tab-manual">
-        <p style="margin-bottom:8px;">Drag & drop file .txt atau .zip (banyak). ZIP akan diekstrak otomatis.</p>
+        <p style="margin-bottom:8px;">Drag & drop file .txt atau .zip</p>
         <div class="drop-zone" id="dropZone">
             <div style="pointer-events:none;">
                 <span style="font-size:20px;">📂</span><br>
-                <span style="font-size:14px;">Tarik file .txt atau .zip ke sini</span>
+                <span style="font-size:14px;">Tarik file ke sini</span>
             </div>
         </div>
         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
             <button class="btn btn-primary" id="addFilesBtn">Tambah File</button>
             <button class="btn btn-success" id="addFolderBtn">Tambah Folder</button>
-            <button class="btn btn-danger" id="clearFilesBtn">Hapus Semua</button>
+            <button class="btn btn-danger" id="clearFilesBtn">Hapus</button>
             <button class="btn btn-warning" id="processManualBtn">Gabung & Download</button>
         </div>
         <div class="file-list" id="fileList">Belum ada file.</div>
         <div class="stats">
-            <span id="statRaw">Baris awal: 0</span>
+            <span id="statRaw">Baris: 0</span>
             <span id="statDup">Duplikat: 0</span>
-            <span id="statUnique">Baris unik: 0</span>
+            <span id="statUnique">Unik: 0</span>
         </div>
         <div class="output-area" id="manualOutput">Hasil gabungan akan muncul di sini.</div>
     </div>
 
-    <!-- TAB 2: DESA (2 LEVEL: BULAN → DESA) -->
+    <!-- TAB 2: DESA -->
     <div class="tab-pane" id="tab-desa">
-        <p style="margin-bottom:10px;">
-            Pilih <strong>Bulan</strong> → <strong>Desa</strong> untuk memproses data.
-            <br>
-            <span style="font-size:13px; color:#666;">
-                <span style="background:#d1fae5; padding:2px 10px; border-radius:4px;">✅ Hijau = Sudah diproses</span>
-                <span style="background:#f3f4f6; padding:2px 10px; border-radius:4px; margin-left:8px;">📁 Putih = Belum diproses</span>
-            </span>
-        </p>
-        
+        <p style="margin-bottom:10px;">Pilih <strong>Bulan</strong> → <strong>Desa</strong></p>
         <div class="filter-group">
             <label>📆 Bulan</label>
-            <select id="monthSelect">
-                <option value="">-- Pilih Bulan --</option>
-            </select>
-            
+            <select id="monthSelect"><option value="">-- Pilih Bulan --</option></select>
             <label>🏘️ Desa</label>
-            <select id="villageSelect" disabled>
-                <option value="">-- Pilih Desa --</option>
-            </select>
-            
-            <button class="btn btn-teal" id="btnProcessDesa">Proses</button>
+            <select id="villageSelect" disabled><option value="">-- Pilih Desa --</option></select>
+            <button class="btn btn-teal" id="btnProcessDesa">Proses Desa</button>
+            <button class="btn btn-success-all" id="btnProcessAllDesa">Proses Semua Desa</button>
             <span class="refresh-link" id="refreshFilterBtn">↻ Refresh</span>
             <span class="loading-text" id="desaLoading"></span>
         </div>
-        
         <div class="path-preview-container">
             <span>📍 Path:</span>
             <code id="pathPreview">(pilih bulan dan desa)</code>
             <span id="folderStatus"></span>
         </div>
-        
         <div class="output-area" id="desaOutput">Pilih Bulan → Desa, lalu klik "Proses".</div>
     </div>
 
     <!-- TAB 3: SERVER -->
     <div class="tab-pane" id="tab-server">
-        <p style="margin-bottom:10px;">Semua aksi memanggil Google Apps Script via HTTP.</p>
+        <p style="margin-bottom:10px;">Aksi server</p>
         <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
             <button class="btn btn-primary" id="btnProcess">Proses Semua</button>
             <button class="btn btn-success" id="btnTrigger">Buat Trigger</button>
             <button class="btn btn-danger" id="btnDeleteTriggers">Hapus Trigger</button>
             <button class="btn btn-warning" id="btnTest">Test</button>
             <button class="btn btn-purple" id="btnRestore">Restore ZIP</button>
-            <button class="btn btn-info" id="btnDeleteInfo">Hapus INFO_EXTRACT</button>
+            <button class="btn btn-info" id="btnDeleteInfo">Hapus INFO</button>
             <button class="btn btn-gray" id="btnClearServer">Bersihkan</button>
         </div>
-        <div class="output-area" id="serverOutput">Klik tombol untuk menjalankan aksi server.</div>
+        <div class="output-area" id="serverOutput">Klik tombol untuk menjalankan aksi.</div>
     </div>
 
     <div class="footer">
-        <span class="highlight">I Nyoman Arta</span> &middot; 2025 &middot; Klasik + PWA
+        <span class="highlight">I Nyoman Arta</span> &middot; 2025
     </div>
 </div>
 
 <script>
-    // ============================================================
-    // KONFIGURASI - GANTI DENGAN URL DEPLOY ANDA
-    // ============================================================
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxI7MDejmYEGzhJI-g0rDUengbyKRsVUfE9X-EfGArG9Ju9U87miic9lUp2N5fil9W6/exec';
-    const SECRET_TOKEN = ''; // Kosongkan jika tidak pakai token
+// ============================================================
+// KONFIGURASI - GANTI DENGAN URL DEPLOY ANDA
+// ============================================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxI7MDejmYEGzhJI-g0rDUengbyKRsVUfE9X-EfGArG9Ju9U87miic9lUp2N5fil9W6/exec';
+const SECRET_TOKEN = '';
 
-    // ============================================================
-    // PWA INSTALL
-    // ============================================================
-    let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installBtn.classList.add('show');
+// ============================================================
+// VARIABEL GLOBAL
+// ============================================================
+let selectedFiles = [];
+let isRunning = false;
+
+// ============================================================
+// DOM ELEMENTS
+// ============================================================
+const dot = document.getElementById('indicatorDot');
+const statusText = document.getElementById('statusText');
+const monthSelect = document.getElementById('monthSelect');
+const villageSelect = document.getElementById('villageSelect');
+
+// ============================================================
+// FUNGSI UTILITY
+// ============================================================
+function setStatus(state, text) { dot.className = 'dot ' + state; statusText.textContent = text; }
+function appendOutput(el, text) { el.textContent += text + '\n'; el.scrollTop = el.scrollHeight; }
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+        if (this.dataset.tab === 'desa') loadMonths();
     });
-    installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const result = await deferredPrompt.userChoice;
-            if (result.outcome === 'accepted') {
-                installBtn.classList.remove('show');
-            }
-            deferredPrompt = null;
-        }
-    });
-    window.addEventListener('appinstalled', () => {
-        installBtn.classList.remove('show');
-    });
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-        installBtn.classList.remove('show');
-    }
+});
 
-    // ============================================================
-    // INDIKATOR
-    // ============================================================
-    const dot = document.getElementById('indicatorDot');
-    const statusText = document.getElementById('statusText');
-
-    function setStatus(state, text) {
-        dot.className = 'dot ' + state;
-        statusText.textContent = text;
-    }
-
-    // ============================================================
-    // TAB SWITCHING
-    // ============================================================
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const panes = {
-        manual: document.getElementById('tab-manual'),
-        desa: document.getElementById('tab-desa'),
-        server: document.getElementById('tab-server')
-    };
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            tabBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const target = this.dataset.tab;
-            Object.keys(panes).forEach(key => {
-                panes[key].classList.toggle('active', key === target);
+// ============================================================
+// LOAD BULAN & DESA
+// ============================================================
+async function loadMonths() {
+    const loading = document.getElementById('desaLoading');
+    loading.textContent = '⏳ Memuat bulan...';
+    monthSelect.disabled = true;
+    villageSelect.disabled = true;
+    try {
+        const data = await fetchAPI('getMonthsDirect');
+        if (data.success && data.data) {
+            monthSelect.innerHTML = '<option value="">-- Pilih Bulan --</option>';
+            data.data.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.name;
+                opt.textContent = item.name + (item.processed ? ' ✅' : '');
+                opt.className = item.processed ? 'processed' : 'unprocessed';
+                monthSelect.appendChild(opt);
             });
-            if (target === 'desa') {
-                loadMonths();
-            }
-        });
-    });
+            loading.textContent = '✅ ' + data.data.length + ' bulan ditemukan';
+        } else { loading.textContent = '❌ ' + (data.message || 'Gagal'); }
+    } catch (e) { loading.textContent = '❌ Error: ' + e.message; }
+    monthSelect.disabled = false;
+}
 
-    // ============================================================
-    // FILTER DROPDOWN 2 LEVEL: BULAN → DESA
-    // ============================================================
-    const monthSelect = document.getElementById('monthSelect');
-    const villageSelect = document.getElementById('villageSelect');
-    const desaLoading = document.getElementById('desaLoading');
-    const pathPreview = document.getElementById('pathPreview');
-    const folderStatus = document.getElementById('folderStatus');
-
-    /**
-     * Load daftar bulan dari root folder
-     */
-    async function loadMonths() {
-        desaLoading.textContent = '⏳ Memuat bulan...';
-        monthSelect.disabled = true;
-        villageSelect.disabled = true;
-
-        try {
-            let url = APPS_SCRIPT_URL + '?action=getMonthsDirect&t=' + Date.now();
-            if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
-            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            if (!response.ok) throw new Error('HTTP ' + response.status);
-            const data = await response.json();
-
-            if (data.success && data.data) {
-                monthSelect.innerHTML = '<option value="">-- Pilih Bulan --</option>';
-                data.data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.name;
-                    option.textContent = item.name + (item.processed ? ' ✅' : '');
-                    if (item.processed) option.className = 'processed';
-                    monthSelect.appendChild(option);
-                });
-                monthSelect.disabled = false;
-                desaLoading.textContent = '✅ ' + data.data.length + ' bulan ditemukan';
-            } else {
-                desaLoading.textContent = '❌ Gagal muat: ' + (data.message || '');
-                monthSelect.innerHTML = '<option value="">-- Gagal muat --</option>';
-            }
-        } catch (err) {
-            desaLoading.textContent = '❌ Error: ' + err.message;
-            monthSelect.innerHTML = '<option value="">-- Error --</option>';
-        } finally {
-            monthSelect.disabled = false;
-        }
-    }
-
-    /**
-     * Load daftar desa dari bulan yang dipilih
-     */
-    async function loadVillages(month) {
-        if (!month) {
+async function loadVillages(month) {
+    const loading = document.getElementById('desaLoading');
+    villageSelect.disabled = true;
+    if (!month) { villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>'; villageSelect.disabled = true; updatePath(); return; }
+    loading.textContent = '⏳ Memuat desa...';
+    try {
+        const data = await fetchAPI('getVillagesDirect', { month });
+        if (data.success && data.data) {
             villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
-            villageSelect.disabled = true;
-            updatePathPreview();
-            return;
-        }
-
-        desaLoading.textContent = '⏳ Memuat desa untuk ' + month + '...';
-        villageSelect.disabled = true;
-
-        try {
-            let url = APPS_SCRIPT_URL + '?action=getVillagesDirect&month=' + encodeURIComponent(month) + '&t=' + Date.now();
-            if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
-            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            if (!response.ok) throw new Error('HTTP ' + response.status);
-            const data = await response.json();
-
-            if (data.success && data.data) {
-                villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
-                data.data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.path;
-                    option.textContent = item.name + (item.processed ? ' ✅' : '');
-                    if (item.processed) option.className = 'processed';
-                    villageSelect.appendChild(option);
-                });
-                villageSelect.disabled = false;
-                desaLoading.textContent = '✅ ' + data.data.length + ' desa ditemukan';
-            } else {
-                desaLoading.textContent = '❌ Gagal muat: ' + (data.message || '');
-                villageSelect.innerHTML = '<option value="">-- Gagal muat --</option>';
-            }
-        } catch (err) {
-            desaLoading.textContent = '❌ Error: ' + err.message;
-            villageSelect.innerHTML = '<option value="">-- Error --</option>';
-        } finally {
+            data.data.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.path;
+                opt.textContent = item.name + (item.processed ? ' ✅' : '');
+                opt.className = item.processed ? 'processed' : 'unprocessed';
+                villageSelect.appendChild(opt);
+            });
             villageSelect.disabled = false;
-        }
-    }
+            loading.textContent = '✅ ' + data.data.length + ' desa ditemukan';
+        } else { loading.textContent = '❌ ' + (data.message || 'Gagal'); }
+    } catch (e) { loading.textContent = '❌ Error: ' + e.message; }
+}
 
-    /**
-     * Update preview path dan status
-     */
-    function updatePathPreview() {
-        const month = monthSelect.value;
-        const village = villageSelect.value;
-        const selectedOption = villageSelect.options[villageSelect.selectedIndex];
-        
-        if (village && selectedOption && selectedOption.value) {
-            const isProcessed = selectedOption.classList.contains('processed');
-            pathPreview.textContent = month + '/' + village;
-            if (isProcessed) {
-                folderStatus.innerHTML = '<span class="status-badge processed">✅ Sudah Diproses</span>';
-            } else {
-                folderStatus.innerHTML = '<span class="status-badge unprocessed">⏳ Belum Diproses</span>';
-            }
-        } else if (month) {
-            pathPreview.textContent = month + ' (pilih desa)';
-            folderStatus.innerHTML = '';
-        } else {
-            pathPreview.textContent = '(pilih bulan dan desa)';
-            folderStatus.innerHTML = '';
-        }
-    }
+function updatePath() {
+    const month = monthSelect.value;
+    const village = villageSelect.value;
+    const sel = villageSelect.options[villageSelect.selectedIndex];
+    document.getElementById('pathPreview').textContent = village ? month + '/' + village : (month || '(pilih)');
+    document.getElementById('folderStatus').innerHTML = village && sel && sel.value ?
+        '<span class="status-badge ' + (sel.className.includes('processed') ? 'processed' : 'unprocessed') + '">' +
+        (sel.className.includes('processed') ? '✅ Sudah Diproses' : '⏳ Belum Diproses') + '</span>' : '';
+}
 
-    // ============================================================
-    // CEK STATUS FOLDER (SETELAH PROSES)
-    // ============================================================
+// ============================================================
+// API CALL
+// ============================================================
+async function fetchAPI(action, params = {}) {
+    let url = APPS_SCRIPT_URL + '?action=' + encodeURIComponent(action) + '&t=' + Date.now();
+    if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
+    for (const [k, v] of Object.entries(params)) { if (v) url += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(v); }
+    const res = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+}
 
-    async function checkFolderStatus(folderPath) {
-        try {
-            let url = APPS_SCRIPT_URL + '?action=checkFolderStatus&folder=' + encodeURIComponent(folderPath) + '&t=' + Date.now();
-            if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
-            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            if (!response.ok) throw new Error('HTTP ' + response.status);
-            const data = await response.json();
+// ============================================================
+// CALL SERVER ACTION
+// ============================================================
+async function callServerAction(action, btnId, extraParams = {}, outputEl = document.getElementById('serverOutput')) {
+    if (isRunning) { alert('Masih ada proses berjalan.'); return; }
+    const btn = document.getElementById(btnId);
+    if (btn) { btn.disabled = true; isRunning = true; }
+    setStatus('running', 'Memproses...');
+    appendOutput(outputEl, '▶️ Menjalankan: ' + action);
+    try {
+        const data = await fetchAPI(action, extraParams);
+        if (data.success) {
+            setStatus('done', 'Selesai');
+            appendOutput(outputEl, '✅ ' + data.message);
+            if (data.log) appendOutput(outputEl, '📋 ' + data.log);
             return data;
-        } catch (err) {
-            console.error('Gagal cek status:', err);
-            return { success: false };
-        }
-    }
-
-    /**
-     * Update status dropdown setelah proses
-     */
-    async function updateFolderStatus(folderPath) {
-        const result = await checkFolderStatus(folderPath);
-        if (result.success && result.processed !== undefined) {
-            // Update status di dropdown desa
-            const options = villageSelect.options;
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].value === folderPath) {
-                    const isProcessed = result.processed;
-                    let displayName = options[i].text.replace(/ ✅$/, '').replace(/ 📁$/, '');
-                    options[i].text = displayName + (isProcessed ? ' ✅' : '');
-                    options[i].className = isProcessed ? 'processed' : 'unprocessed';
-                    break;
-                }
-            }
-            // Update status badge
-            if (result.processed) {
-                folderStatus.innerHTML = '<span class="status-badge processed">✅ Sudah Diproses</span>';
-            } else {
-                folderStatus.innerHTML = '<span class="status-badge unprocessed">⏳ Belum Diproses</span>';
-            }
-        }
-    }
-
-    // ============================================================
-    // EVENT LISTENER UNTUK DROPDOWN
-    // ============================================================
-    
-    monthSelect.addEventListener('change', function() {
-        const month = this.value;
-        if (month) {
-            loadVillages(month);
         } else {
-            villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
-            villageSelect.disabled = true;
-            updatePathPreview();
-        }
-    });
-
-    villageSelect.addEventListener('change', function() {
-        updatePathPreview();
-    });
-
-    document.getElementById('refreshFilterBtn').addEventListener('click', function() {
-        loadMonths();
-        villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
-        villageSelect.disabled = true;
-        updatePathPreview();
-    });
-
-    // ============================================================
-    // MANUAL GABUNG (TAB 1)
-    // ============================================================
-    let selectedFiles = [];
-    const dropZone = document.getElementById('dropZone');
-    const fileListDiv = document.getElementById('fileList');
-    const manualOutput = document.getElementById('manualOutput');
-    const statRaw = document.getElementById('statRaw');
-    const statDup = document.getElementById('statDup');
-    const statUnique = document.getElementById('statUnique');
-
-    function renderFileList() {
-        if (selectedFiles.length === 0) {
-            fileListDiv.innerHTML = 'Belum ada file.';
-            return;
-        }
-        let html = '';
-        selectedFiles.forEach((f, i) => {
-            html += `<div class="file-item">
-                <span>${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
-                <span class="remove" data-idx="${i}">✖</span>
-            </div>`;
-        });
-        fileListDiv.innerHTML = html;
-        document.querySelectorAll('.file-item .remove').forEach(el => {
-            el.addEventListener('click', function() {
-                const idx = parseInt(this.dataset.idx);
-                selectedFiles.splice(idx, 1);
-                renderFileList();
-            });
-        });
-    }
-
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-    dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('dragover'); });
-    dropZone.addEventListener('drop', async (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-        const items = e.dataTransfer.items;
-        const files = [];
-        const zipFiles = [];
-        const processEntry = async (entry) => {
-            if (entry.isFile) {
-                const file = await new Promise(resolve => entry.file(resolve));
-                const name = file.name.toLowerCase();
-                if (name.endsWith('.txt')) {
-                    files.push(file);
-                } else if (name.endsWith('.zip')) {
-                    zipFiles.push(file);
-                }
-            } else if (entry.isDirectory) {
-                const reader = entry.createReader();
-                const entries = await new Promise(resolve => reader.readEntries(resolve));
-                for (let ent of entries) {
-                    await processEntry(ent);
-                }
-            }
-        };
-        for (let i = 0; i < items.length; i++) {
-            const entry = items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : null;
-            if (entry) await processEntry(entry);
-        }
-
-        let txtFromZips = [];
-        if (zipFiles.length > 0) {
-            manualOutput.textContent = '⏳ Mengekstrak ' + zipFiles.length + ' ZIP...';
-            for (const zipFile of zipFiles) {
-                try {
-                    const arrayBuffer = await zipFile.arrayBuffer();
-                    const zip = await JSZip.loadAsync(arrayBuffer);
-                    const promises = [];
-                    zip.forEach((relativePath, zipEntry) => {
-                        if (!zipEntry.dir && /\.txt$/i.test(relativePath)) {
-                            const p = zipEntry.async('blob').then(blob => {
-                                const fileName = relativePath.split('/').pop() || relativePath;
-                                const file = new File([blob], fileName, { type: 'text/plain' });
-                                txtFromZips.push(file);
-                            });
-                            promises.push(p);
-                        }
-                    });
-                    await Promise.all(promises);
-                } catch (err) {
-                    manualOutput.textContent = '❌ Gagal ekstrak ZIP: ' + zipFile.name;
-                }
-            }
-        }
-
-        const allFiles = files.concat(txtFromZips);
-        if (allFiles.length) {
-            selectedFiles = selectedFiles.concat(allFiles);
-            renderFileList();
-            setStatus('idle', 'Idle');
-            manualOutput.textContent = '✅ ' + allFiles.length + ' file .txt siap (termasuk dari ' + zipFiles.length + ' ZIP).';
-        } else {
-            manualOutput.textContent = '⚠️ Tidak ditemukan file .txt.';
-        }
-    });
-
-    document.getElementById('addFilesBtn').addEventListener('click', function() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.multiple = true;
-        input.accept = '.txt,.zip';
-        input.onchange = async function(e) {
-            const rawFiles = Array.from(e.target.files);
-            const txtFiles = rawFiles.filter(f => f.name.toLowerCase().endsWith('.txt'));
-            const zipFiles = rawFiles.filter(f => f.name.toLowerCase().endsWith('.zip'));
-            let txtFromZips = [];
-            for (const zf of zipFiles) {
-                try {
-                    const arrayBuffer = await zf.arrayBuffer();
-                    const zip = await JSZip.loadAsync(arrayBuffer);
-                    const promises = [];
-                    zip.forEach((relativePath, zipEntry) => {
-                        if (!zipEntry.dir && /\.txt$/i.test(relativePath)) {
-                            const p = zipEntry.async('blob').then(blob => {
-                                const fileName = relativePath.split('/').pop() || relativePath;
-                                const file = new File([blob], fileName, { type: 'text/plain' });
-                                txtFromZips.push(file);
-                            });
-                            promises.push(p);
-                        }
-                    });
-                    await Promise.all(promises);
-                } catch (err) {
-                    manualOutput.textContent = '❌ Gagal ekstrak ZIP: ' + zf.name;
-                }
-            }
-            const all = txtFiles.concat(txtFromZips);
-            if (all.length) {
-                selectedFiles = selectedFiles.concat(all);
-                renderFileList();
-                setStatus('idle', 'Idle');
-                manualOutput.textContent = '✅ ' + all.length + ' file ditambahkan (termasuk dari ' + zipFiles.length + ' ZIP).';
-            }
-        };
-        input.click();
-    });
-
-    document.getElementById('addFolderBtn').addEventListener('click', function() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.webkitdirectory = true;
-        input.directory = true;
-        input.onchange = function(e) {
-            const files = Array.from(e.target.files).filter(f => f.name.toLowerCase().endsWith('.txt'));
-            if (files.length) {
-                selectedFiles = selectedFiles.concat(files);
-                renderFileList();
-                setStatus('idle', 'Idle');
-            }
-        };
-        input.click();
-    });
-
-    document.getElementById('clearFilesBtn').addEventListener('click', function() {
-        selectedFiles = [];
-        renderFileList();
-        manualOutput.textContent = 'Semua file dihapus.';
-        statRaw.textContent = 'Baris awal: 0';
-        statDup.textContent = 'Duplikat: 0';
-        statUnique.textContent = 'Baris unik: 0';
-        setStatus('idle', 'Idle');
-    });
-
-    function extractDateFromLine(line) {
-        const patterns = [
-            /(\d{4})-(\d{1,2})-(\d{1,2})/,
-            /(\d{1,2})\/(\d{1,2})\/(\d{4})/,
-            /(\d{1,2})-(\d{1,2})-(\d{4})/,
-            /(\d{1,2})\.(\d{1,2})\.(\d{4})/,
-            /(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i,
-            /([A-Za-z]+),\s+(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i
-        ];
-        for (let pat of patterns) {
-            const match = line.match(pat);
-            if (match) {
-                if (pat.toString().includes('Januari')) {
-                    const bulanMap = { januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5, juli: 6, agustus: 7,
-                        september: 8, oktober: 9, november: 10, desember: 11 };
-                    let bulanStr = match[2].toLowerCase();
-                    let bulan = bulanMap[bulanStr] !== undefined ? bulanMap[bulanStr] : 0;
-                    let tahun = parseInt(match[3]);
-                    let hari = parseInt(match[1]);
-                    return new Date(tahun, bulan, hari);
-                } else if (pat.toString().includes('Kamis') || pat.toString().includes('Senin')) {
-                    const bulanMap = { januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5, juli: 6, agustus: 7,
-                        september: 8, oktober: 9, november: 10, desember: 11 };
-                    let hari = parseInt(match[2]);
-                    let bulanStr = match[3].toLowerCase();
-                    let bulan = bulanMap[bulanStr] !== undefined ? bulanMap[bulanStr] : 0;
-                    let tahun = parseInt(match[4]);
-                    return new Date(tahun, bulan, hari);
-                } else {
-                    let y, m, d;
-                    if (match[1].length === 4) {
-                        y = parseInt(match[1]);
-                        m = parseInt(match[2]) - 1;
-                        d = parseInt(match[3]);
-                    } else {
-                        if (match[3] && match[3].length === 4) {
-                            d = parseInt(match[1]);
-                            m = parseInt(match[2]) - 1;
-                            y = parseInt(match[3]);
-                        } else if (match[2] && match[2].length === 4) {
-                            d = parseInt(match[3]);
-                            m = parseInt(match[1]) - 1;
-                            y = parseInt(match[2]);
-                        } else {
-                            d = parseInt(match[1]);
-                            m = parseInt(match[2]) - 1;
-                            y = parseInt(match[3]);
-                        }
-                    }
-                    if (!isNaN(y) && !isNaN(m) && !isNaN(d)) return new Date(y, m, d);
-                }
-            }
-        }
-        return null;
-    }
-
-    document.getElementById('processManualBtn').addEventListener('click', async function() {
-        if (selectedFiles.length === 0) {
-            manualOutput.textContent = 'Tidak ada file. Tambahkan file terlebih dahulu.';
             setStatus('error', 'Error');
-            setTimeout(() => setStatus('idle', 'Idle'), 3000);
-            return;
+            appendOutput(outputEl, '❌ ' + data.message);
+            alert('❌ ' + data.message);
         }
-        setStatus('running', 'Memproses...');
-        let allLines = [];
-        for (const file of selectedFiles) {
-            try {
-                const text = await file.text();
-                const lines = text.split(/\r?\n/);
-                for (let line of lines) {
-                    const trimmed = line.trim();
-                    if (trimmed) allLines.push(trimmed);
-                }
-            } catch (e) {
-                manualOutput.textContent = 'Gagal baca file: ' + file.name;
-                setStatus('error', 'Error');
-                setTimeout(() => setStatus('idle', 'Idle'), 3000);
-                return;
-            }
-        }
-        const totalRaw = allLines.length;
-        const unique = [];
-        const seen = new Set();
-        for (const line of allLines) {
-            const key = line.toLowerCase();
-            if (!seen.has(key)) {
-                seen.add(key);
-                unique.push(line);
-            }
-        }
-        const dupCount = totalRaw - unique.length;
-        const withDate = unique.map(line => ({ line, date: extractDateFromLine(line) }));
-        withDate.sort((a, b) => {
-            if (a.date && b.date) return a.date - b.date;
-            if (a.date) return -1;
-            if (b.date) return 1;
-            return 0;
-        });
-        const sorted = withDate.map(item => item.line);
-
-        manualOutput.textContent = sorted.join('\n');
-        statRaw.textContent = 'Baris awal: ' + totalRaw;
-        statDup.textContent = 'Duplikat: ' + dupCount;
-        statUnique.textContent = 'Baris unik: ' + sorted.length;
-
-        if (sorted.length > 0) {
-            const blob = new Blob([sorted.join('\n')], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const baseName = selectedFiles[0]?.name.replace(/\.[^.]+$/, '') || 'gabungan';
-            a.download = baseName + '_gabungan.txt';
-            a.href = url;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(url), 2000);
-            manualOutput.textContent += '\n\nFile berhasil didownload!';
-        }
-        setStatus('done', 'Selesai');
+    } catch (err) {
+        setStatus('error', 'Error');
+        appendOutput(outputEl, '❌ Error: ' + err.message);
+        alert('Error: ' + err.message);
+    } finally {
+        if (btn) { btn.disabled = false; isRunning = false; }
         setTimeout(() => setStatus('idle', 'Idle'), 3000);
-    });
-
-    // ============================================================
-    // AKSI SERVER (TAB 2 & 3)
-    // ============================================================
-    const desaOutput = document.getElementById('desaOutput');
-    const serverOutput = document.getElementById('serverOutput');
-    let isRunning = false;
-
-    function appendOutput(outputEl, text, type) {
-        const prefix = type === 'error' ? '❌ ' : type === 'info' ? 'ℹ️ ' : '';
-        outputEl.textContent += prefix + text + '\n';
-        outputEl.scrollTop = outputEl.scrollHeight;
     }
+}
 
-    async function callServerAction(action, btnId, extraParams = {}, outputEl = serverOutput) {
-        if (isRunning) {
-            alert('Masih ada proses berjalan.');
-            return;
-        }
-        const btn = document.getElementById(btnId);
-        if (btn) { btn.disabled = true; isRunning = true; }
-
-        setStatus('running', 'Memproses...');
-        appendOutput(outputEl, 'Menjalankan: ' + action, 'info');
-
-        try {
-            let url = APPS_SCRIPT_URL + '?action=' + encodeURIComponent(action) + '&t=' + Date.now();
-            if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
-            for (const [key, value] of Object.entries(extraParams)) {
-                if (value) url += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(value);
-            }
-            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            if (!response.ok) throw new Error('HTTP ' + response.status);
-            const data = await response.json();
-
-            if (data.success) {
-                setStatus('done', 'Selesai');
-                appendOutput(outputEl, '✅ ' + data.message, 'info');
-                if (data.log) appendOutput(outputEl, 'LOG:\n' + data.log, 'info');
-            } else {
-                setStatus('error', 'Error');
-                appendOutput(outputEl, 'ERROR: ' + data.message, 'error');
-                alert('❌ ' + data.message);
-            }
-        } catch (err) {
-            setStatus('error', 'Error');
-            const errorMsg = 'Gagal koneksi: ' + err.message;
-            appendOutput(outputEl, errorMsg, 'error');
-            alert('Gagal koneksi:\n' + errorMsg);
-        } finally {
-            if (btn) { btn.disabled = false; isRunning = false; }
-            setTimeout(() => {
-                if (dot.className.includes('done') || dot.className.includes('error')) {
-                    setStatus('idle', 'Idle');
-                }
-            }, 4000);
-        }
-    }
-
-    // Tombol Server
-    document.getElementById('btnProcess').addEventListener('click', function() {
-        callServerAction('process', 'btnProcess');
-    });
-    document.getElementById('btnTrigger').addEventListener('click', function() {
-        callServerAction('trigger', 'btnTrigger');
-    });
-    document.getElementById('btnDeleteTriggers').addEventListener('click', function() {
-        callServerAction('deleteTriggers', 'btnDeleteTriggers');
-    });
-    document.getElementById('btnTest').addEventListener('click', function() {
-        callServerAction('test', 'btnTest');
-    });
-    document.getElementById('btnRestore').addEventListener('click', function() {
-        callServerAction('restore', 'btnRestore');
-    });
-    document.getElementById('btnDeleteInfo').addEventListener('click', function() {
-        callServerAction('deleteInfo', 'btnDeleteInfo');
-    });
-    document.getElementById('btnClearServer').addEventListener('click', function() {
-        serverOutput.textContent = 'Output server dibersihkan.';
-        setStatus('idle', 'Idle');
-    });
-
-    // ============================================================
-    // TOMBOL PROSES DESA (DIPERBAIKI - TIDAK RESET)
-    // ============================================================
-
-    document.getElementById('btnProcessDesa').addEventListener('click', function() {
-        const folderPath = villageSelect.value;
-        if (!folderPath) {
-            alert('Pilih Bulan → Desa terlebih dahulu.');
-            return;
-        }
-        
-        const loading = document.getElementById('desaLoading');
-        const btn = this;
-        btn.disabled = true;
-        const originalText = loading.textContent;
-        loading.textContent = '⏳ Memproses ' + folderPath + '...';
-        
-        // Simpan pilihan saat ini
-        const currentMonth = monthSelect.value;
-        const currentVillage = villageSelect.value;
-        
-        // Jalankan proses
-        callServerAction('processSpecific', 'btnProcessDesa', { folder: folderPath }, desaOutput)
-            .finally(async () => {
-                // Update status folder
-                await updateFolderStatus(folderPath);
-                
-                // Kembalikan pilihan
-                monthSelect.value = currentMonth;
-                villageSelect.value = currentVillage;
-                
-                // Update path preview
-                updatePathPreview();
-                
-                loading.textContent = '✅ Proses selesai!';
-                btn.disabled = false;
-                
-                // Refresh daftar bulan (untuk update status di bulan)
-                await loadMonths();
-                
-                // Kembalikan pilihan setelah refresh
-                monthSelect.value = currentMonth;
-                // Trigger change untuk load desa
-                monthSelect.dispatchEvent(new Event('change'));
-                
-                // Set desa kembali setelah load desa selesai
-                setTimeout(() => {
-                    villageSelect.value = currentVillage;
-                    updatePathPreview();
-                    updateFolderStatus(folderPath);
-                }, 600);
-            });
-    });
-
-    // ============================================================
-    // SERVICE WORKER (PWA)
-    // ============================================================
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-            for(let registration of registrations) {
-                registration.unregister();
-            }
-        }).then(function() {
-            const swCode = `
-            const CACHE = 'txt-combiner-v2';
-            const ASSETS = ['/'];
-            self.addEventListener('install', e => {
-                e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
-            });
-            self.addEventListener('activate', e => {
-                e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
-            });
-            self.addEventListener('fetch', e => {
-                e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-            });
-            `;
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            const swUrl = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(swUrl)
-                .then(() => console.log('SW registered'))
-                .catch(() => console.log('SW failed'));
-        }).catch(() => console.log('SW unregister failed'));
-    }
-
-    // ============================================================
-    // INISIALISASI
-    // ============================================================
-    setStatus('idle', 'Idle');
-    serverOutput.textContent = 'Klik tombol untuk menjalankan aksi server.';
-    desaOutput.textContent = 'Pilih Bulan → Desa, lalu klik "Proses".';
-    pathPreview.textContent = '(pilih bulan dan desa)';
-
-    // Load bulan saat pertama kali
+// ============================================================
+// EVENT: MONTH CHANGE
+// ============================================================
+monthSelect.addEventListener('change', function() { loadVillages(this.value); });
+villageSelect.addEventListener('change', updatePath);
+document.getElementById('refreshFilterBtn').addEventListener('click', function() {
     loadMonths();
+    villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+    villageSelect.disabled = true;
+    updatePath();
+});
+
+// ============================================================
+// PROSES DESA (SATU)
+// ============================================================
+document.getElementById('btnProcessDesa').addEventListener('click', function() {
+    const path = villageSelect.value;
+    if (!path) { alert('Pilih Bulan → Desa dulu.'); return; }
+    const loading = document.getElementById('desaLoading');
+    const btn = this;
+    btn.disabled = true;
+    const cm = monthSelect.value, cv = villageSelect.value;
+    loading.textContent = '⏳ Memproses ' + path + '...';
+    callServerAction('processSpecific', 'btnProcessDesa', { folder: path }, document.getElementById('desaOutput'))
+        .finally(() => { loading.textContent = '✅ Selesai!'; btn.disabled = false;
+            setTimeout(() => { loadMonths(); monthSelect.value = cm; monthSelect.dispatchEvent(new Event('change'));
+                setTimeout(() => { villageSelect.value = cv; updatePath(); }, 500); }, 300); });
+});
+
+// ============================================================
+// PROSES SEMUA DESA (BARU!)
+// ============================================================
+document.getElementById('btnProcessAllDesa').addEventListener('click', function() {
+    const month = monthSelect.value;
+    if (!month) { alert('Pilih bulan dulu.'); return; }
+    const loading = document.getElementById('desaLoading');
+    const btn = this;
+    btn.disabled = true;
+    const cm = monthSelect.value, cv = villageSelect.value;
+    loading.textContent = '⏳ Memproses semua desa di ' + month + '...';
+    callServerAction('processAllVillages', 'btnProcessAllDesa', { month }, document.getElementById('desaOutput'))
+        .finally(() => { loading.textContent = '✅ Semua desa selesai!'; btn.disabled = false;
+            setTimeout(() => { loadMonths(); monthSelect.value = cm; monthSelect.dispatchEvent(new Event('change'));
+                setTimeout(() => { villageSelect.value = cv; updatePath(); }, 500); }, 300); });
+});
+
+// ============================================================
+// SERVER BUTTONS
+// ============================================================
+const actions = {
+    'btnProcess': 'process',
+    'btnTrigger': 'trigger',
+    'btnDeleteTriggers': 'deleteTriggers',
+    'btnTest': 'test',
+    'btnRestore': 'restore',
+    'btnDeleteInfo': 'deleteInfo'
+};
+Object.entries(actions).forEach(([id, action]) => {
+    document.getElementById(id).addEventListener('click', () => callServerAction(action, id));
+});
+document.getElementById('btnClearServer').addEventListener('click', function() {
+    document.getElementById('serverOutput').textContent = 'Output dibersihkan.';
+});
+
+// ============================================================
+// MANUAL GABUNG
+// ============================================================
+const dropZone = document.getElementById('dropZone');
+const fileListDiv = document.getElementById('fileList');
+
+function renderFiles() {
+    if (!selectedFiles.length) { fileListDiv.innerHTML = 'Belum ada file.'; return; }
+    fileListDiv.innerHTML = selectedFiles.map((f, i) => 
+        `<div class="file-item"><span>${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
+        <span class="remove" data-idx="${i}">✖</span></div>`
+    ).join('');
+    document.querySelectorAll('.file-item .remove').forEach(el => {
+        el.addEventListener('click', function() { selectedFiles.splice(parseInt(this.dataset.idx), 1); renderFiles(); });
+    });
+}
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', async e => {
+    e.preventDefault(); dropZone.classList.remove('dragover');
+    const items = e.dataTransfer.items;
+    const files = [], zipFiles = [];
+    const processEntry = async (entry) => {
+        if (entry.isFile) {
+            const file = await new Promise(r => entry.file(r));
+            const name = file.name.toLowerCase();
+            if (name.endsWith('.txt')) files.push(file);
+            else if (name.endsWith('.zip')) zipFiles.push(file);
+        } else if (entry.isDirectory) {
+            const reader = entry.createReader();
+            const entries = await new Promise(r => reader.readEntries(r));
+            for (const ent of entries) await processEntry(ent);
+        }
+    };
+    for (let i = 0; i < items.length; i++) {
+        const entry = items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : null;
+        if (entry) await processEntry(entry);
+    }
+    let txtFromZips = [];
+    if (zipFiles.length) {
+        document.getElementById('manualOutput').textContent = '⏳ Ekstrak ' + zipFiles.length + ' ZIP...';
+        for (const zf of zipFiles) {
+            try {
+                const zip = await JSZip.loadAsync(await zf.arrayBuffer());
+                const promises = [];
+                zip.forEach((relPath, entry) => {
+                    if (!entry.dir && /\.txt$/i.test(relPath)) {
+                        promises.push(entry.async('blob').then(blob => {
+                            txtFromZips.push(new File([blob], relPath.split('/').pop() || relPath, { type: 'text/plain' }));
+                        }));
+                    }
+                });
+                await Promise.all(promises);
+            } catch (err) { /* skip */ }
+        }
+    }
+    const all = files.concat(txtFromZips);
+    if (all.length) { selectedFiles = selectedFiles.concat(all); renderFiles(); }
+});
+
+document.getElementById('addFilesBtn').addEventListener('click', function() {
+    const input = document.createElement('input');
+    input.type = 'file'; input.multiple = true; input.accept = '.txt,.zip';
+    input.onchange = async function(e) {
+        const raw = Array.from(e.target.files);
+        const txt = raw.filter(f => f.name.toLowerCase().endsWith('.txt'));
+        const zip = raw.filter(f => f.name.toLowerCase().endsWith('.zip'));
+        let fromZip = [];
+        for (const zf of zip) {
+            try {
+                const z = await JSZip.loadAsync(await zf.arrayBuffer());
+                const p = [];
+                z.forEach((rel, entry) => {
+                    if (!entry.dir && /\.txt$/i.test(rel)) {
+                        p.push(entry.async('blob').then(b => { fromZip.push(new File([b], rel.split('/').pop() || rel)); }));
+                    }
+                });
+                await Promise.all(p);
+            } catch (e) { /* skip */ }
+        }
+        const all = txt.concat(fromZip);
+        if (all.length) { selectedFiles = selectedFiles.concat(all); renderFiles(); }
+    };
+    input.click();
+});
+
+document.getElementById('addFolderBtn').addEventListener('click', function() {
+    const input = document.createElement('input');
+    input.type = 'file'; input.webkitdirectory = true;
+    input.onchange = function(e) {
+        const files = Array.from(e.target.files).filter(f => f.name.toLowerCase().endsWith('.txt'));
+        if (files.length) { selectedFiles = selectedFiles.concat(files); renderFiles(); }
+    };
+    input.click();
+});
+
+document.getElementById('clearFilesBtn').addEventListener('click', function() {
+    selectedFiles = []; renderFiles();
+    document.getElementById('manualOutput').textContent = 'Semua file dihapus.';
+    document.getElementById('statRaw').textContent = 'Baris: 0';
+    document.getElementById('statDup').textContent = 'Duplikat: 0';
+    document.getElementById('statUnique').textContent = 'Unik: 0';
+});
+
+function extractDateFromLine(line) {
+    const patterns = [
+        /(\d{4})-(\d{1,2})-(\d{1,2})/,
+        /(\d{1,2})\/(\d{1,2})\/(\d{4})/,
+        /(\d{1,2})-(\d{1,2})-(\d{4})/,
+        /(\d{1,2})\.(\d{1,2})\.(\d{4})/,
+        /(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i,
+        /([A-Za-z]+),\s+(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i
+    ];
+    const bulanMap = { januari:0, februari:1, maret:2, april:3, mei:4, juni:5, juli:6, agustus:7, september:8, oktober:9, november:10, desember:11 };
+    for (const pat of patterns) {
+        const m = line.match(pat);
+        if (!m) continue;
+        if (pat.toString().includes('Januari')) {
+            let hari, bulan, tahun;
+            if (m.length === 5) { hari=parseInt(m[2]); bulan=bulanMap[m[3].toLowerCase()]; tahun=parseInt(m[4]); }
+            else if (m.length === 4) { hari=parseInt(m[1]); bulan=bulanMap[m[2].toLowerCase()]; tahun=parseInt(m[3]); }
+            if (bulan!==undefined && !isNaN(hari) && !isNaN(tahun)) return new Date(tahun, bulan, hari);
+        } else {
+            let y, mo, d;
+            if (m[1].length === 4) { y=parseInt(m[1]); mo=parseInt(m[2])-1; d=parseInt(m[3]); }
+            else if (m[3] && m[3].length === 4) { d=parseInt(m[1]); mo=parseInt(m[2])-1; y=parseInt(m[3]); }
+            else if (m[2] && m[2].length === 4) { d=parseInt(m[3]); mo=parseInt(m[1])-1; y=parseInt(m[2]); }
+            else { d=parseInt(m[1]); mo=parseInt(m[2])-1; y=parseInt(m[3]); }
+            if (!isNaN(y) && !isNaN(mo) && !isNaN(d)) return new Date(y, mo, d);
+        }
+    }
+    return null;
+}
+
+document.getElementById('processManualBtn').addEventListener('click', async function() {
+    if (!selectedFiles.length) { alert('Tidak ada file.'); return; }
+    setStatus('running', 'Memproses...');
+    let allLines = [];
+    for (const file of selectedFiles) {
+        try {
+            const text = await file.text();
+            text.split(/\r?\n/).forEach(line => { const t = line.trim(); if (t) allLines.push(t); });
+        } catch (e) { /* skip */ }
+    }
+    const unique = [], seen = new Set();
+    for (const line of allLines) {
+        const key = line.toLowerCase();
+        if (!seen.has(key)) { seen.add(key); unique.push(line); }
+    }
+    const withDate = unique.map(line => ({ line, date: extractDateFromLine(line) }));
+    withDate.sort((a, b) => {
+        if (a.date && b.date) return a.date - b.date;
+        if (a.date) return -1; if (b.date) return 1; return 0;
+    });
+    const sorted = withDate.map(item => item.line);
+    const output = document.getElementById('manualOutput');
+    output.textContent = sorted.join('\n');
+    document.getElementById('statRaw').textContent = 'Baris: ' + allLines.length;
+    document.getElementById('statDup').textContent = 'Duplikat: ' + (allLines.length - unique.length);
+    document.getElementById('statUnique').textContent = 'Unik: ' + sorted.length;
+    if (sorted.length) {
+        const blob = new Blob([sorted.join('\n')], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.download = 'gabungan.txt'; a.href = url;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+        output.textContent += '\n\n✅ File berhasil didownload!';
+    }
+    setStatus('done', 'Selesai');
+    setTimeout(() => setStatus('idle', 'Idle'), 3000);
+});
+
+// ============================================================
+// PWA INSTALL
+// ============================================================
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.getElementById('installBtn').classList.add('show'); });
+document.getElementById('installBtn').addEventListener('click', async () => {
+    if (deferredPrompt) { deferredPrompt.prompt(); const result = await deferredPrompt.userChoice; if (result.outcome === 'accepted') document.getElementById('installBtn').classList.remove('show'); deferredPrompt = null; }
+});
+
+// ============================================================
+// SERVICE WORKER
+// ============================================================
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(regs => Promise.all(regs.map(r => r.unregister())))
+        .then(() => {
+            const sw = new Blob([`
+                const CACHE='txt-combiner-v2';
+                self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/'])).then(() => self.skipWaiting())));
+                self.addEventListener('activate', e => e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+                self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+            `], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(sw));
+        });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+setStatus('idle', 'Idle');
+loadMonths();
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
