@@ -229,6 +229,42 @@
             font-weight: bold;
             text-decoration: underline;
         }
+        
+        /* ============================================================
+           STYLE UNTUK FOLDER YANG SUDAH DIPROSES
+           ============================================================ */
+        select option.processed {
+            background-color: #d1fae5 !important;
+            color: #065f46 !important;
+            font-weight: 600;
+        }
+        select option.processed:hover {
+            background-color: #a7f3d0 !important;
+        }
+        select option.unprocessed {
+            background-color: #ffffff;
+            color: #374151;
+        }
+        select option.unprocessed:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-badge.processed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-badge.unprocessed {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
         .footer {
             margin-top: 20px;
             border-top: 2px solid #ccc;
@@ -250,6 +286,7 @@
             display: none;
         }
         .install-btn.show { display: inline-block; }
+        
         @media (max-width: 600px) {
             .container { padding: 14px; }
             .tab-btn { font-size: 13px; padding: 6px 12px; }
@@ -311,9 +348,13 @@
         <div class="output-area" id="manualOutput">Hasil gabungan akan muncul di sini.</div>
     </div>
 
-    <!-- TAB 2: DESA (DROPDOWN BERTINGKAT) -->
+    <!-- TAB 2: DESA (DROPDOWN BERTINGKAT DENGAN WARNA) -->
     <div class="tab-pane" id="tab-desa">
         <p style="margin-bottom:10px;">Pilih folder dari daftar (terstruktur: utama → tahun → bulan → desa).</p>
+        <p style="font-size:13px; color:#666; margin-bottom:10px;">
+            <span style="background:#d1fae5; padding:2px 10px; border-radius:4px;">✅ Hijau = Sudah diproses</span>
+            <span style="background:#f3f4f6; padding:2px 10px; border-radius:4px; margin-left:8px;">📁 Putih = Belum diproses</span>
+        </p>
         <div class="filter-group">
             <label for="folderSelect">Folder</label>
             <select id="folderSelect">
@@ -325,6 +366,7 @@
         </div>
         <p style="font-size:13px; color:#666; margin-bottom:10px;">
             Path terpilih: <code id="pathPreview">(pilih folder)</code>
+            <span id="folderStatus" style="margin-left:10px;"></span>
         </p>
         <div class="output-area" id="desaOutput">Pilih folder dari dropdown, lalu klik "Proses Folder".</div>
     </div>
@@ -351,9 +393,10 @@
 
 <script>
     // ============================================================
-    // KONFIGURASI (URL APPS SCRIPT) — GANTI DENGAN URL DEPLOY ANDA
+    // KONFIGURASI - GANTI DENGAN URL DEPLOY ANDA
     // ============================================================
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxy8Hiy2i0ukCftKaDcijSewoGmDBcIgOIdyppAGSf3LuPq0T3SZ24g-OESEJstHnuU/exec';
+    const SECRET_TOKEN = ''; // Kosongkan jika tidak pakai token
 
     // ============================================================
     // PWA INSTALL
@@ -418,38 +461,57 @@
     });
 
     // ============================================================
-    // LOAD FOLDER LIST DARI APPS SCRIPT
+    // LOAD FOLDER LIST DARI APPS SCRIPT (DENGAN STATUS PROCESSED)
     // ============================================================
     const folderSelect = document.getElementById('folderSelect');
     const desaLoading = document.getElementById('desaLoading');
     const pathPreview = document.getElementById('pathPreview');
+    const folderStatus = document.getElementById('folderStatus');
 
     async function loadFolderList() {
         desaLoading.textContent = '⏳ Memuat daftar folder...';
         folderSelect.disabled = true;
 
         try {
-            const url = APPS_SCRIPT_URL + '?action=listFolders&t=' + Date.now();
+            let url = APPS_SCRIPT_URL + '?action=listFolders&t=' + Date.now();
+            if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
             const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
             if (!response.ok) throw new Error('HTTP ' + response.status);
             const data = await response.json();
 
             if (data.success && data.folders) {
                 folderSelect.innerHTML = '<option value="">-- Pilih folder --</option>';
-                // Grouping berdasarkan level (indentasi)
+                
+                let processedCount = 0;
+                let totalCount = data.folders.length;
+                
                 data.folders.forEach(f => {
                     const option = document.createElement('option');
                     option.value = f.path;
-                    // Tambahkan indentasi berdasarkan level
+                    
                     let indent = '';
                     for (let i = 0; i < f.level; i++) {
                         indent += '  ';
                     }
-                    option.textContent = indent + '📁 ' + f.display;
-                    option.title = f.path; // tooltip untuk path lengkap
+                    
+                    // Tentukan ikon dan status
+                    let icon = f.processed ? '✅' : '📁';
+                    let statusText = f.processed ? ' [✓ DIPROSES]' : '';
+                    option.textContent = indent + icon + ' ' + f.display + statusText;
+                    option.title = f.path + (f.processed ? ' (Sudah diproses)' : ' (Belum diproses)');
+                    
+                    // Tambahkan class untuk styling
+                    if (f.processed) {
+                        option.className = 'processed';
+                        processedCount++;
+                    } else {
+                        option.className = 'unprocessed';
+                    }
+                    
                     folderSelect.appendChild(option);
                 });
-                desaLoading.textContent = '✅ ' + data.folders.length + ' folder ditemukan';
+                
+                desaLoading.textContent = `✅ ${totalCount} folder ditemukan (${processedCount} sudah diproses)`;
             } else {
                 desaLoading.textContent = '❌ Gagal muat: ' + (data.message || '');
                 folderSelect.innerHTML = '<option value="">-- Gagal muat --</option>';
@@ -466,14 +528,26 @@
         loadFolderList();
     });
 
-    // Preview path saat pilihan berubah
+    // Preview path dan status saat pilihan berubah
     folderSelect.addEventListener('change', function() {
         const val = this.value;
         pathPreview.textContent = val || '(pilih folder)';
+        
+        const selectedOption = this.options[this.selectedIndex];
+        if (val && selectedOption) {
+            const isProcessed = selectedOption.classList.contains('processed');
+            if (isProcessed) {
+                folderStatus.innerHTML = '<span class="status-badge processed">✅ Sudah Diproses</span>';
+            } else {
+                folderStatus.innerHTML = '<span class="status-badge unprocessed">⏳ Belum Diproses</span>';
+            }
+        } else {
+            folderStatus.innerHTML = '';
+        }
     });
 
     // ============================================================
-    // MANUAL GABUNG (TAB 1) - DENGAN EKSTRAK ZIP
+    // MANUAL GABUNG (TAB 1)
     // ============================================================
     let selectedFiles = [];
     const dropZone = document.getElementById('dropZone');
@@ -572,7 +646,6 @@
         }
     });
 
-    // Tombol tambah file
     document.getElementById('addFilesBtn').addEventListener('click', function() {
         const input = document.createElement('input');
         input.type = 'file';
@@ -788,6 +861,7 @@
 
         try {
             let url = APPS_SCRIPT_URL + '?action=' + encodeURIComponent(action) + '&t=' + Date.now();
+            if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
             for (const [key, value] of Object.entries(extraParams)) {
                 if (value) url += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(value);
             }
@@ -843,7 +917,7 @@
         setStatus('idle', 'Idle');
     });
 
-    // Tombol Proses Desa (dari dropdown)
+    // Tombol Proses Desa
     document.getElementById('btnProcessDesa').addEventListener('click', function() {
         const folderPath = folderSelect.value;
         if (!folderPath) {
@@ -860,26 +934,30 @@
     // SERVICE WORKER (PWA)
     // ============================================================
     if ('serviceWorker' in navigator) {
-        const swCode = `
-        const CACHE = 'txt-combiner-v1';
-        const ASSETS = ['/'];
-        self.addEventListener('install', e => {
-            e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
-        });
-        self.addEventListener('activate', e => {
-            e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
-        });
-        self.addEventListener('fetch', e => {
-            e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-        });
-        `;
-        try {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister();
+            }
+        }).then(function() {
+            const swCode = `
+            const CACHE = 'txt-combiner-v2';
+            const ASSETS = ['/'];
+            self.addEventListener('install', e => {
+                e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+            });
+            self.addEventListener('activate', e => {
+                e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+            });
+            self.addEventListener('fetch', e => {
+                e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+            });
+            `;
             const blob = new Blob([swCode], { type: 'application/javascript' });
             const swUrl = URL.createObjectURL(blob);
             navigator.serviceWorker.register(swUrl)
                 .then(() => console.log('SW registered'))
                 .catch(() => console.log('SW failed'));
-        } catch (e) { console.log('SW skip'); }
+        }).catch(() => console.log('SW unregister failed'));
     }
 
     // ============================================================
@@ -894,7 +972,7 @@
     loadFolderList();
 </script>
 
-<!-- Sertakan JSZip untuk ekstrak ZIP -->
+<!-- JSZip untuk ekstrak ZIP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </body>
 </html>
