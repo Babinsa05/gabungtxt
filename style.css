@@ -340,3 +340,15 @@ select option.unprocessed:hover { background-color: #f3f4f6; }
     .filter-group select { min-width: 100px; max-width: 150px; }
     .filter-group { padding: 10px 12px; }
 }
+/* Tambahan untuk tombol "Proses Semua Desa" */
+.btn-success-all {
+    background: #059669;
+    color: #fff;
+    border-color: #047857;
+}
+.btn-success-all:hover {
+    background: #047857;
+}
+.btn-success-all:active {
+    background: #065f46;
+}
