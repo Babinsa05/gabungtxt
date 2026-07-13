@@ -613,6 +613,50 @@
     }
 
     // ============================================================
+    // CEK STATUS FOLDER (SETELAH PROSES)
+    // ============================================================
+
+    async function checkFolderStatus(folderPath) {
+        try {
+            let url = APPS_SCRIPT_URL + '?action=checkFolderStatus&folder=' + encodeURIComponent(folderPath) + '&t=' + Date.now();
+            if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
+            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            const data = await response.json();
+            return data;
+        } catch (err) {
+            console.error('Gagal cek status:', err);
+            return { success: false };
+        }
+    }
+
+    /**
+     * Update status dropdown setelah proses
+     */
+    async function updateFolderStatus(folderPath) {
+        const result = await checkFolderStatus(folderPath);
+        if (result.success && result.processed !== undefined) {
+            // Update status di dropdown desa
+            const options = villageSelect.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value === folderPath) {
+                    const isProcessed = result.processed;
+                    let displayName = options[i].text.replace(/ ✅$/, '').replace(/ 📁$/, '');
+                    options[i].text = displayName + (isProcessed ? ' ✅' : '');
+                    options[i].className = isProcessed ? 'processed' : 'unprocessed';
+                    break;
+                }
+            }
+            // Update status badge
+            if (result.processed) {
+                folderStatus.innerHTML = '<span class="status-badge processed">✅ Sudah Diproses</span>';
+            } else {
+                folderStatus.innerHTML = '<span class="status-badge unprocessed">⏳ Belum Diproses</span>';
+            }
+        }
+    }
+
+    // ============================================================
     // EVENT LISTENER UNTUK DROPDOWN
     // ============================================================
     
@@ -1008,19 +1052,57 @@
         setStatus('idle', 'Idle');
     });
 
-    // Tombol Proses Desa (2 Level)
+    // ============================================================
+    // TOMBOL PROSES DESA (DIPERBAIKI - TIDAK RESET)
+    // ============================================================
+
     document.getElementById('btnProcessDesa').addEventListener('click', function() {
         const folderPath = villageSelect.value;
         if (!folderPath) {
             alert('Pilih Bulan → Desa terlebih dahulu.');
             return;
         }
+        
         const loading = document.getElementById('desaLoading');
+        const btn = this;
+        btn.disabled = true;
+        const originalText = loading.textContent;
         loading.textContent = '⏳ Memproses ' + folderPath + '...';
+        
+        // Simpan pilihan saat ini
+        const currentMonth = monthSelect.value;
+        const currentVillage = villageSelect.value;
+        
+        // Jalankan proses
         callServerAction('processSpecific', 'btnProcessDesa', { folder: folderPath }, desaOutput)
-            .finally(() => { 
-                loading.textContent = '';
-                loadMonths();
+            .finally(async () => {
+                // Update status folder
+                await updateFolderStatus(folderPath);
+                
+                // Kembalikan pilihan
+                monthSelect.value = currentMonth;
+                villageSelect.value = currentVillage;
+                
+                // Update path preview
+                updatePathPreview();
+                
+                loading.textContent = '✅ Proses selesai!';
+                btn.disabled = false;
+                
+                // Refresh daftar bulan (untuk update status di bulan)
+                await loadMonths();
+                
+                // Kembalikan pilihan setelah refresh
+                monthSelect.value = currentMonth;
+                // Trigger change untuk load desa
+                monthSelect.dispatchEvent(new Event('change'));
+                
+                // Set desa kembali setelah load desa selesai
+                setTimeout(() => {
+                    villageSelect.value = currentVillage;
+                    updatePathPreview();
+                    updateFolderStatus(folderPath);
+                }, 600);
             });
     });
 
