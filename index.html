@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>TXT Combiner Pro - Desa</title>
+    <title>TXT Combiner Pro - Desa (2 Level)</title>
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRYVCBDb21iaW5lciBQcm8iLAogICJzaG9ydF9uYW1lIjogIlRYVENvbWJpbmVyIiwKICAiZGVzY3JpcHRpb24iOiAiR2FidW5nIGZpbGUgVFhUIGRlc2EiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2YwZjRmOCIsCiAgInRoZW1lX2NvbG9yIjogIiMxZTI5M2IiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi5qcy5kZWxpdnIubmV0L2dwL2ZvbnQtYXdlc29tZS82LjAuMC9zdmdzL3NvbGlkL2ZvbGRlci1vcGVuLnN2ZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0=">
     <link rel="icon" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/svgs/solid/folder-open.svg" type="image/svg+xml">
     <style>
-        /* ===== SAME AS PREVIOUS ===== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -192,7 +191,6 @@
             border: 1px solid #aaa;
         }
         
-        /* FILTER GROUP STYLE */
         .filter-group {
             display: flex;
             flex-wrap: wrap;
@@ -215,8 +213,8 @@
             font-size: 14px;
             border: 2px solid #888;
             background: #fff;
-            min-width: 130px;
-            max-width: 180px;
+            min-width: 150px;
+            max-width: 200px;
             flex: 1;
         }
         .filter-group select:focus {
@@ -239,7 +237,6 @@
             text-decoration: underline;
         }
         
-        /* STYLE UNTUK FOLDER YANG SUDAH DIPROSES */
         select option.processed {
             background-color: #d1fae5 !important;
             color: #065f46 !important;
@@ -319,7 +316,7 @@
             .tab-btn { font-size: 13px; padding: 6px 12px; }
             .btn { font-size: 12px; padding: 4px 10px; }
             .output-area { font-size: 11px; min-height: 120px; }
-            .filter-group select { min-width: 80px; max-width: 120px; }
+            .filter-group select { min-width: 100px; max-width: 150px; }
             .filter-group { padding: 10px 12px; }
         }
     </style>
@@ -327,12 +324,12 @@
 <body>
 <div class="container">
     <h1>
-        <span>TXT Combiner <small>Desa</small></span>
+        <span>TXT Combiner <small>Desa 2 Level</small></span>
         <span style="font-size:14px; font-weight:400;">
             <button class="install-btn" id="installBtn">Install App</button>
         </span>
     </h1>
-    <div class="subtitle">Gabung file TXT per Desa — pilih Tahun → Bulan → Desa</div>
+    <div class="subtitle">Gabung file TXT per Desa — pilih Bulan → Desa (2 Level)</div>
 
     <div class="status-bar">
         <div class="status-indicator">
@@ -374,10 +371,10 @@
         <div class="output-area" id="manualOutput">Hasil gabungan akan muncul di sini.</div>
     </div>
 
-    <!-- TAB 2: DESA (FILTER TAHUN → BULAN → DESA) -->
+    <!-- TAB 2: DESA (2 LEVEL: BULAN → DESA) -->
     <div class="tab-pane" id="tab-desa">
         <p style="margin-bottom:10px;">
-            Pilih <strong>Tahun</strong> → <strong>Bulan</strong> → <strong>Desa</strong> untuk memproses data.
+            Pilih <strong>Bulan</strong> → <strong>Desa</strong> untuk memproses data.
             <br>
             <span style="font-size:13px; color:#666;">
                 <span style="background:#d1fae5; padding:2px 10px; border-radius:4px;">✅ Hijau = Sudah diproses</span>
@@ -386,13 +383,8 @@
         </p>
         
         <div class="filter-group">
-            <label>📅 Tahun</label>
-            <select id="yearSelect">
-                <option value="">-- Pilih Tahun --</option>
-            </select>
-            
             <label>📆 Bulan</label>
-            <select id="monthSelect" disabled>
+            <select id="monthSelect">
                 <option value="">-- Pilih Bulan --</option>
             </select>
             
@@ -408,11 +400,11 @@
         
         <div class="path-preview-container">
             <span>📍 Path:</span>
-            <code id="pathPreview">(pilih tahun, bulan, dan desa)</code>
+            <code id="pathPreview">(pilih bulan dan desa)</code>
             <span id="folderStatus"></span>
         </div>
         
-        <div class="output-area" id="desaOutput">Pilih Tahun → Bulan → Desa, lalu klik "Proses".</div>
+        <div class="output-area" id="desaOutput">Pilih Bulan → Desa, lalu klik "Proses".</div>
     </div>
 
     <!-- TAB 3: SERVER -->
@@ -439,7 +431,7 @@
     // ============================================================
     // KONFIGURASI - GANTI DENGAN URL DEPLOY ANDA
     // ============================================================
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxy8Hiy2i0ukCftKaDcijSewoGmDBcIgOIdyppAGSf3LuPq0T3SZ24g-OESEJstHnuU/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwt1rfvfEKLA46rG0bKVq37sF-tBi1WTZP5YzWa82bnCrw8prGQ2kZyDyILMI4IDus/exec';
     const SECRET_TOKEN = ''; // Kosongkan jika tidak pakai token
 
     // ============================================================
@@ -499,15 +491,14 @@
                 panes[key].classList.toggle('active', key === target);
             });
             if (target === 'desa') {
-                loadYears();
+                loadMonths();
             }
         });
     });
 
     // ============================================================
-    // FILTER DROPDOWN BERTINGKAT: TAHUN → BULAN → DESA
+    // FILTER DROPDOWN 2 LEVEL: BULAN → DESA
     // ============================================================
-    const yearSelect = document.getElementById('yearSelect');
     const monthSelect = document.getElementById('monthSelect');
     const villageSelect = document.getElementById('villageSelect');
     const desaLoading = document.getElementById('desaLoading');
@@ -515,62 +506,15 @@
     const folderStatus = document.getElementById('folderStatus');
 
     /**
-     * Load daftar tahun dari Drive
+     * Load daftar bulan dari root folder
      */
-    async function loadYears() {
-        desaLoading.textContent = '⏳ Memuat tahun...';
-        yearSelect.disabled = true;
+    async function loadMonths() {
+        desaLoading.textContent = '⏳ Memuat bulan...';
         monthSelect.disabled = true;
         villageSelect.disabled = true;
 
         try {
-            let url = APPS_SCRIPT_URL + '?action=getYears&t=' + Date.now();
-            if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
-            const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-            if (!response.ok) throw new Error('HTTP ' + response.status);
-            const data = await response.json();
-
-            if (data.success && data.data) {
-                yearSelect.innerHTML = '<option value="">-- Pilih Tahun --</option>';
-                data.data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.name;
-                    option.textContent = item.name + (item.processed ? ' ✅' : '');
-                    if (item.processed) option.className = 'processed';
-                    yearSelect.appendChild(option);
-                });
-                desaLoading.textContent = '✅ ' + data.data.length + ' tahun ditemukan';
-            } else {
-                desaLoading.textContent = '❌ Gagal muat: ' + (data.message || '');
-                yearSelect.innerHTML = '<option value="">-- Gagal muat --</option>';
-            }
-        } catch (err) {
-            desaLoading.textContent = '❌ Error: ' + err.message;
-            yearSelect.innerHTML = '<option value="">-- Error --</option>';
-        } finally {
-            yearSelect.disabled = false;
-        }
-    }
-
-    /**
-     * Load daftar bulan dari tahun yang dipilih
-     */
-    async function loadMonths(year) {
-        if (!year) {
-            monthSelect.innerHTML = '<option value="">-- Pilih Bulan --</option>';
-            monthSelect.disabled = true;
-            villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
-            villageSelect.disabled = true;
-            updatePathPreview();
-            return;
-        }
-
-        desaLoading.textContent = '⏳ Memuat bulan untuk ' + year + '...';
-        monthSelect.disabled = true;
-        villageSelect.disabled = true;
-
-        try {
-            let url = APPS_SCRIPT_URL + '?action=getMonths&year=' + encodeURIComponent(year) + '&t=' + Date.now();
+            let url = APPS_SCRIPT_URL + '?action=getMonthsDirect&t=' + Date.now();
             if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
             const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
             if (!response.ok) throw new Error('HTTP ' + response.status);
@@ -602,8 +546,8 @@
     /**
      * Load daftar desa dari bulan yang dipilih
      */
-    async function loadVillages(year, month) {
-        if (!year || !month) {
+    async function loadVillages(month) {
+        if (!month) {
             villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
             villageSelect.disabled = true;
             updatePathPreview();
@@ -614,7 +558,7 @@
         villageSelect.disabled = true;
 
         try {
-            let url = APPS_SCRIPT_URL + '?action=getVillages&year=' + encodeURIComponent(year) + '&month=' + encodeURIComponent(month) + '&t=' + Date.now();
+            let url = APPS_SCRIPT_URL + '?action=getVillagesDirect&month=' + encodeURIComponent(month) + '&t=' + Date.now();
             if (SECRET_TOKEN) url += '&token=' + encodeURIComponent(SECRET_TOKEN);
             const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
             if (!response.ok) throw new Error('HTTP ' + response.status);
@@ -647,27 +591,23 @@
      * Update preview path dan status
      */
     function updatePathPreview() {
-        const year = yearSelect.value;
         const month = monthSelect.value;
         const village = villageSelect.value;
         const selectedOption = villageSelect.options[villageSelect.selectedIndex];
         
         if (village && selectedOption && selectedOption.value) {
             const isProcessed = selectedOption.classList.contains('processed');
-            pathPreview.textContent = village;
+            pathPreview.textContent = month + '/' + village;
             if (isProcessed) {
                 folderStatus.innerHTML = '<span class="status-badge processed">✅ Sudah Diproses</span>';
             } else {
                 folderStatus.innerHTML = '<span class="status-badge unprocessed">⏳ Belum Diproses</span>';
             }
         } else if (month) {
-            pathPreview.textContent = year + '/' + month + ' (pilih desa)';
-            folderStatus.innerHTML = '';
-        } else if (year) {
-            pathPreview.textContent = year + ' (pilih bulan)';
+            pathPreview.textContent = month + ' (pilih desa)';
             folderStatus.innerHTML = '';
         } else {
-            pathPreview.textContent = '(pilih tahun, bulan, dan desa)';
+            pathPreview.textContent = '(pilih bulan dan desa)';
             folderStatus.innerHTML = '';
         }
     }
@@ -676,20 +616,10 @@
     // EVENT LISTENER UNTUK DROPDOWN
     // ============================================================
     
-    yearSelect.addEventListener('change', function() {
-        const year = this.value;
-        loadMonths(year);
-        monthSelect.innerHTML = '<option value="">-- Pilih Bulan --</option>';
-        villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
-        villageSelect.disabled = true;
-        updatePathPreview();
-    });
-
     monthSelect.addEventListener('change', function() {
-        const year = yearSelect.value;
         const month = this.value;
-        if (year && month) {
-            loadVillages(year, month);
+        if (month) {
+            loadVillages(month);
         } else {
             villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
             villageSelect.disabled = true;
@@ -702,16 +632,14 @@
     });
 
     document.getElementById('refreshFilterBtn').addEventListener('click', function() {
-        loadYears();
-        monthSelect.innerHTML = '<option value="">-- Pilih Bulan --</option>';
-        monthSelect.disabled = true;
+        loadMonths();
         villageSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
         villageSelect.disabled = true;
         updatePathPreview();
     });
 
     // ============================================================
-    // MANUAL GABUNG (TAB 1)
+    // MANUAL GABUNG (TAB 1) - SAMA SEPERTI SEBELUMNYA
     // ============================================================
     let selectedFiles = [];
     const dropZone = document.getElementById('dropZone');
@@ -1080,11 +1008,11 @@
         setStatus('idle', 'Idle');
     });
 
-    // Tombol Proses Desa (dengan filter)
+    // Tombol Proses Desa (2 Level)
     document.getElementById('btnProcessDesa').addEventListener('click', function() {
         const folderPath = villageSelect.value;
         if (!folderPath) {
-            alert('Pilih Tahun → Bulan → Desa terlebih dahulu.');
+            alert('Pilih Bulan → Desa terlebih dahulu.');
             return;
         }
         const loading = document.getElementById('desaLoading');
@@ -1092,8 +1020,7 @@
         callServerAction('processSpecific', 'btnProcessDesa', { folder: folderPath }, desaOutput)
             .finally(() => { 
                 loading.textContent = '';
-                // Refresh list setelah proses
-                loadYears();
+                loadMonths();
             });
     });
 
@@ -1132,14 +1059,13 @@
     // ============================================================
     setStatus('idle', 'Idle');
     serverOutput.textContent = 'Klik tombol untuk menjalankan aksi server.';
-    desaOutput.textContent = 'Pilih Tahun → Bulan → Desa, lalu klik "Proses".';
-    pathPreview.textContent = '(pilih tahun, bulan, dan desa)';
+    desaOutput.textContent = 'Pilih Bulan → Desa, lalu klik "Proses".';
+    pathPreview.textContent = '(pilih bulan dan desa)';
 
-    // Load tahun saat pertama kali
-    loadYears();
+    // Load bulan saat pertama kali
+    loadMonths();
 </script>
 
-<!-- JSZip untuk ekstrak ZIP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </body>
 </html>
